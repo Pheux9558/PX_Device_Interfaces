@@ -26,7 +26,7 @@ class ConnectionOrganiser:
         # region Variable declaration
         self.name = device_name
         self.program_name = "Connection_Organiser"
-        self.settings_file_path = "../sys_files/" + self.program_name + "/" + self.name + ".data"
+        self.settings_file_path = "sys_files/" + self.program_name + "/" + self.name + ".data"
         self.connected = False
         self.firmware = firmware
         self.debug = False
@@ -536,6 +536,7 @@ class ConnectionOrganiser:
 class ConfigWindow:
     def __init__(self, obj):
         self.watched = obj
+        self.do_save = False
         self.ui_type: (str, None) = None
         self.window()
 

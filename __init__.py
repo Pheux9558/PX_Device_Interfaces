@@ -4,8 +4,8 @@
 # from timer import *
 
 from .python import (
-    arduino_GPIO_lib,
     connection_organiser_with_opc,
+    arduino_GPIO_lib,
     opc_GPIO_lib,
     timer
     )
