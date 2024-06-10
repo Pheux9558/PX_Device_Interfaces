@@ -6,7 +6,7 @@ import time
 
 
 class GPIOlib(conorg.ConnectionOrganiser):
-    def __init__(self, device_name=None, firmware=None, **kwargs):
+    def __init__(self, device_name, firmware=None, **kwargs):
         self.configured = False
         self.auto_io = False
         self.pins = []

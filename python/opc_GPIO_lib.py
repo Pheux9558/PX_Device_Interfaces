@@ -9,7 +9,7 @@ import mapping
 
 
 class GPIOlib(conorg.ConnectionOrganiser):
-    def __init__(self, device_name: str = None, firmware: str = None, opc_node_addr: str = "ns=3;", **kwargs):
+    def __init__(self, device_name: str, firmware: str = None, opc_node_addr: str = "ns=3;", **kwargs):
         """
         This class is a ported version of arduino_GPIO_Lib\n
         Versions and functionality may differ between those two\n
