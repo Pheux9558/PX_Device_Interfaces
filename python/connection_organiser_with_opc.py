@@ -432,9 +432,6 @@ class ConnectionOrganiser:
                 else:
                     if self.debug:
                         print(f'ERROR: Send param invalid: type_of_data [{self.name}]')
-
-            # Unlock sender
-            self.event_send_block.set()
             # endregion
 
     def receive_worker(self):
