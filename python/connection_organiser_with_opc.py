@@ -321,7 +321,8 @@ class ConnectionOrganiser:
                 data_to_send: (list, None) = self.send_q.get(True, 1)
             except:
                 if self.debug:
-                    print(f'Send Worker Q MT [{self.name}]')
+                    pass
+                    # print(f'Send Worker Q MT [{self.name}]')
                 data_to_send = None
             if data_to_send:
                 if self.debug:
@@ -407,7 +408,15 @@ class ConnectionOrganiser:
                     #
 
                 # Catch Node from OPC-UA Server
-                client_node = self.connection_opc_client.get_node(node_id)
+
+                try:
+                    client_node = self.connection_opc_client.get_node(node_id)
+                except:
+                    print(f'ERROR: Connection Organiser send() [{self.name}]')
+                    self.connected = False
+                    self.disconnect()
+                    return
+
                 client_node_dv = None
 
                 # Generate OPC send data
@@ -500,11 +509,17 @@ class ConnectionOrganiser:
         """
 
         if self.type == "OPC":
-            client_node = self.connection_opc_client.get_node(node_id)
-            client_node_value = client_node.get_value()
-            if self.debug:
-                print(f'Value of Node [{client_node}]: {client_node_value}')
-            return client_node_value
+            try:
+                client_node = self.connection_opc_client.get_node(node_id)
+                client_node_value = client_node.get_value()
+                if self.debug:
+                    print(f'Value of Node [{client_node}]: {client_node_value}')
+                return client_node_value
+            except Exception as e:
+                print(f'ERROR [{e}]: Connection Organiser request_from_device() [{self.name}]')
+                self.connected = False
+                self.disconnect()
+                return ""
 
     # If firmware is defined run a check
     def check_firmware(self):

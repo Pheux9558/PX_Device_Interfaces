@@ -3,8 +3,8 @@ import os
 
 # PX libs
 
-import PX_Interfaces.python.connection_organiser_with_opc as conorg
-import PX_Interfaces.python.timer
+import PX_Device_Interfaces.python.connection_organiser_with_opc as conorg
+import PX_Device_Interfaces.python.timer
 
 
 class GPIOlib(conorg.ConnectionOrganiser):
@@ -201,6 +201,16 @@ class GPIOlib(conorg.ConnectionOrganiser):
     def set_all(self, value: int):
         for module in self.input_data.keys():
             self.write(module, [value for _ in range(16)])
+
+    def retrieve_pin_value(self, module, pin):
+        """
+        Retrieve Output value
+        """
+        module = self.__check_label(module, "in")
+        if module:
+            data = self.request_from_device(f'ns=3;s="{module}"."Array"')
+            if data:
+                return data[pin]
 
     def read_all(self):
         """
