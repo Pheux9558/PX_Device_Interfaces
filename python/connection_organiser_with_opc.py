@@ -10,7 +10,7 @@ from opcua import ua
 
 
 class ConnectionOrganiser:
-    def __init__(self, device_name: str = None, firmware: str = None, init_connect: bool = False, **kwargs):
+    def __init__(self, device_name: str, firmware: str = None, init_connect: bool = False, **kwargs):
         """
         Init the connection between this system and PX Systems running GPIO_Lib or CNZero.\n
         Version 2.0 Working with OPC-UA Client
