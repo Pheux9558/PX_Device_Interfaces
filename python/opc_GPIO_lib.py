@@ -239,22 +239,27 @@ class GPIOlib(conorg.ConnectionOrganiser):
                     self.output_data[module] = data
         return self.output_data.get(module, None)
 
-    def get(self, module: str, pin: int) -> (int, None):
+    def get(self, module: str, pin: int, do_update_sw_in: bool = True) -> (int, None):
         """
         Get the value of a pin from a module.\n
         read(module) gets triggered in the process.\n
-        This function also sets SW_In to 2 (DIO Read Mode) if required.\n
+        This function also sets SW_In to 2 (DIO Read Mode) if required and do_update_sw_in is True.\n
 
         :type pin: int
         :type module: str
+        :type do_update_sw_in: bool
         :param module:
         :param pin:
+        :param do_update_sw_in:
         :return:
         """
-        if self.input_data.get(self.__check_label(module, "in"), None):
-            if not self.input_data.get(self.__check_label(module, "in"))[pin] == 2:
-                self.set(self.__check_label(module, "in"), pin, 2, force=True)
-                time.sleep(.02)
+
+        # Reconfigure input
+        if do_update_sw_in:
+            if self.input_data.get(self.__check_label(module, "in"), None):
+                if not self.input_data.get(self.__check_label(module, "in"))[pin] == 2:
+                    self.set(self.__check_label(module, "in"), pin, 2, force=True)
+                    time.sleep(.02)
 
         module = self.__check_label(module, "out")
         self.read(module)
