@@ -426,7 +426,13 @@ class ConnectionOrganiser:
 
                 # If data is available send it
                 if client_node_dv:
-                    client_node.set_value(client_node_dv)
+                    try:
+                        client_node.set_value(client_node_dv)
+                    except Exception as e:
+                        print(
+                            f'ERROR: Connection Organiser send() [{self.name}]\n'
+                            f'{e}'
+                        )
                     if self.debug:
                         print(f'Set Value of Node [{client_node}]: {data_to_send}')
                 else:
