@@ -108,6 +108,9 @@ class GPIOlib(conorg.ConnectionOrganiser):
         Run a sweep on all Software inputs to test Hardware Outputs.\n
         set all Hardware ports to input
         """
+        if not self.connected:
+            return
+
         for module in self.input_data.keys():
             module: str
             if module.startswith("K"):
@@ -150,6 +153,9 @@ class GPIOlib(conorg.ConnectionOrganiser):
         """
         Write all OPC registers to SPS
         """
+        if not self.connected:
+            return
+
         if not self.auto_io:
             for module in self.input_data.keys():
                 value = self.input_data[module]
@@ -167,6 +173,9 @@ class GPIOlib(conorg.ConnectionOrganiser):
         :param module:
         :param value:
         """
+        if not self.connected:
+            return
+
         module = self.__check_label(module, "in")
         value = value or self.input_data.get(module, None)
         if value:
@@ -190,15 +199,20 @@ class GPIOlib(conorg.ConnectionOrganiser):
         :param value:
         :param pin:
         """
+        if not self.connected:
+            return
+
         module = self.__check_label(module, "in")
         data = self.input_data.get(module, None)
         if isinstance(data, list):
             data[pin] = value
             self.input_data[module] = data
         self.write(module, force=force)
-        pass
 
     def set_all(self, value: int):
+        if not self.connected:
+            return
+
         for module in self.input_data.keys():
             self.write(module, [value for _ in range(16)])
 
@@ -206,6 +220,9 @@ class GPIOlib(conorg.ConnectionOrganiser):
         """
         Retrieve Output value
         """
+        if not self.connected:
+            return
+
         module = self.__check_label(module, "in")
         if module:
             data = self.request_from_device(f'ns=3;s="{module}"."Array"')
@@ -216,6 +233,8 @@ class GPIOlib(conorg.ConnectionOrganiser):
         """
         Read all OPC registers from SPS
         """
+        if not self.connected:
+            return
 
         if not self.auto_io:
             for module in self.output_data.keys():
@@ -231,6 +250,9 @@ class GPIOlib(conorg.ConnectionOrganiser):
         :type module: str
         :param module:
         """
+        if not self.connected:
+            return
+
         module = self.__check_label(module, "out")
         if module:
             if self.auto_io:
@@ -253,6 +275,8 @@ class GPIOlib(conorg.ConnectionOrganiser):
         :param do_update_sw_in:
         :return:
         """
+        if not self.connected:
+            return
 
         # Reconfigure input
         if do_update_sw_in:
