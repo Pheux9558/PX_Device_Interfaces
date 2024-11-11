@@ -572,6 +572,8 @@ class ConfigWindow:
             self.watched.type = "WIFI"
         if self.ui_type == "BLUETOOTH":
             self.type = "BLUETOOTH"
+        if self.ui_type == "OPC":
+            self.type = "OPC"
 
         if self.watched.type == "USB":
             if not self.entry_usb_port.get() == "" and not self.entry_usb_baud.get() == "":
@@ -599,15 +601,25 @@ class ConfigWindow:
             else:
                 print("ERROR: Blank Entry")
 
+        if self.watched.type == "OPC":
+            if not self.entry_opc_adress.get() == "":
+                self.watched.opc_client_address = self.entry_opc_adress.get()
+                self.do_save = True
+                self.root.destroy()
+
+
     def ui_sw_usb(self):
         self.ui_type = "USB"
         self.btn_usb_frame.config(bg="gray80")
         self.btn_wifi_frame.config(bg="gray94")
         self.btn_ble_frame.config(bg="gray94")
+        self.btn_opc_frame.config(bg="gray94")
+
         #
         self.frame_usb.grid(column=0, row=2, columnspan=3, sticky="nsew")
         self.frame_wifi.grid_remove()
         self.frame_ble.grid_remove()
+        self.frame_opc.grid_remove()
         #
         self.entry_usb_port.delete(0, 'end')
         self.entry_usb_port.insert(0, self.watched.usb_port)
@@ -619,10 +631,13 @@ class ConfigWindow:
         self.btn_usb_frame.config(bg="gray94")
         self.btn_wifi_frame.config(bg="gray80")
         self.btn_ble_frame.config(bg="gray94")
+        self.btn_opc_frame.config(bg="gray94")
+
         #
         self.frame_usb.grid_remove()
         self.frame_wifi.grid(column=0, row=2, columnspan=3, sticky="nsew")
         self.frame_ble.grid_remove()
+        self.frame_opc.grid_remove()
         #
         self.entry_wifi_host.delete(0, 'end')
         self.entry_wifi_host.insert(0, self.watched.wifi_host)
@@ -634,14 +649,33 @@ class ConfigWindow:
         self.btn_usb_frame.config(bg="gray94")
         self.btn_wifi_frame.config(bg="gray94")
         self.btn_ble_frame.config(bg="gray80")
+        self.btn_opc_frame.config(bg="gray94")
         #
         self.frame_usb.grid_remove()
         self.frame_wifi.grid_remove()
         self.frame_ble.grid(column=0, row=2, columnspan=3, sticky="nsew")
+        self.frame_opc.grid_remove()
+
+    def ui_sw_opc(self):
+        self.ui_type = "OPC"
+
+        self.btn_usb_frame.config(bg="gray94")
+        self.btn_wifi_frame.config(bg="gray94")
+        self.btn_ble_frame.config(bg="gray94")
+        self.btn_opc_frame.config(bg="gray80")
+
+        self.frame_usb.grid_remove()
+        self.frame_wifi.grid_remove()
+        self.frame_ble.grid_remove()
+        self.frame_opc.grid(column=0, row=2, columnspan=3, sticky="nsew")
+
+        self.entry_opc_adress.delete(0, 'end')
+        self.entry_opc_adress.insert(0, self.watched.opc_client_address)
+
 
     def window(self):
         self.root = tk.Tk()
-        self.root.geometry('360x300')
+        self.root.geometry('480x300')
         self.temp = tk.Label(self.root, width=0, height=0)
         self.temp.grid(column=0, row=0, columnspan=10, sticky="nsew")
         self.root.title(f'{self.watched.program_name}:{self.watched.name}')
@@ -696,7 +730,21 @@ class ConfigWindow:
         #
         #
         #
+        self.btn_opc_frame = tk.Button(
+            self.root, text="Config\nOpcUa",
+            state='active', command=self.ui_sw_opc,
+            width=10, height=0, font=('Helvetica bold', 10))
+        self.btn_opc_frame.grid(column=3, row=1, sticky="nsew", padx=15, pady=10)
+        self.frame_opc = tk.Frame(self.root, height=200)
+        self.label_opc_adress = tk.Label(self.frame_opc, width=10, text="Adress:")
+        self.label_opc_adress.grid(column=0, row=0, sticky="nsew", padx=15, pady=10)
+        self.entry_opc_adress = tk.Entry(self.frame_opc, width=30)
+        self.entry_opc_adress.grid(column=1, row=0, columnspan=10, sticky="nsew", pady=10)
 
+
+        #
+        #
+        #
         self.btn_cancel = tk.Button(self.root, text="Cancel", command=lambda: self.root.destroy(), width=10)
         self.btn_cancel.place(anchor="se", x=360 - 110, y=300 - 10)
         self.btn_save = tk.Button(self.root, text="Save", command=self.save_help, width=10)
@@ -705,12 +753,15 @@ class ConfigWindow:
         #
         #
         #
+
         if self.watched.type == "USB":
             self.ui_sw_usb()
         if self.watched.type == "WIFI":
             self.ui_sw_wifi()
         if self.watched.type == "BLUETOOTH":
             self.ui_sw_ble()
+        if self.watched.type == "OPC":
+            self.ui_sw_opc()
 
         self.root.mainloop()
 
