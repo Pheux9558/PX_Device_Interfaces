@@ -514,6 +514,9 @@ class ConnectionOrganiser:
         :type node_id: str
         """
 
+        if not self.connected:
+            return
+
         if self.type == "OPC":
             try:
                 client_node = self.connection_opc_client.get_node(node_id)

@@ -6,7 +6,6 @@ import os
 import PX_Device_Interfaces.python.connection_organiser_with_opc as conorg
 import PX_Device_Interfaces.python.timer
 
-
 class GPIOlib(conorg.ConnectionOrganiser):
     def __init__(self, device_name: str, firmware: str = None, opc_node_addr: str = "ns=3;", **kwargs):
         """
