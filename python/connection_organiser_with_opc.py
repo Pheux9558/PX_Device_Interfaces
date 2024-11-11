@@ -190,6 +190,7 @@ class ConnectionOrganiser:
         elif self.type == "OPC":
             self.connection_opc_client = opcua.Client(self.opc_client_address)
             try:
+                self.connection_opc_client.session_timeout = 30000
                 self.connection_opc_client.connect()
                 if self.debug:
                     print(f'Info: Connection [Type: {self.type}, Object:{self.connection_opc_client}] [{self.name}]')
