@@ -178,8 +178,8 @@ class GPIOlib(conorg.ConnectionOrganiser):
         module = self.__check_label(module, "in")
         value = value or self.input_data.get(module, None)
         if value:
+            self.input_data[module] = value
             if self.auto_io or force:
-                self.input_data[module] = value
                 self.send([f'ns=3;s="{module}"."Array"', value], "byte")
         else:
             if self.debug:
@@ -215,7 +215,7 @@ class GPIOlib(conorg.ConnectionOrganiser):
         for module in self.input_data.keys():
             self.write(module, [value for _ in range(16)])
 
-    def retrieve_pin_value(self, module, pin):
+    def retrieve_pin_value(self, module: str, pin: int | None = None) -> list | int:
         """
         Retrieve Output value
         """
@@ -226,7 +226,9 @@ class GPIOlib(conorg.ConnectionOrganiser):
         if module:
             data = self.request_from_device(f'ns=3;s="{module}"."Array"')
             if data:
-                return data[pin]
+                if pin:
+                    return data[pin]
+                return data
 
     def read_all(self):
         """
