@@ -529,7 +529,7 @@ class ConnectionOrganiser:
                 print(f'ERROR [{e}]: Connection Organiser request_from_device() [{self.name}]')
                 self.connected = False
                 self.disconnect()
-                return ""
+                return
 
     # If firmware is defined run a check
     def check_firmware(self):
