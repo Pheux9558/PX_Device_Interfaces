@@ -431,9 +431,11 @@ class ConnectionOrganiser:
                         client_node.set_value(client_node_dv)
                     except Exception as e:
                         print(
-                            f'ERROR: Connection Organiser send() [{self.name}]\n'
-                            f'{e}'
+                            f'ERROR [{e}]: Connection Organiser send() [{self.name}]\n'
                         )
+                        self.connected = False
+                        self.disconnect()
+                        return
                     if self.debug:
                         print(f'Set Value of Node [{client_node}]: {data_to_send}')
                 else:

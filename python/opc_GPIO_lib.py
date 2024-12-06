@@ -226,7 +226,7 @@ class GPIOlib(conorg.ConnectionOrganiser):
         if module:
             data = self.request_from_device(f'ns=3;s="{module}"."Array"')
             if data:
-                if pin:
+                if not pin is None:
                     return data[pin]
                 return data
 
