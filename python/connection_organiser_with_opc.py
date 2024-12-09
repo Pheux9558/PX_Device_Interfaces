@@ -115,14 +115,14 @@ class ConnectionOrganiser:
         """
         Helper function to trigger the Configuration window
         """
-        old_type = self.type
-        ConfigWindow(self)
-        new_type = self.type
-        self.type = old_type
+        self.old_type = self.type
+        self.conf = ConfigWindow(self)
+        self.new_type = self.type
+        self.type = self.old_type
         if self.connected:
             self.disconnect()
             time.sleep(.1)
-        self.type = new_type
+        self.type = self.new_type
         self.connect()
 
         #

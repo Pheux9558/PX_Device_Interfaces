@@ -29,7 +29,7 @@ class GPIOlib(conorg.ConnectionOrganiser):
     #
     #
     def open_config_window(self):
-        super(GPIOlib, self).open_config_window()
+        super().open_config_window()
         self.configure_io()
 
     def disconnect(self):
@@ -106,8 +106,14 @@ class GPIOlib(conorg.ConnectionOrganiser):
             # If no File -> Create one
             else:
                 print(f'[{self.program_name_GPIOlib}] Create system file: {self.configure_io_file_path}')
-                os.makedirs("sys_files/" + self.program_name_GPIOlib)
-                open(self.configure_io_file_path, "w").close()
+                try:
+                    os.makedirs("sys_files/" + self.program_name_GPIOlib)
+                except Exception as e:
+                    print(e)
+                try:
+                    open(self.configure_io_file_path, "w").close()
+                except Exception as e:
+                    print(e)
         # Failsafe
         else:
             print(f'ERROR: No {self.name} Connection')

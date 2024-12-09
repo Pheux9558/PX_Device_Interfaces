@@ -35,7 +35,7 @@ class GPIOlib(conorg.ConnectionOrganiser):
         """
         Helper function to reconfigure IO after reconfigure the Connection
         """
-        super(GPIOlib, self).open_config_window()
+        super().open_config_window()
         self.configure_io()
 
     # TODO open_io_config_window
