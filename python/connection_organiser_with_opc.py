@@ -32,7 +32,7 @@ class ConnectionOrganiser:
         self.debug = False
         self.send_worker_phase: int = 0
         self.rec_worker_phase: int = 0
-
+        self.send_attach = "\n"
         #
 
         # type (USB/WIFI/Bluetooth/OPC)
@@ -365,7 +365,7 @@ class ConnectionOrganiser:
                     try:
                         if self.debug:
                             print(f'Info: Send [{data_to_send}] [{self.name}]')
-                        self.connection_usb.write((data_to_send + "\n").encode())
+                        self.connection_usb.write((data_to_send + self.send_attach).encode())
                     except:
                         print(f'ERROR: Connection Organiser send() [{self.name}]')
                         self.connected = False
@@ -377,7 +377,7 @@ class ConnectionOrganiser:
                     try:
                         if self.debug:
                             print(f'Info: Send [{data_to_send}] [{self.name}]')
-                        self.connection_wifi.send((data_to_send + "\n").encode())
+                        self.connection_wifi.send((data_to_send + self.send_attach).encode())
                     except:
                         print(f'ERROR: Connection Organiser [send()] [{self.name}]')
                         self.connected = False
