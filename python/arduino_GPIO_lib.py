@@ -32,6 +32,10 @@ class GPIOlib(conorg.ConnectionOrganiser):
         super().open_config_window()
         self.configure_io()
 
+    def connect(self):
+        super().connect()
+        self.configure_io()
+
     def disconnect(self):
         self.lcd_clear()
         for reset_pin in self.reset_output_pins:
@@ -188,10 +192,10 @@ class GPIOlib(conorg.ConnectionOrganiser):
 
     def lcd_write(self, val=" "):
         if self.configured:
-            self.send(f'P6 A1')
+            self.send(f'P6 A4')
             self.send(val)
             if self.debug:
-                print(f'lcd_write: P6 A1')
+                print(f'lcd_write: P6 A4')
                 print(f'lcd_write: {val}')
 
     def lcd_set_cursor(self, x, y):

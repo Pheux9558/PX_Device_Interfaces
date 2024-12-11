@@ -27,12 +27,12 @@
 #define OLED_SDA    41 
 
 // ##########################
-#define FIRMWARE_VERSION 3
+#define FIRMWARE_VERSION 1
 #include "update_mngr.h"
 String init_text;
 
 
-#include "Flapp.h"
+// #include "Flapp.h"
 
 
 #define powerOffDelay 1000
@@ -126,12 +126,12 @@ void loop() {
 
   if (btn_relese_flag && pwrState) {
     digitalWrite(vibMotorr, HIGH);
-    digitalWrite(LED_DEBUG, HIGH);
+    digitalWrite(LED_DEBUG, LOW);
     delay(250);
     digitalWrite(vibMotorr, LOW);
-    digitalWrite(LED_DEBUG, LOW);
+    digitalWrite(LED_DEBUG, HIGH);
 
-    flapp_start();
+    // flapp_start();
 
     int batAnalogValue = analogRead(batVoltage);
     int batVal = map(batAnalogValue, 1650, 2400, 300, 415);
