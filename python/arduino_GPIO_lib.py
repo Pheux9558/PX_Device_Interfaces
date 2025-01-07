@@ -41,13 +41,15 @@ class GPIOlib(conorg.ConnectionOrganiser):
         for reset_pin in self.reset_output_pins:
             self.digital_write(reset_pin)
         self.lcd_write("GPIO_Lib disconnect")
-        time.sleep(0.1)
-        super().clear_send()
         self.configured = False
         super().disconnect()
 
     def configure_io(self):
         if self.connected:
+            if self.configured:
+                return
+            self.pins.clear()
+            self.names.clear()
             self.lcd_clear()
             self.lcd_write("I/O Config...")
             self.send("")
@@ -128,8 +130,11 @@ class GPIOlib(conorg.ConnectionOrganiser):
         if type(name).__name__ == "str":
             try:
                 pin = self.pins[self.names.index(name)]
-            except:
-                print(f'Error GPIO Lib: Pin name [{name}] not defined')
+            except Exception as e:
+                print(
+                    f'Error GPIO Lib: Pin name [{name}] not defined\n'
+                    f'{e}'
+                )
         return int(pin)
 
     # P1 digital_read
@@ -191,7 +196,7 @@ class GPIOlib(conorg.ConnectionOrganiser):
                 print(f'P5 N{index} V{val}')
 
     def lcd_write(self, val=" "):
-        if self.configured:
+        if self.connected:
             self.send(f'P6 A4')
             self.send(val)
             if self.debug:
@@ -199,13 +204,13 @@ class GPIOlib(conorg.ConnectionOrganiser):
                 print(f'lcd_write: {val}')
 
     def lcd_set_cursor(self, x, y):
-        if self.configured:
+        if self.connected:
             self.send(f'P6 A2 X{x} Y{y}')
             if self.debug:
                 print(f'lcd_set_cursor: P6 A2 X{x} Y{y}')
 
     def lcd_clear(self):
-        if self.configured:
+        if self.connected:
             self.send(f'P6 A3')
             if self.debug:
                 print(f'lcd_clear: P6 A3')

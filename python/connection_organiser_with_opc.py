@@ -30,6 +30,7 @@ class ConnectionOrganiser:
         self.connected = False
         self.firmware = firmware
         self.debug = False
+        self.disable_dsrdtr = True
         self.send_worker_phase: int = 0
         self.rec_worker_phase: int = 0
         self.send_attach = "\n"
@@ -119,6 +120,8 @@ class ConnectionOrganiser:
         self.conf = ConfigWindow(self)
         self.new_type = self.type
         self.type = self.old_type
+        if not self.conf.do_save:
+            return
         if self.connected:
             self.disconnect()
             time.sleep(.1)
@@ -150,6 +153,12 @@ class ConnectionOrganiser:
             self.connection_usb.port = self.usb_port
             self.connection_usb.baudrate = self.usb_baud
             self.connection_usb.timeout = 1
+
+            if self.disable_dsrdtr:
+                self.connection_usb.dsrdtr = None
+                self.connection_usb.setRTS(False)
+                self.connection_usb.setDTR(False)
+
             try:
                 self.connection_usb.open()
                 if self.debug:
@@ -274,7 +283,7 @@ class ConnectionOrganiser:
         if not self.connected:
             while self.send_q.qsize() > 0:
                 print(f'Clear send offline failsafe: Q_SEND = {self.send_q.qsize()} [{self.name}]')
-                self.send_q.get()
+                self.send_q.get(block=False)
                 self.send_q.task_done()
             if self.debug:
                 print(f'###Clearing Send Q Done### [{self.name}] Disconnected')
@@ -773,7 +782,6 @@ class ConfigWindow:
 
         # TODO if save -> write to settings
         if self.do_save:
-            self.do_save = False
             #
             #
             with open(self.watched.settings_file_path, "w") as f:
