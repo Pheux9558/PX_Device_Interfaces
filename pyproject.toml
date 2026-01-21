@@ -12,7 +12,8 @@ authors = [ { name = "Yannik Dolde" } ]
 license = "MIT"
 dependencies = [
     "pyserial",
-    "opcua"
+    "opcua",
+    "cryptography"
 ]
 
 [tool.setuptools.packages.find]
