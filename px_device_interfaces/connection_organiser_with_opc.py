@@ -55,7 +55,7 @@ class ConnectionOrganiser:
         #
         #
         self.opc_client_address = ""
-
+        self.connection_opc_client = None
         self.send_q = queue.Queue()
         self.event_send_block = threading.Event()
 
@@ -197,7 +197,8 @@ class ConnectionOrganiser:
         #
         #
         elif self.type == "OPC":
-            self.connection_opc_client = opcua.Client(self.opc_client_address)
+            if not self.connection_opc_client:
+                self.connection_opc_client = opcua.Client(self.opc_client_address)
             try:
                 self.connection_opc_client.session_timeout = 30000
                 self.connection_opc_client.connect()
@@ -234,8 +235,10 @@ class ConnectionOrganiser:
         """
         Disconnect a device
         """
+        if not self.connected:
+            return
         self.connected = False
-        self.clear_send()
+        # self.clear_send()
         self.event_send_block.set()
         if self.type == "USB":
             if self.debug:
@@ -271,6 +274,8 @@ class ConnectionOrganiser:
                 if self.debug:
                     print(f'Info: Disconnect [Object:{self.connection_opc_client}] [{self.name}]')
                 self.connection_opc_client.disconnect()
+                del self.connection_opc_client
+                self.connection_opc_client = None
             except:
                 if self.debug:
                     print(f'ERROR: Disconnect Failed [{self.name}]')
@@ -283,7 +288,10 @@ class ConnectionOrganiser:
         if not self.connected:
             while self.send_q.qsize() > 0:
                 print(f'Clear send offline failsafe: Q_SEND = {self.send_q.qsize()} [{self.name}]')
-                self.send_q.get(block=False)
+                try:
+                    self.send_q.get(block=False)
+                except Exception as e:
+                    print(e)
                 self.send_q.task_done()
             if self.debug:
                 print(f'###Clearing Send Q Done### [{self.name}] Disconnected')
@@ -291,8 +299,8 @@ class ConnectionOrganiser:
         if self.debug:
             print(f'###Clearing Send Q### [{self.name}]')
             print("Q size: ", self.send_q.qsize())
-        while self.send_q.qsize() > 0:
-            time.sleep(0.01)
+        # while self.send_q.qsize() > 0:
+        #     time.sleep(0.01)
         if self.debug:
             print(f'###Clearing Send Q Done### [{self.name}]')
 
@@ -343,7 +351,12 @@ class ConnectionOrganiser:
                 self.event_send_block.wait(timeout=10)
                 if self.debug:
                     print("Send Task done")
-                self.send_q.task_done()
+
+                try:
+                    self.send_q.task_done()
+                except Exception as e:
+                    print(e)
+                    break
         self.send_worker_phase = 3
         print(f'END Send Worker [{self.name}]')
 
@@ -537,7 +550,7 @@ class ConnectionOrganiser:
                     print(f'Value of Node [{client_node}]: {client_node_value}')
                 return client_node_value
             except Exception as e:
-                print(f'ERROR [{e}]: Connection Organiser request_from_device() [{self.name}]')
+                print(f'ERROR [{e}]: Connection Organiser request_from_device() [{self.name}, {node_id}]')
                 self.connected = False
                 self.disconnect()
                 return
@@ -713,7 +726,6 @@ class ConfigWindow:
         #
         #
         #
-
         self.btn_wifi_frame = tk.Button(self.root, text="Config\nWiFi",
                                         state='active', command=self.ui_sw_wifi,
                                         width=10, height=0, font=('Helvetica bold', 10))
@@ -731,7 +743,6 @@ class ConfigWindow:
         #
         #
         #
-
         self.btn_ble_frame = tk.Button(self.root, text="Config\nBluetooth",
                                        state='active', command=self.ui_sw_ble,
                                        width=10, height=0, font=('Helvetica bold', 10))
@@ -764,7 +775,6 @@ class ConfigWindow:
         #
         #
         #
-
         if self.watched.type == "USB":
             self.ui_sw_usb()
         if self.watched.type == "WIFI":
@@ -779,7 +789,6 @@ class ConfigWindow:
         #
         #
         #
-
         # TODO if save -> write to settings
         if self.do_save:
             #

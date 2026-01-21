@@ -3,15 +3,16 @@ import os
 
 # PX libs
 
-import PX_Device_Interfaces.python.connection_organiser_with_opc as conorg
-import PX_Device_Interfaces.python.timer
+from . import connection_organiser_with_opc as conorg
+from . import timer
+
 
 class GPIOlib(conorg.ConnectionOrganiser):
     def __init__(self, device_name: str, firmware: str = None, opc_node_addr: str = "ns=3;", **kwargs):
         """
         This class is a ported version of arduino_GPIO_Lib\n
         Versions and functionality may differ between those two\n
-        Only works with the OPC-UA IO Firmware for the NE13 Test system\n
+        Only works with the OPC-UA IO Firmware for the NE13 Test system
         :type device_name: str
         :type firmware: str
         :type kwargs: any
@@ -139,9 +140,9 @@ class GPIOlib(conorg.ConnectionOrganiser):
         :type module: str
         :type mode: str
         """
-        labels: (list, None) = self.inout_label.get(module, None)
+        labels: list | None = self.inout_label.get(module, None)
         if labels:
-            labels: (list, None)
+            labels: list | None
             if mode == "in":
                 module = labels[0]
             elif mode == "out":
@@ -160,7 +161,7 @@ class GPIOlib(conorg.ConnectionOrganiser):
                 value = self.input_data[module]
                 self.send([f'ns=3;s="{module}"."Array"', value], "byte")
 
-    def write(self, module: str, value: (list, None) = None, force: bool = False):
+    def write(self, module: str, value: list | None = None, force: bool = False):
         """
         Write or Overwrite Software Array\n
         return with error if no value set or modul wrong\n
@@ -243,31 +244,30 @@ class GPIOlib(conorg.ConnectionOrganiser):
                 if data:
                     self.output_data[module] = data
 
-    def read(self, module: str) -> any:
+    def read(self, module: str, force: bool = False) -> any:
         """
         Get Output of specific Module and write it to Output Array.\n
         Return statement gets the raw data.\n
-
         :type module: str
         :param module:
+        :param force:
         """
         if not self.connected:
             return
 
         module = self.__check_label(module, "out")
         if module:
-            if self.auto_io:
+            if self.auto_io or force:
                 data = self.request_from_device(f'ns=3;s="{module}"."Array"')
                 if data:
                     self.output_data[module] = data
         return self.output_data.get(module, None)
 
-    def get(self, module: str, pin: int, do_update_sw_in: bool = True) -> (int, None):
+    def get(self, module: str, pin: int, do_update_sw_in: bool = True, force: bool = False) -> int | None:
         """
         Get the value of a pin from a module.\n
         read(module) gets triggered in the process.\n
         This function also sets SW_In to 2 (DIO Read Mode) if required and do_update_sw_in is True.\n
-
         :type pin: int
         :type module: str
         :type do_update_sw_in: bool
@@ -287,5 +287,5 @@ class GPIOlib(conorg.ConnectionOrganiser):
                     time.sleep(.02)
 
         module = self.__check_label(module, "out")
-        self.read(module)
-        return self.output_data.get(module, [None for _ in range(16)])[pin]
+        self.read(module, force=force)
+        return int(self.output_data.get(module, [None for _ in range(16)])[pin])

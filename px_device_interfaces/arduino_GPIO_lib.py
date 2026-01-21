@@ -1,7 +1,7 @@
-import PX_Device_Interfaces.python.connection_organiser_with_opc as conorg
-# import python.connection_organiser_with_opc as conorg
+from . import connection_organiser_with_opc as conorg
 import os
 import time
+
 
 # TODO remove self.use_update, no manual retrieve
 
@@ -125,7 +125,7 @@ class GPIOlib(conorg.ConnectionOrganiser):
             print(f'ERROR: No {self.name} Connection')
 
     # Used to call pin from name instead of number
-    def get_pin_from_name(self, name):
+    def get_pin_from_name(self, name: int | str) -> int:
         pin = name
         if type(name).__name__ == "str":
             try:
@@ -144,7 +144,10 @@ class GPIOlib(conorg.ConnectionOrganiser):
     # P5 servo_write
     # P6 LCD commands
 
-    def digital_read(self, pin=None):
+    def digital_read(self, pin: int | str) -> bool:
+        if not pin:
+            return False
+        
         if self.configured:
             if pin:
                 pin = self.get_pin_from_name(pin)
@@ -168,15 +171,14 @@ class GPIOlib(conorg.ConnectionOrganiser):
                     if self.debug:
                         print(f'digital_write: Update pin {pin}')
                         print(f'digital_write: P2 N{pin} V{val}')
-                    # self.pause_check()
 
-    def analog_read(self, pin):
+    def analog_read(self, pin) -> int:
         if self.configured:
             if pin:
                 pin = self.get_pin_from_name(pin)
                 return self.input_array[pin][1]
 
-    def analog_write(self, pin, val):
+    def analog_write(self, pin: int | str, val: int):
         if self.configured:
             if pin:
                 pin = self.get_pin_from_name(pin)
@@ -252,7 +254,6 @@ class GPIOlib(conorg.ConnectionOrganiser):
 #
 #
 #
-
 
 if __name__ == "__main__":
 
