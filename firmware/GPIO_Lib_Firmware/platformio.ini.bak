@@ -1,0 +1,70 @@
+; default_envs will be set by tools/scan_and_select.py
+; leave empty to require explicit env selection
+[platformio]
+default_envs = esp32
+
+
+
+[env]
+extra_scripts = pre:tools/pio_scan_hook.py, post:tools/pio_post_hook.py
+upload_port = /dev/ttyACM0
+build_flags = -DDEBUG
+
+; Global build flags applied to all environments. Toggle by commenting this out
+; or create a separate debug env if you prefer non-global control.
+
+
+; Common build flags and library paths can be set in each environment
+; Individual environments can override these settings
+
+[env:uno]
+; Standard Arduino Uno board with Serial only
+platform = atmelavr
+board = uno
+framework = arduino
+build_flags = -DARDUINO_UNO -Ilib
+lib_extra_dirs = lib
+monitor_speed = 115200
+
+; Run scanner before build/upload to auto-detect board and set upload_port
+
+[env:stm32] 
+; Standard STM32F103C Blue Pill board
+platform = ststm32
+board = genericSTM32F103C
+framework = arduino
+build_flags = -DARDUINO_STM32 -Ilib
+lib_extra_dirs = lib
+; Run scanner before build/upload to auto-detect board and set upload_port
+extra_scripts = pre:tools/pio_scan_hook.py
+
+[env:stm32f4]
+; Standard STM32F4 Blackpill
+platform = ststm32
+board = genericSTM32F411
+framework = arduino
+build_flags = -DARDUINO_STM32 -Ilib
+lib_extra_dirs = lib
+; Run scanner before build/upload to auto-detect board and set upload_port
+
+[env:esp32]
+; ESP32 (ESP32-PICO-D4) generic devkit
+platform = espressif32
+board = esp32dev
+framework = arduino
+monitor_speed = 115200
+upload_speed = 921600
+build_flags = -DESP32_PICO_D4 -Ilib
+lib_extra_dirs = lib
+; Run scanner before build/upload to auto-detect board and set upload_port
+
+; PlatformIO Project Configuration File
+;
+;   Build options: build flags, source filter
+;   Upload options: custom upload port, speed and extra flags
+;   Library options: dependencies, extra library storages
+;   Advanced options: extra scripting
+;
+; Please visit documentation for the other options and examples
+; https://docs.platformio.org/page/projectconf.html
+

@@ -1,7 +1,0 @@
-type:USB
-type:USB
-usb_port:COM16
-usb_baud:115200
-wifi_host:0.0.0.0
-wifi_port:0000
-opc_client_address:N/A
