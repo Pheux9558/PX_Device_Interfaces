@@ -12,28 +12,21 @@ import threading
 import time
 
 from px_device_interfaces.GPIO_Lib import GPIO_Lib
-from px_device_interfaces.transports.usb import USBTransport
+from px_device_interfaces.transports.usb import USBTransportConfig
 
 
 def main() -> None:
     port = "/dev/ttyACM0"
     baud = 115200
 
-    # Create the library (device name is arbitrary when we attach a transport manually)
-    gpio = GPIO_Lib("usb_manual", auto_io=True, debug=True)
-
-    # Create and open the USB transport
-    usb = USBTransport({"port": port, "baud": baud})
-    ok = usb.connect()
-    if not ok:
+    # Create the transport config and GPIO_Lib; let GPIO_Lib.start() open the port
+    cfg = USBTransportConfig(port=port, baud=baud, timeout=0.1, debug=True)
+    gpio = GPIO_Lib(transport_config=cfg, auto_io=True, debug_enabled=True)
+    try:
+        gpio.start()
+    except RuntimeError:
         print(f"Failed to open serial port {port} (check permissions and that device is connected)")
         return
-
-    # Attach the transport and start the receive worker
-    gpio._transport = usb
-    gpio._running = True
-    gpio._recv_thread = threading.Thread(target=gpio._recv_worker, daemon=True)
-    gpio._recv_thread.start()
 
     time.sleep(2)  # wait for device to settle
     try:
