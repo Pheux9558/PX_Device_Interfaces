@@ -10,8 +10,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from px_device_interfaces.transports.mock import MockTransport
-from px_device_interfaces.GPIO_Lib import GPIO_Lib, _build_packet, CMD_LCD_WRITE_BITMAP, CMD_DIGITAL_READ
+from px_device_interfaces.transports.mock import MockTransport, MockTransportConfig
+from px_device_interfaces.GPIO_Lib import GPIO_Lib, CMD_LCD_WRITE_BITMAP, CMD_DIGITAL_READ
 
 
 def test_mock_large_bitmap_and_response(tmp_path):
@@ -19,8 +19,9 @@ def test_mock_large_bitmap_and_response(tmp_path):
     # create a MockTransport (no loopback - we'll push responses manually)
     mock = MockTransport(loopback=False)
 
-    # create GPIO_Lib and inject transport
-    gpio = GPIO_Lib(device, auto_io=False, debug=True)
+    # create GPIO_Lib with a mock transport config and inject transport instance
+    cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
     gpio._transport = mock
     mock.connect()
 
@@ -39,7 +40,7 @@ def test_mock_large_bitmap_and_response(tmp_path):
 
         # build and send a 256-byte bitmap frame to the transport
         payload = bytes([i & 0xFF for i in range(256)])
-        pkt = _build_packet(CMD_LCD_WRITE_BITMAP, payload)
+        pkt = gpio._build_packet(CMD_LCD_WRITE_BITMAP, payload)
         mock.send(pkt)
 
         sent = mock.pop_sent(raw=True)
@@ -61,7 +62,7 @@ def test_mock_large_bitmap_and_response(tmp_path):
         assert length == 256
 
         # simulate device response: digital read on pin 15 = 1
-        resp = _build_packet(CMD_DIGITAL_READ, bytes([15, 1]))
+        resp = gpio._build_packet(CMD_DIGITAL_READ, bytes([15, 1]))
         mock._incoming.put(resp)
 
         # give receive worker a moment to process

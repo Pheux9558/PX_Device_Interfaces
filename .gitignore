@@ -5,3 +5,4 @@ dist/
 /firmware/old/
 *.pyc
 *.code-workspace
+old_system_files/

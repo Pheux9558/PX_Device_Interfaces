@@ -19,7 +19,7 @@ def test_mock_transport_loopback():
     t.send("ping")
     # allow a tiny amount of time for queueing
     time.sleep(0.01)
-    r = t.receive(timeout=0.1)
+    r = t.receive()
     assert r == "ping"
 
     sent = t.pop_sent()

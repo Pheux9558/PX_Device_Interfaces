@@ -5,8 +5,8 @@ import threading
 import time
 from typing import Optional
 
-from px_device_interfaces import settings_manager
-from px_device_interfaces.transports import create_transport_for_device, BaseTransport
+from px_device_interfaces.transports import BaseTransport
+from px_device_interfaces.transports.base import BaseTransportConfig
 
 
 
@@ -19,8 +19,11 @@ class ConnectionOrganiserAdapter:
     in unit tests with `MockTransport`.
     """
 
-    def __init__(self, device_name: str, *, interactive: bool = False, debug: bool = False):
-        self.device_name = device_name
+    def __init__(
+        self,
+        transport_config: Optional["BaseTransportConfig"] = None,
+        debug: bool = False,
+    ):
         self.debug = debug
 
         # queues exposed to callers
@@ -34,26 +37,13 @@ class ConnectionOrganiserAdapter:
         self._recv_thread: Optional[threading.Thread] = None
         self._lock = threading.RLock()
 
-        # load settings for this device
-        self._settings = settings_manager.load_connection_settings(device_name)
+        self._transport = None
+        if transport_config is not None:
+            self._transport = transport_config.create_transport()
 
-        # If there's no configured type, either open interactive editor or
-        # raise depending on `interactive` flag.
-        if not self._settings.get("type"):
-            if interactive:
-                edited = settings_manager.interactive_edit(self._settings)
-                settings_manager.save_connection_settings(device_name, edited)
-                self._settings = edited
-            else:
-                # caller does not allow interactive setup — leave unconfigured
-                self._transport = None
-        # Attempt to create transport from device settings
-        try:
-            from px_device_interfaces.transports import create_transport_for_device
 
-            self._transport = create_transport_for_device(device_name)
-        except Exception:
-            self._transport = None
+        # Attempt to create transport from provided parameters
+
 
     # --- public API -------------------------------------------------
     def start(self) -> None:
@@ -62,7 +52,7 @@ class ConnectionOrganiserAdapter:
             if self._running:
                 return
             if not self._transport:
-                raise RuntimeError(f"no transport configured for device '{self.device_name}'")
+                raise RuntimeError("no transport configured for this ConnectionOrganiserAdapter instance")
             self._transport.connect()
             self._running = True
             self._send_thread = threading.Thread(target=self._send_worker, name="CO_send", daemon=True)
@@ -84,7 +74,8 @@ class ConnectionOrganiserAdapter:
             self._recv_thread.join(timeout)
 
         try:
-            self._transport.disconnect()
+            if self._transport:
+                self._transport.disconnect()
         except Exception:
             pass
 
@@ -107,6 +98,8 @@ class ConnectionOrganiserAdapter:
 
     # --- internal workers -------------------------------------------
     def _send_worker(self) -> None:
+        if not self._transport:
+            return
         if self.debug:
             print("send_worker started")
         while self._running:
@@ -126,11 +119,13 @@ class ConnectionOrganiserAdapter:
                 time.sleep(0.001)
 
     def _recv_worker(self) -> None:
+        if not self._transport:
+            return
         if self.debug:
             print("recv_worker started")
         while self._running:
             try:
-                data = self._transport.receive(timeout=0.5)
+                data = self._transport.receive()
                 if data is not None:
                     if self.debug:
                         print("received:", data)

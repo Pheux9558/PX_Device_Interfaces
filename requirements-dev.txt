@@ -2,3 +2,4 @@ pytest
 mypy
 dataclasses-json
 types-PyYAML
+pytest-timeout

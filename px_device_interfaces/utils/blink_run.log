@@ -1,0 +1,1424 @@
+2026-01-28T08:44:26.289 - GPIO_Lib: send_worker started
+2026-01-28T08:44:26.289 - GPIO_Lib: Starting handshake to wait for device ready banner...
+2026-01-28T08:44:26.289 - GPIO_Lib: Waiting for device ready banner...
+2026-01-28T08:44:26.390 - GPIO_Lib: USBTransport <- recv_bytes(b"E (171) esp_core_dump_flash: Core du=\x06\x81data check failed:\r\nCalculated checksum='c975121b'\r\nImage checksum='ffffffff'\r\n")
+2026-01-28T08:44:26.441 - GPIO_Lib: USBTransport <- recv_bytes(b'GPIO_READY\r\n')
+2026-01-28T08:44:26.441 - GPIO_Lib: received ready banner data: GPIO_READY
+2026-01-28T08:44:26.441 - GPIO_Lib: handshake: ready=True
+2026-01-28T08:44:26.442 - GPIO_Lib: recv_worker started
+2026-01-28T08:44:26.442 - GPIO_Lib: #### GPIO_Lib started successfully ####
+2026-01-28T08:44:26.442 - GPIO_Lib: Building packet: CMD=0x0000, LEN=1, PAYLOAD=0a, CHK=0x0B
+2026-01-28T08:44:26.442 - GPIO_Lib: enqueue packet len=7 wait_ack=False hex=aa000001000a0b
+Blinking pin 10 (LED_BUILTIN) on COM7 - 100 times
+2026-01-28T08:44:26.442 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.442 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.442 - GPIO_Lib: sending(hex): aa000001000a0b
+2026-01-28T08:44:26.443 - GPIO_Lib: USBTransport -> send(b'\xaa\x00\x00\x01\x00\n\x0b')
+2026-01-28T08:44:26.449 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.449 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.449 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.450 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.450 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.453 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.453 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.460 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.460 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.460 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.461 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.461 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.463 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.463 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.471 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.471 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.471 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.471 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.471 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.474 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.474 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.480 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.480 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.480 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.481 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.481 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.484 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.484 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.488 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.488 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.488 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.489 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.489 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.495 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.495 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.500 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.500 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.500 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.501 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.501 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.505 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.505 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.510 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.510 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.510 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.512 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.512 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.515 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.515 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.521 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.521 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.521 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.522 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.522 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.526 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.526 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.530 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.530 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.530 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.531 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.531 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.536 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.536 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.540 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.540 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.540 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.541 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.541 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.547 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.547 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.548 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.548 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.548 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.549 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.549 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.558 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.558 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.558 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.558 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.558 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.559 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.559 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.568 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.568 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.571 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.571 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.571 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.572 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.572 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.579 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.579 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.581 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.581 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.581 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.582 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.582 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.589 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.589 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.590 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.590 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.590 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.592 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.592 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.600 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.600 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.601 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.601 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.601 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.602 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.602 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.610 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.610 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.610 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.610 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.610 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.612 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.612 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.617 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.618 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.618 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.621 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.621 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.621 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.621 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.631 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.631 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.631 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.633 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.633 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.633 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.633 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.641 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.641 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.641 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.643 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.643 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.643 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.643 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.651 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.651 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.651 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.654 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.654 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.654 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.654 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.660 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.660 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.660 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.664 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.664 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.664 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.664 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.670 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.670 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.670 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.675 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.675 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.675 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.675 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.680 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.680 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.681 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.685 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.685 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.685 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.685 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.690 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.690 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.691 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.695 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.695 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.696 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.696 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.706 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.706 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.710 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.710 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.710 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.712 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.712 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.716 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.716 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.718 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.718 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.718 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.719 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.719 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.727 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.727 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.730 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.730 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.730 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.731 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.731 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.738 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.738 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.738 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.738 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.738 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.739 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.739 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.748 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.748 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.751 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.751 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.751 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.751 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.751 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.759 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.759 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.761 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.761 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.761 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.762 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.762 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.768 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.768 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.768 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.769 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.769 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.769 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.769 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.778 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.778 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.778 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.780 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.780 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.780 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.780 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.790 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.790 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.790 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.790 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.790 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.791 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.791 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.801 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.801 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.801 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.801 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.801 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.801 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.801 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.810 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.810 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.810 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.811 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.811 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.811 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.811 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.820 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.820 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.820 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.821 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.821 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.821 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.821 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.827 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.827 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.827 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.832 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.832 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.832 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.832 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.838 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.838 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.838 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.842 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.842 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.842 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.842 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.848 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.848 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.848 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.852 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.853 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.853 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.853 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.860 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.860 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.860 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.863 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.863 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.863 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.863 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.871 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.871 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.871 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.874 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.874 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.874 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.874 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.880 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.880 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.880 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.884 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.884 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.885 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.885 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.890 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.890 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.890 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.895 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.895 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.895 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.895 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.901 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.901 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.901 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.905 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.905 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.905 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.905 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.916 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.916 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.918 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.918 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.918 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.918 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.918 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.926 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.926 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.931 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.931 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.931 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.931 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.931 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.937 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.937 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.940 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.940 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.940 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.941 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.941 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.947 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.947 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.950 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.950 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.950 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.951 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.951 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.958 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.958 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.958 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.958 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.958 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.959 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.959 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.969 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.969 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.970 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.970 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.970 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.971 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.971 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:26.979 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:26.979 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:26.981 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.981 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.981 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.982 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:26.982 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:26.990 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:26.990 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:26.990 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:26.990 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:26.990 - GPIO_Lib: device: OK
+2026-01-28T08:44:26.991 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:26.991 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.000 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.000 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.001 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.001 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.001 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.001 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.001 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.011 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.011 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.011 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.011 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.011 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.012 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.012 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.021 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.021 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.021 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.021 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.022 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.022 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.022 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.030 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.030 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.030 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.032 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.032 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.032 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.032 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.041 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.041 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.041 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.043 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.043 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.043 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.043 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.050 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.050 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.050 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.053 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.053 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.053 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.053 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.060 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.060 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.060 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.064 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.064 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.064 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.064 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.071 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.071 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.071 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.074 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.074 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.074 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.074 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.080 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.080 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.080 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.084 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.084 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.084 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.084 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.090 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.091 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.091 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.095 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.095 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.095 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.095 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.097 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.097 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.097 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.105 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.105 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.105 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.105 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.115 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.115 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.118 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.118 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.118 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.119 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.119 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.126 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.126 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.131 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.131 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.131 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.131 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.131 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.136 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.136 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.140 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.140 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.141 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.141 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.141 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.146 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.146 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.150 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.150 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.150 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.151 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.151 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.157 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.157 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.160 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.160 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.160 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.161 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.161 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.167 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.168 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.171 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.171 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.171 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.172 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.172 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.178 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.178 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.178 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.178 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.178 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.179 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.179 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.188 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.188 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.191 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.191 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.191 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.191 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.191 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.198 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.198 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.201 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.201 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.201 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.202 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.202 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.209 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.209 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.211 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.211 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.211 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.212 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.212 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.218 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.218 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.218 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.220 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.220 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.220 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.220 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.228 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.228 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.228 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.230 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.230 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.240 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.240 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.241 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.241 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.241 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.242 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.242 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.250 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.250 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.251 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.251 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.251 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.252 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.252 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.261 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.261 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.261 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.261 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.261 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.262 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.262 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.270 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.270 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.270 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.271 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.271 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.271 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.271 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.278 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.278 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.278 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.282 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.282 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.282 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.282 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.288 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.288 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.288 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.292 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.292 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.292 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.292 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.300 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.300 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.300 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.302 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.302 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.303 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.303 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.311 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.311 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.311 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.313 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.313 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.313 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.313 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.318 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.318 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.318 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.324 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.324 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.324 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.324 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.331 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.331 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.331 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.334 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.334 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.334 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.334 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.340 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.340 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.340 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.345 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.345 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.345 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.345 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.351 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.351 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.351 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.355 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.355 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.355 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.355 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.360 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.360 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.360 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.365 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.365 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.366 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.366 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.376 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.376 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.378 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.378 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.378 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.379 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.379 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.386 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.386 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.390 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.390 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.390 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.391 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.391 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.397 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.397 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.400 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.400 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.400 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.401 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.401 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.407 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.407 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.410 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.410 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.410 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.412 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.412 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.417 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.417 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.420 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.420 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.420 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.421 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.421 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.428 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.428 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.428 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.428 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.428 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.429 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.429 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.438 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.438 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.440 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.440 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.440 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.441 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.441 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.448 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.448 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.448 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.449 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.449 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.449 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.449 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.457 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.457 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.458 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.459 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.459 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.459 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.459 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.467 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.467 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.467 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.470 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.470 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.470 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.470 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.480 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.480 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.481 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.481 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.481 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.481 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.481 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.488 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.488 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.488 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.490 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.491 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.491 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.491 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.501 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.501 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.501 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.501 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.501 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.502 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.502 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.511 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.511 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.511 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.511 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.511 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.512 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.512 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.517 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.517 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.518 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.521 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.521 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.522 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.522 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.530 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.530 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.530 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.532 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.532 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.532 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.532 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.541 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.541 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.541 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.542 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.542 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.542 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.542 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.550 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.550 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.550 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.553 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.553 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.553 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.553 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.557 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.558 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.558 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.563 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.563 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.563 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.563 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.570 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.570 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.570 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.574 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.574 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.574 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.574 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.581 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.581 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.581 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.584 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.584 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.584 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.584 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.588 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.588 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.588 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.594 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.594 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.594 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.594 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.600 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.600 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.600 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.605 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.605 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.605 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.605 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.610 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.610 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.610 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.615 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.615 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.615 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.615 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.625 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.625 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.631 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.631 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.631 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.632 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.632 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.636 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.636 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.640 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.640 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.640 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.642 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.642 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.646 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.646 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.648 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.648 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.648 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.649 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.649 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.657 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.657 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.660 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.660 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.660 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.661 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.661 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.667 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.667 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.670 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.670 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.670 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.671 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.672 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.678 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.678 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.680 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.680 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.681 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.682 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.682 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.687 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.687 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.687 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.689 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.689 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.689 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.689 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.699 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.699 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.700 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.700 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.700 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.701 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.701 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.707 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.707 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.707 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.710 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.710 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.710 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.710 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.720 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.720 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.720 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.720 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.720 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.721 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.721 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.728 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.728 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.728 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.731 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.731 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.731 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.731 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.737 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.737 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.738 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.741 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.741 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.742 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.742 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.750 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.750 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.750 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.752 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.752 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.752 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.752 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.760 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.760 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.760 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.763 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.763 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.763 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.763 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.768 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.768 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.768 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.773 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.774 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.774 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.774 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.780 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.780 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.780 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.784 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.784 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.784 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.784 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.790 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.790 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.790 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.794 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.794 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.795 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.795 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.800 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.800 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.800 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.805 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.805 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.805 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.805 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.816 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.816 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.821 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.821 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.821 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.822 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.822 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.826 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.826 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.828 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.828 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.828 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.829 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.829 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.836 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.836 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.837 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.837 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.837 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.839 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.839 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.847 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.847 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.850 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.850 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.850 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.851 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.851 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.857 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.857 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.861 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.861 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.861 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.862 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.862 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.868 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.868 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.868 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.868 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.868 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.869 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.869 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.878 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.878 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.880 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.880 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.880 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.881 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.882 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.889 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.889 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.890 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.890 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.890 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.892 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.892 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.899 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.900 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.900 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.900 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.900 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.902 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.902 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.908 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.908 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.908 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.910 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.910 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.910 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.910 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.920 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.920 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.921 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.921 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.921 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.922 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.922 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.927 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.927 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.927 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.931 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.931 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.932 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.932 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.940 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.940 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.941 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.942 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.942 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.942 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.942 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.951 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.951 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.951 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.952 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.952 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.953 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.953 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.957 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.957 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.957 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.963 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.963 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.963 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.963 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.970 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.970 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.970 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.973 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.973 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.973 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.973 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:27.980 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.980 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.980 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.984 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:27.984 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:27.984 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:27.984 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:27.988 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:27.988 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:27.988 - GPIO_Lib: device: OK
+2026-01-28T08:44:27.995 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:27.995 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:27.995 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:27.995 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.000 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.000 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.000 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.005 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.005 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.006 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.006 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.016 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.016 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.018 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.018 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.018 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.019 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.019 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.027 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.027 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.030 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.031 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.031 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.031 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.031 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.037 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.037 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.038 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.038 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.038 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.039 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.039 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.047 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.048 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.051 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.051 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.051 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.052 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.052 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.058 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.058 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.061 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.061 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.061 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.062 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.062 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.068 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.068 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.068 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.068 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.068 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.069 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.069 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.079 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.079 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.080 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.080 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.080 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.081 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.081 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.088 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.088 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.088 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.089 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.089 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.090 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.090 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.100 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.100 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.100 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.100 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.100 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.101 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.101 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.108 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.108 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.108 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.110 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.111 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.111 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.111 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.120 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.120 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.120 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.121 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.121 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.122 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.122 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.130 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.130 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.130 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.132 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.132 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.132 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.132 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.138 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.138 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.138 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.143 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.143 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.143 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.143 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.150 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.150 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.150 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.153 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.153 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.153 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.153 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.158 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.158 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.158 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.164 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.164 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.164 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.164 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.171 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.171 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.171 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.174 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.174 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.174 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.174 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.178 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.178 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.178 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.185 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.185 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.185 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.185 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.191 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.191 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.191 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.195 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.195 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.195 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.195 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.206 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.206 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.208 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.208 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.208 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.209 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.209 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.216 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.216 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.220 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.220 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.220 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.221 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.221 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.227 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.227 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.228 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.228 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.228 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.229 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.229 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.237 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.237 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.240 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.240 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.240 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.241 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.241 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.247 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.248 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.251 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.251 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.251 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.252 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.252 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.258 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.258 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.258 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.258 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.258 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.259 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.259 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.269 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.269 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.271 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.271 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.271 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.272 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.272 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.278 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.278 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.278 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.279 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.279 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.279 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.279 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.288 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.288 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.288 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.290 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.290 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.290 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.290 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.300 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.300 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.301 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.301 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.301 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.302 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.302 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.311 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.311 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.311 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.311 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.311 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.312 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.312 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.320 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.320 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.320 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.321 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.322 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.322 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.322 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.331 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.331 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.331 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.332 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.332 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.332 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.332 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.340 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.340 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.340 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.342 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.342 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.343 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.343 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.351 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.351 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.351 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.353 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.353 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.353 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.353 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.358 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.358 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.358 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.363 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.364 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.364 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.364 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.371 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.371 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.371 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.374 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.374 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.374 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.374 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.377 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.378 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.378 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.384 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.384 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.384 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.384 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.391 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.391 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.391 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.395 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.395 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.395 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.395 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.400 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.400 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.400 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.405 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.405 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.405 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.405 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.416 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.416 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.420 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.420 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.420 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.422 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.422 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.426 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.426 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.431 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.431 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.431 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.432 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.432 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.436 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.436 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.440 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.440 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.440 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.442 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.442 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.447 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.447 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.450 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.450 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.450 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.451 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.451 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.457 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.457 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.461 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.461 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.461 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.462 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.462 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.468 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.468 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.471 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.471 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.471 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.472 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.472 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.478 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.478 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.480 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.480 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.480 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.481 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.481 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.488 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.488 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.491 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.491 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.491 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.492 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.492 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.498 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.499 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.500 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.500 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.500 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.501 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.501 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.509 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.509 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.511 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.511 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.511 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.512 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.512 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-01-28T08:44:28.518 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.518 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.518 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.520 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-01-28T08:44:28.520 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-01-28T08:44:28.520 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-01-28T08:44:28.520 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-01-28T08:44:28.530 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-01-28T08:44:28.530 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-01-28T08:44:28.530 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.531 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.531 - GPIO_Lib: device: OK
+2026-01-28T08:44:28.531 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-01-28T08:44:28.531 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+Done blinking
+2026-01-28T08:44:28.541 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-01-28T08:44:28.541 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-01-28T08:44:28.541 - GPIO_Lib: device: OK
+2026-01-28T08:44:29.041 - GPIO_Lib: Waiting for send thread to terminate...
+2026-01-28T08:44:29.042 - GPIO_Lib: recv_worker exiting
+2026-01-28T08:44:29.168 - GPIO_Lib: send_worker exiting
+2026-01-28T08:44:29.169 - GPIO_Lib: Waiting for recv thread to terminate...
+2026-01-28T08:44:29.174 - GPIO_Lib: GPIO_Lib stopped
+
