@@ -1,6 +1,6 @@
 """PX_Device_Interfaces: Python host library and firmware for PX devices."""
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 # Re-export main components from px_device_interfaces package
 try:
