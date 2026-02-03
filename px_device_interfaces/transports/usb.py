@@ -27,7 +27,17 @@ class USBTransportConfig(BaseTransportConfig):
     auto_io: bool = True
 
     def create_transport(self) -> "USBTransport":
-        return USBTransport(port=self.port, baud=self.baud, timeout=self.timeout, debug=self.debug)
+        return USBTransport(port=self.port, baud=self.baud, config=self)
+
+    def help(self) -> str:
+        return (
+            "\nUSBTransportConfig fields:\n"
+            "  - port: serial device path (e.g. COM3 or /dev/ttyACM0)\n"
+            "  - baud: baud rate\n"
+            "  - timeout: read timeout in seconds\n"
+            "  - debug: enable debug prints\n"
+            "  - auto_io: whether to automatically handle I/O\n"
+        )
 
 
 class USBTransport(BaseTransport):
@@ -51,12 +61,13 @@ class USBTransport(BaseTransport):
     - `scan()`: discover available serial ports using pyserial's list_ports.
     """
 
-    def __init__(self, port: Optional[str] = None, baud: Optional[int] = 115200, timeout: Optional[float] = 0.1, debug: bool = True) -> None:
+    def __init__(self, port: Optional[str] = None, baud: Optional[int] = 11520, config: Optional[USBTransportConfig] = None) -> None:
         """Initialize USBTransport with explicit parameters."""
-        self.port = port 
-        self.baud = baud if baud is not None else 115200
-        self.timeout = timeout if timeout is not None else 0.1
-        self.debug = debug
+        self.config = config
+        self.port = config.port if config and config.port is not None else port
+        self.baud = config.baud if config and config.baud is not None else (baud if baud is not None else 115200)
+        self.timeout = config.timeout if config and config.timeout is not None else 0.1
+        self.debug = config.debug if config and config.debug is not None else False
         self._serial = None
         self._lock = threading.RLock()
         self._connected = False

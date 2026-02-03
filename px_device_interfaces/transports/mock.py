@@ -24,6 +24,15 @@ class MockTransportConfig(BaseTransportConfig):
     def create_transport(self) -> "MockTransport":
         return MockTransport(loopback=self.loopback, debug=self.debug, timeout=self.timeout)
 
+    def help(self) -> str:
+        return (
+            "\nMockTransportConfig fields:\n"
+            "  - loopback: whether to loop sent messages back into incoming queue\n"
+            "  - debug: enable debug prints\n"
+            "  - timeout: receive timeout seconds\n"
+            "  - auto_io: whether to automatically handle I/O\n"
+        )
+
 
 class MockTransport(BaseTransport):
     """A simple in-process transport useful for unit tests.

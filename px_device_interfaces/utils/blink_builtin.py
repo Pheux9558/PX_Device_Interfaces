@@ -19,7 +19,7 @@ blink_count = 100
 def main() -> int:
     # Create GPIO_Lib with explicit transport config (USB on COM7)
     conf = USBTransportConfig(port=port, baud=baud, timeout=0, debug=True, auto_io=True)
-    gpio = GPIO_Lib(transport_config=conf, require_ack_on_send=True, debug_enabled=True)
+    gpio = GPIO_Lib(transport_config=conf, require_ack_on_send=False, debug_enabled=True)
     try:
         gpio.start()
 

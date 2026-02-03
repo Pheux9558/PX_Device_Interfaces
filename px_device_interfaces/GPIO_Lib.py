@@ -368,7 +368,16 @@ class GPIO_Lib:
         """Return a copy of recorded OK timestamps (datetime objects)."""
         return list(self._ok_timestamps)
 
+    # region Legacy connect/disconnect
+    def connect(self) -> bool:
+        """Legacy connect() method; use start() instead."""
+        self.log_debug_message("connect() called (legacy); starting GPIO_Lib...")
+        return self.start()
 
+    def disconnect(self) -> None:
+        """Legacy disconnect() method; use stop() instead."""
+        self.log_debug_message("disconnect() called (legacy); stopping GPIO_Lib...")
+        self.stop()
 
     # region Start/Stop
     # [x] TODO refactor formate (Start/Stop)

@@ -26,6 +26,10 @@ class BaseTransportConfig:
         # return BaseTransport()  # Placeholder; subclasses should return specific transport instances
         # Example:
         # return USBTransport(port=self.port, baud=self.baud, timeout=self.timeout, debug=self.debug)
+    
+    def help(self) -> str:
+        """Return a help string describing the transport configuration."""
+        return "BaseTransportConfig does not provide specific help. Subclasses should override this method."
 
 
 class BaseTransport(ABC):

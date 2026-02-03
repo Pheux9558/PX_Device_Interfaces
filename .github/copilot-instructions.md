@@ -1,91 +1,64 @@
 # Copilot / AI Agent Instructions — PX_Device_Interfaces
 
 Purpose
-- PX_Device_Interfaces contains the Python host libraries and the device firmware for PX hardware. Host code is in `python/`; main firmware is in `firmware/GPIO_Lib_Firmware/`.
+- This repository contains the Python host library in `px_device_interfaces/` and the MCU firmware in `firmware/GPIO_Lib_Firmware/`.
 
 Quick architecture (what to read first)
-- Host binary protocol: `python/GPIO_Lib.py` — framing helpers, command constants, and the `GPIO_Lib` class (reads `sys_files/GPIO_Lib/<device>.data`).
-- Transport layer: `python/transports/` — `BaseTransport`, `MockTransport`, and the factory `create_transport_for_device()`.
-- Settings/persistence: `python/settings_manager.py` and `python/sys_files/` — per-device JSON settings under `sys_files/Connection_Organiser/`.
-- Firmware: `firmware/GPIO_Lib_Firmware/src/` and `platformio.ini` — PlatformIO project implementing the same command IDs.
+- Host protocol & constants: [px_device_interfaces/GPIO_Lib.py](px_device_interfaces/GPIO_Lib.py) — framing helpers, `GPIO_Lib` class, and `CMD_` constants.
+- Transports & mocks: [px_device_interfaces/transports/](px_device_interfaces/transports/) — `BaseTransport`, `MockTransport` (use for unit tests), and transport configs like `usb.py`.
+- Examples & runtime: [px_device_interfaces/examples/](px_device_interfaces/examples/) — show repo-root `sys_files/GPIO_Lib/<device>.data` usage.
+- Firmware: [firmware/GPIO_Lib_Firmware/src/](firmware/GPIO_Lib_Firmware/src/) and firmware libraries like [firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.h](firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.h).
 
-Key conventions you must follow
-- I/O config files: lines starting with `>` in `sys_files/GPIO_Lib/<name>.data` are parsed by `GPIO_Lib.configure_io()` as `>use pin name` (examples: `>input_digital 15 S15`, `>lcd 20:4 LCD`). Other lines are ignored. This will be refactored soon to a pinMode() or similar API.
-- Command IDs: defined as `CMD_` constants in `python/GPIO_Lib.py` and `firmware/GPIO_Lib_Firmware/src/commands.h`.
-- Protocol flavors: legacy textual M/P commands live in `python_old/` for reference; the modern framed binary protocol is implemented in `python/GPIO_Lib.py` (START_BYTE=0xAA, 2-byte CMD, 2-byte LEN, PAYLOAD, CHK).
-- Settings: `load_connection_settings()`/`save_connection_settings()` in `python/settings_manager.py` manage per-device JSON files in `sys_files/Connection_Organiser/`.
+Key conventions and patterns (project-specific)
+- Packet framing: `CMD_START_BYTE` = `0xAA`. Packet layout is CMD (2 bytes), LEN (2 bytes), PAYLOAD, CHK. See `_build_packet()` / `_parse_frame()` in [px_device_interfaces/GPIO_Lib.py](px_device_interfaces/GPIO_Lib.py). Checksum: `(CMD + LEN + sum(PAYLOAD)) & 0xFF`.
+- Command definitions: all `CMD_...` constants live in [px_device_interfaces/GPIO_Lib.py](px_device_interfaces/GPIO_Lib.py). When adding/removing commands, mirror the change in firmware headers (see [firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.h](firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.h)).
+- I/O config files: repo-relative `sys_files/GPIO_Lib/<device>.data` (create if missing). Lines starting with `>` are directives parsed by `GPIO_Lib.configure_io()`; examples are in [px_device_interfaces/examples/blink_pin_configured.py](px_device_interfaces/examples/blink_pin_configured.py).
+- Use `MockTransport` in [px_device_interfaces/transports/mock.py](px_device_interfaces/transports/mock.py) for unit tests to avoid hardware dependence.
+- Settings persistence: per-device JSON settings live under `sys_files/Connection_Organiser/`.
 
 Developer workflows (copy-paste)
 - Install deps:
-```bash
-pip install -r requirements.txt
-pip install -r requirements-dev.txt  # optional
-```
-- Run tests:
-```bash
-pytest -q
-```
-- Run an example:
-```bash
-python3 python/examples/blink_led13.py
-```
-# Copilot / AI Agent Instructions — PX_Device_Interfaces
 
-Purpose
-- This repo contains the Python host libraries (`python/`) and MCU firmware (`firmware/GPIO_Lib_Firmware/`) for PX devices. Host implements a framed binary protocol; firmware mirrors command IDs and behavior.
-
-Quick architecture (read first)
-- Host protocol & constants: [python/GPIO_Lib.py](python/GPIO_Lib.py)
-- Transport layer & mocks: [python/transports/](python/transports/) — use [python/transports/mock.py](python/transports/mock.py) for tests
-- Settings & per-device JSON: [python/settings_manager.py](python/settings_manager.py) and [python/sys_files/Connection_Organiser/](python/sys_files/Connection_Organiser/)
-- Firmware sources & build: [firmware/GPIO_Lib_Firmware/src/](firmware/GPIO_Lib_Firmware/src/) and [firmware/GPIO_Lib_Firmware/platformio.ini](firmware/GPIO_Lib_Firmware/platformio.ini)
-
-Critical conventions (do not change lightly)
-- I/O config parsing: lines beginning with `>` in files under [python/sys_files/GPIO_Lib/](python/sys_files/GPIO_Lib/) are parsed by `GPIO_Lib.configure_io()` as directives (e.g. `>input_digital 15 S15`).
-- Command identifiers: `CMD_` constants live in [python/GPIO_Lib.py](python/GPIO_Lib.py) and firmware headers — update both when changing IDs.
-- Packet framing: START_BYTE = `0xAA`; layout is CMD (2B), LEN (2B), PAYLOAD, CHK. See `_build_packet()` / `_parse_frame()` in [python/GPIO_Lib.py](python/GPIO_Lib.py). Checksum formula: `(CMD + LEN + sum(PAYLOAD)) & 0xFF`.
-
-Developer workflows (copy-paste)
-- Install dependencies:
 ```bash
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
-- Run tests:
+
+- Run unit tests:
+
 ```bash
 pytest -q
 ```
-- Run an example:
+
+- Run a host example (from repo root):
+
 ```bash
-python3 python/examples/blink_led13.py
+python -m px_device_interfaces.examples.blink_pin_configured --pin 13
 ```
-- Build/upload firmware:
+
+- Build/upload firmware (PlatformIO):
+
 ```bash
 cd firmware/GPIO_Lib_Firmware
 pio run
 pio run -t upload --upload-port /dev/ttyACM0
 ```
-Use `tools/scan_and_select.py` to enumerate ports.
 
-Integration notes
-- Key packages: `pyserial`, `opcua`. GUI code uses `tkinter` (install `python3-tk` on Debian/Ubuntu).
-- Transports: USB serial, TCP sockets (WIFI), OPC‑UA. Some tests need hardware or an OPC server.
+Important integration notes
+- External deps: `pyserial` and `opcua` are primary runtime dependencies; GUI demos use `tkinter`.
+- Transport types: USB serial, TCP (WiFi), and OPC‑UA are implemented — see [px_device_interfaces/transports/](px_device_interfaces/transports/).
 
-Rules for AI agents working here
-- Prioritize forward-facing API changes; do not maintain legacy shims unless requested. When changing protocol or CMDs, update host and firmware in tandem.
-- Modify `python/transports/*` and `python/settings_manager.py` for connection-layer work. Document sys_files format changes in `TODO.md`.
-- Use `MockTransport` for unit tests to avoid relying on hardware.
+Guidance for AI agents working in this repo
+- Always prefer changing APIs in the host package first and keep host and firmware command lists synchronized.
+- Avoid touching legacy code paths unless requested; legacy textual protocols are for reference only.
+- Small change rule: if you change a `CMD_` value, update the corresponding firmware handler (or add a compatibility shim) and run unit tests.
+- Use `MockTransport` for tests and add unit tests under [px_device_interfaces/tests/](px_device_interfaces/tests/) when adding behavior.
 
-Quick references
-- Packet helpers: `_build_packet()` and `_parse_frame()` in [python/GPIO_Lib.py](python/GPIO_Lib.py).
-- I/O config parsing: `GPIO_Lib.configure_io()` (reads [python/sys_files/GPIO_Lib/](python/sys_files/GPIO_Lib/) files).
-- Tests: look at `python/tools/test_gpio_mock.py` and other tests in `python/tools/` for examples.
+Quick references (where to look for examples)
+- Packet helpers and constants: [px_device_interfaces/GPIO_Lib.py](px_device_interfaces/GPIO_Lib.py)
+- Transport implementations and mocks: [px_device_interfaces/transports/](px_device_interfaces/transports/)
+- Firmware command helpers: [firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.h](firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.h)
+- Examples: [px_device_interfaces/examples/](px_device_interfaces/examples/)
+- Tests: [px_device_interfaces/tests/](px_device_interfaces/tests/)
 
-Files to inspect first
-- [python/GPIO_Lib.py](python/GPIO_Lib.py)
-- [python/transports/](python/transports/)
-- [python/settings_manager.py](python/settings_manager.py) and [python/sys_files/](python/sys_files/)
-- [firmware/GPIO_Lib_Firmware/src/](firmware/GPIO_Lib_Firmware/src/)
-- [python/examples/](python/examples/) and [firmware/tools/](firmware/tools/)
-
-If you want expansion (firmware snippets, migration scripts, or runnable test harnesses), tell me which section to expand and I will add concrete examples.
+If anything here is unclear or you want the agent to expand a section (firmware snippets, migration steps, or runnable test harnesses), say which area to expand and I will update the file.
