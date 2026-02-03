@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "px-device-interfaces"
-version = "1.0.0"
+version = "1.0.1"
 description = "PX Device Interfaces: connection and GPIO helper libraries"
 readme = "README.md"
 requires-python = ">=3.8"

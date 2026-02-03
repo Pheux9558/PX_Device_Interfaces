@@ -1,4 +1,4 @@
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 # Core GPIO library
 from .GPIO_Lib import GPIO_Lib
