@@ -184,7 +184,7 @@ class GPIO_Lib_OPCUA:
             raise RuntimeError("GPIO_Lib_OPCUA.start failed to connect transport")
 
         # Fetch data from server to initialize inputs and outputs
-        self.syncAll()
+        self.syncAll(from_server=True)
 
         
 
@@ -339,27 +339,44 @@ class GPIO_Lib_OPCUA:
     
     # region sync IO
     # Seperate functions because outputs could change inputs
-    def syncIN_SW(self) -> None:
+    def syncIN_SW(self, from_server = False) -> None:
         """Perform a full sync of all GPIO inputs (read IN_SW)."""
         if not self._running or not self._transport:
             raise RuntimeError("GPIO_Lib_OPCUA.syncInputs called when not running")
+
+        # Skip if auto_io is enabled
+        if self._transport_config.auto_io:
+            return
 
         # Sync inputs (IN_SW)
         for label in self.IN_SW_mirror.keys():
             nodeid = self._getNodeIdFromLabel(label, is_input=True)
             if not nodeid:
                 continue
-            try:
-                value = self._transport.read(nodeid)
-                self.IN_SW_mirror[label]["value"] = value
-                self.log_debug_message(f"Synced GPIO input '{label}' (nodeid={nodeid}): {value}")
-            except Exception:
-                self.log_debug_message(f"Failed to read input node for '{label}' (nodeid={nodeid})")
+            if from_server:
+                try:
+                    value = self._transport.read(nodeid)
+                    self.IN_SW_mirror[label]["value"] = value
+                    self.log_debug_message(f"Synced GPIO input '{label}' (nodeid={nodeid}) from server: {value}")
+                except Exception:
+                    self.log_debug_message(f"Failed to read input node for '{label}' (nodeid={nodeid})")
+                continue
+            else:
+                try:
+                    value = self.IN_SW_mirror[label]["value"]
+                    self._transport.write(nodeid, value)
+                    self.log_debug_message(f"Synced GPIO input '{label}' (nodeid={nodeid}): {value}")
+                except Exception:
+                    self.log_debug_message(f"Failed to write input node for '{label}' (nodeid={nodeid})")
 
     def syncOUT_SW(self) -> None:
         """Perform a full sync of all GPIO outputs (read OUT_SW)."""
         if not self._running or not self._transport:
             raise RuntimeError("GPIO_Lib_OPCUA.syncOutputs called when not running")
+
+        # Skip if auto_io is enabled
+        if self._transport_config.auto_io:
+            return
 
         # Sync outputs (OUT_SW)
         for label in self.OUT_SW_mirror.keys():
@@ -373,7 +390,7 @@ class GPIO_Lib_OPCUA:
             except Exception:
                 self.log_debug_message(f"Failed to read output node for '{label}' (nodeid={nodeid})")
 
-    def syncAll(self) -> None:
+    def syncAll(self, from_server = False) -> None:
         """Perform a full sync of all GPIO inputs and outputs."""
-        self.syncIN_SW()
+        self.syncIN_SW(from_server=from_server)
         self.syncOUT_SW()

@@ -9,7 +9,7 @@ LABLE = "K4331"
 NODEID_IN = 'ns=3;s="K4331_IN_SW".Array'
 NODEID_OUT = 'ns=3;s="K4331_OUT_SW".Array'
 
-CONFIG = OPCUATransportConfig(opcua_endpoint=ENDPOINT, default_node=NODEID_IN, timeout=2.0, debug=True, auto_io=True)
+CONFIG = OPCUATransportConfig(opcua_endpoint=ENDPOINT, default_node=NODEID_IN, timeout=2.0, debug=True, auto_io=False)
 
 
 def _connect_or_skip(cfg: OPCUATransportConfig):
@@ -88,8 +88,8 @@ def test_opcua_transport_read_write():
 def test_gpio_lib_opcua_set_input_output():
     gpio = GPIO_Lib_OPCUA.GPIO_Lib_OPCUA(transport_config=CONFIG, debug_enabled=True)
     try:
-        # check auto_io. Need to be true to work in this test
-        assert gpio._transport_config.auto_io, "GPIO_Lib_OPCUA transport_config.auto_io must be True for this test"
+        gpio._transport_config.auto_io = False  # disable auto io for testing
+
 
 
 
@@ -103,16 +103,48 @@ def test_gpio_lib_opcua_set_input_output():
         assert LABLE in gpio.OUT_SW_mirror and LABLE in gpio.IN_SW_mirror, "Labels not configured"
         assert isinstance(gpio.OUT_SW_mirror[LABLE]["value"], list), "Output cache not initialized as list"
 
-        # initial OUT should be zeros (per FakeTransport)
-        assert gpio.OUT_SW_mirror[LABLE]["value"][0] == 0
+        ## test read/write on OUT
+        # write [] 
 
+        gpio.write(label=LABLE, value=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+        gpio.syncAll()
+
+        gpio.write(label=LABLE, value=[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0])
+        if not gpio._transport_config.auto_io:
+            gpio.syncIN_SW()
+            assert gpio.read(label=LABLE) == [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            gpio.syncOUT_SW()
+        assert gpio.read(label=LABLE) == [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]
+        
+
+        gpio.write(label=LABLE, value=[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1])
+        if not gpio._transport_config.auto_io:
+            gpio.syncIN_SW()
+            assert gpio.read(label=LABLE) == [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]
+            gpio.syncOUT_SW()
+        assert gpio.read(label=LABLE) == [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]
+
+
+
+        gpio.write(label=LABLE, value=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+        gpio.syncAll()
+        assert gpio.read(label=LABLE) == [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+
+        gpio.write(label=LABLE, value=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+        gpio.syncAll()
+        assert gpio.read(label=LABLE) == [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+
+        # Test indexed read/write on OUT
         # write IN index 0 to 1
         gpio.writeArrayIndex(label=LABLE, index=0, value=1)
-        assert gpio.OUT_SW_mirror[LABLE]["value"][0] == 1
+        gpio.syncAll()
+        assert gpio.readArrayIndex(label=LABLE, index=0) == 1
 
         # write IN index 0 to 0
         gpio.writeArrayIndex(label=LABLE, index=0, value=0)
-        assert gpio.OUT_SW_mirror[LABLE]["value"][0] == 0
+        gpio.syncAll()
+        assert gpio.readArrayIndex(label=LABLE, index=0) == 0
 
 
 
