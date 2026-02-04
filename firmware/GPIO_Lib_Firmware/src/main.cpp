@@ -70,7 +70,7 @@ void loop() {
     }
   }
 
-
+  // replace with dynamic delay based on activity
   delay(10);
 
   // Simple blink helper (paste into loop) - only enabled in DEBUG builds
