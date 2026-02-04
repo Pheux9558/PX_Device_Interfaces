@@ -3,9 +3,9 @@ MANIFEST.in
 README.md
 pyproject.toml
 px_device_interfaces/GPIO_Lib.py
+px_device_interfaces/GPIO_Lib_OPCUA.py
 px_device_interfaces/__init__.py
 px_device_interfaces/connection_organiser_adapter.py
-px_device_interfaces/settings_manager.py
 px_device_interfaces.egg-info/PKG-INFO
 px_device_interfaces.egg-info/SOURCES.txt
 px_device_interfaces.egg-info/dependency_links.txt
@@ -24,3 +24,4 @@ px_device_interfaces/transports/__init__.py
 px_device_interfaces/transports/base.py
 px_device_interfaces/transports/mock.py
 px_device_interfaces/transports/usb.py
+px_device_interfaces/transports/opcua.py
