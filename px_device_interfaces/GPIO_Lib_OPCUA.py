@@ -320,7 +320,7 @@ class GPIO_Lib_OPCUA:
         nodeid_in = self._getNodeIdFromLabel(label, is_input=True)
         if not nodeid_in:
             raise ValueError(f"GPIO_Lib_OPCUA.writeArrayIndex: unknown input label '{label}'")
-        print(f"GPIO_Lib_OPCUA.writeArrayIndex: reading current array for label '{label}' from nodeid {nodeid_in}")
+        self.log_debug_message(f"GPIO_Lib_OPCUA.writeArrayIndex: reading current array for label '{label}' from nodeid {nodeid_in}")
         if self._transport_config.auto_io or force:
             array_value = self._transport.read(nodeid_in)
         else:

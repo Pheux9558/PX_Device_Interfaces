@@ -156,7 +156,7 @@ class OPCUATransport:
             if self.getDataType(value) != self.getNodeDataType(nodeid):
                 raise TypeError(f"OPCUA.write: data type mismatch. Node {nodeid} expects {self.getNodeDataType(nodeid)}, got {self.getDataType(value)}")
             client_node = self._client.get_node(nodeid)
-            print(f"Writing to node {nodeid} value {value} of type {type(value)}")
+            self.log_debug_message(f"Writing to node {nodeid} value {value} of type {type(value)}")
             # Let the opcua library pick an appropriate Variant/encoding for
             # the provided Python value (scalars, lists, bytes, etc.). Creating
             # explicit Variants has caused server errors for some combinations,
