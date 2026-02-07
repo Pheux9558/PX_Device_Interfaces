@@ -39,22 +39,28 @@ AUTO_YES = "--yes" in sys.argv
 # Build flags to add for device configuration
 build_flag_list = [
     '-DDEBUG',          # Enable debug output
-    '-DGPIO',           # Enable GPIO
-    '-DI2C',            # Enable I2C
-    '-DSPI',            # Enable SPI
-    '-DUART',           # Enable UART
-    '-DWiFi',           # Enable WiFi
-    '-DBLUETOOTH',      # Enable Bluetooth
-    '-DLCD',            # Enable LCD
-    '-DSD_CARD',        # Enable SD Card
-    '-DOLED',           # Enable OLED
-    '-DIPS_DISPLAY',    # Enable IPS Display
-    '-DTOUCHSCREEN',    # Enable Touchscreen
-    '-DESP32_PICO_D4'   # Enable ESP32 Pico D4 specific features
+    '-DFASTLED',       # Enable FastLED module
 ]
 
 def print_seperator():
     print("=" * 40)
+
+
+def normalize_token(tok: str, allowed_macros: set[str]) -> str | None:
+    """Return a normalized build flag or None if token should be ignored.
+
+    Rules:
+    - If token already starts with '-D', return as-is.
+    - If token contains '=', it's metadata and should be ignored.
+    - Only convert bare tokens to '-D' if they are in allowed_macros.
+    """
+    if tok.startswith('-D'):
+        return tok
+    if '=' in tok:
+        return None
+    if tok.upper() in allowed_macros:
+        return f'-D{tok}'
+    return None
 
 
 def determine_device_metadata(firmware_info: str) -> dict:
@@ -71,6 +77,18 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'upload_speed': '',
             'default_build_flags': '-DARDUINO_UNO -Ilib'
         }
+    # Dongles3 specific metadata (prefer this when info contains S3 tokens)
+    if 'dongles3' in info or "dongle_s3":
+        return {
+            'env': 'T-Dongle-S3',
+            'platform': 'espressif32',
+            'board': 'dongles3',
+            'framework': 'arduino',
+            'monitor_speed': '115200',
+            'upload_speed': '921600',
+            'default_build_flags': '-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -Ilib -DDONGLES3'
+        }
+
     if 'esp32' in info:
         return {
             'env': 'esp32',
@@ -79,8 +97,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'framework': 'arduino',
             'monitor_speed': '115200',
             'upload_speed': '921600',
-            # ESP32 is FreeRTOS-capable; default flags enable RTOS usage in firmware
-            'default_build_flags': '-DESP32_PICO_D4 -Ilib -DLARGE_BUFFERS'
+            'default_build_flags': '-DESP32_PICO_D4 -Ilib'
         }
     if 'stm32' in info:
         return {
@@ -90,8 +107,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'framework': 'arduino',
             'monitor_speed': '115200',
             'upload_speed': '',
-            # STM32 is FreeRTOS-capable; enable RTOS by default
-            'default_build_flags': '-DARDUINO_STM32 -Ilib -DLARGE_BUFFERS'
+            'default_build_flags': '-DARDUINO_STM32 -Ilib'
         }
     if 'rp2040' in info or 'pico' in info or 'raspberry' in info:
         return {
@@ -101,7 +117,6 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'framework': 'arduino',
             'monitor_speed': '115200',
             'upload_speed': '',
-            # RP2040 commonly runs with FreeRTOS or can support it; enable by default
             'default_build_flags': '-DRP2040 -Ilib'
         }
     if 'nrf' in info or 'nrf52' in info or 'nordic' in info:
@@ -122,7 +137,6 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'framework': 'arduino',
             'monitor_speed': '115200',
             'upload_speed': '',
-            # SAMD (Cortex-M) can run FreeRTOS; enable by default
             'default_build_flags': '-DSAMD21 -Ilib'
         }
     if 'mega' in info or 'megaavr' in info or 'atmega' in info:
@@ -159,6 +173,12 @@ def map_board_mcu_to_metadata(board_token: str | None, mcu_token: str | None) ->
             'env': 'uno', 'platform': 'atmelavr', 'board': 'uno', 'framework': 'arduino',
             'monitor_speed': '115200', 'upload_speed': '', 'default_build_flags': '-DARDUINO_UNO -Ilib'
         }
+    if 'dongles3' in b or 'dongles3' in m:
+        return {
+            'env': 'T-Dongle-S3', 'platform': 'espressif32', 'board': 'dongles3', 'framework': 'arduino',
+            'monitor_speed': '115200', 'upload_speed': '921600', 'default_build_flags': '-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -Ilib'
+        }
+
     if 'esp32' in b or 'esp32' in m:
         # prefer specific MCU
         default = '-DESP32_PICO_D4 -Ilib' if 'pico' in m or 'pico_d4' in m else '-Ilib'
@@ -312,8 +332,32 @@ def scan_known_ports(known_ports) -> list[dict]:
                 # give some time for device to reset if needed
                 time.sleep(2)
                 firmware_version, firmware_info, build_flags = get_firmware(ser)
-                # add -D infront of each build flag if not present
-                build_flags = ' '.join([f if f.startswith('-D') else f'-D{f}' for f in build_flags.split()])
+                # Normalize build flags: add -D only for simple tokens.
+                # If a token contains '=' it is likely a key=value metadata (e.g. BOARD=esp32)
+                # and should not be converted into a preprocessor macro (which can clash
+                # with symbols like GPIO in vendor headers).
+                # Only convert bare tokens to -D if they match a safe whitelist.
+                # This avoids converting ambiguous tokens like 'GPIO' that collide with
+                # vendor symbols (e.g., the ESP32 SDK defines a GPIO symbol).
+                allowed_macros = {f[2:].upper() for f in build_flag_list if f.startswith('-D')}
+                # Normalize tokens using a testable helper
+                def normalize_token(tok: str, allowed_macros: set[str]) -> str | None:
+                    """Return a normalized build flag or None if token should be ignored.
+
+                    Rules:
+                    - If token already starts with '-D', return as-is.
+                    - If token contains '=', it's metadata and should be ignored.
+                    - Only convert bare tokens to '-D' if they are in allowed_macros.
+                    """
+                    if tok.startswith('-D'):
+                        return tok
+                    if '=' in tok:
+                        return None
+                    if tok.upper() in allowed_macros:
+                        return f'-D{tok}'
+                    return None
+
+                build_flags = ' '.join([t for t in (normalize_token(f, allowed_macros) for f in build_flags.split()) if t])
                 print("[OK]")
                 # print(f"Detected device on {p}: version={firmware_version}, info='{firmware_info}'")
                 meta = determine_device_metadata(firmware_info)
@@ -365,6 +409,7 @@ def configuer_device(port) -> dict | None:
     print("  [0] Arduino Uno")
     print("  [1] ESP32")
     print("  [2] STM32")
+    print("  [3] Dongles3")
     s = ask('Select device type by number or press Enter to abort> ').strip()
     if s == '':
         print("Aborting.")
@@ -381,6 +426,8 @@ def configuer_device(port) -> dict | None:
         device_type = 'esp32'
     elif s == '2':
         device_type = 'stm32'
+    elif s == '3':
+        device_type = 'dongles3'
     else:
         print("Invalid selection, aborting.")
         return None
@@ -445,6 +492,15 @@ def update_ini(device) -> bool:
     # sanitize build flags for writing into platformio.ini
     # replace common separators and unsafe characters used previously
     if final_build_flags:
+        # Remove risky tokens (e.g., bare 'GPIO' or '-DGPIO') that can collide
+        # with platform/vendor symbols and cause compiler errors.
+        parts = []
+        for tok in final_build_flags.split():
+            name = tok[2:] if tok.startswith('-D') else tok
+            if name.upper() == 'GPIO':
+                continue
+            parts.append(tok)
+        final_build_flags = ' '.join(parts)
         # replace semicolons with spaces and convert colon-based kv to equals
         final_build_flags = final_build_flags.replace(';', ' ')
         final_build_flags = final_build_flags.replace(':', '=')
@@ -468,7 +524,6 @@ def update_ini(device) -> bool:
 
     # Compose minimal platformio.ini with a single env
     lines = []
-    lines.append('; Generated by scan_or_select.py')
     lines.append('[platformio]')
     lines.append(f'default_envs = {target_env}')
     lines.append('')
@@ -576,7 +631,13 @@ def main_program_run() -> dict | None:
         print_seperator()
         if detected:
             print(f"Auto-selected device on port {detected[0]['port']}")
-            # return the first detected device for automated workflows
+            # In non-interactive mode, write the sanitized platformio.ini so that
+            # automated builds don't pick up stale or unsafe flags.
+            success = update_ini(detected[0])
+            if success:
+                print("platformio.ini written in --yes mode.")
+            else:
+                print("Failed to write platformio.ini in --yes mode.")
             return detected[0]
         print("No devices found in --yes mode; skipping interactive selection.")
         return None

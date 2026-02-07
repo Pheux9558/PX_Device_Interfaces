@@ -28,8 +28,8 @@ blink_count = 100
 def main() -> int:
     # Create GPIO_Lib with explicit transport config (USB on COM7)
     print(f"Using serial port {port} (OS: {platform.system()})")
-    conf = USBTransportConfig(port=port, baud=baud, timeout=0, debug=True, auto_io=True)
-    gpio = GPIO_Lib(transport_config=conf, require_ack_on_send=False, debug_enabled=True)
+    conf = USBTransportConfig(port=port, baud=baud, debug=True, auto_io=True, timeout=0)
+    gpio = GPIO_Lib(transport_config=conf, require_ack_on_send=False)
     try:
         gpio.start()
 
@@ -39,13 +39,13 @@ def main() -> int:
         print(f"Blinking pin {led_pin} (LED_BUILTIN) on COM7 - {blink_count} times")
         for i in range(blink_count):
             gpio.digital_write("LED_BUILTIN", False) # invert logic: LOW = ON
-            time.sleep(0.01)
+            # time.sleep(0.01)
             gpio.digital_write("LED_BUILTIN", True) # invert logic: HIGH = OFF
-            time.sleep(0.01)
+            # time.sleep(0.01)
 
         print("Done blinking")
 
-        time.sleep(0.5)
+        time.sleep(1)
     except Exception as e:
         print(f"Error during GPIO_Lib operation: {e}")
     finally:

@@ -1,11 +1,1650 @@
 Using serial port /dev/ttyACM0 (OS: Linux)
-2026-01-29T16:33:32.441 - GPIO_Lib: send_worker started
-2026-01-29T16:33:32.441 - GPIO_Lib: Starting handshake to wait for device ready banner...
-2026-01-29T16:33:32.441 - GPIO_Lib: Waiting for device ready banner...
-2026-01-29T16:33:37.477 - GPIO_Lib: handshake: ready=False
-2026-01-29T16:33:37.477 - GPIO_Lib: Waiting for send thread to terminate...
-2026-01-29T16:33:37.671 - GPIO_Lib: send_worker exiting
-2026-01-29T16:33:37.674 - GPIO_Lib: GPIO_Lib stopped
-Error during GPIO_Lib operation: handshake failed: device not ready within timeout
-2026-01-29T16:33:37.675 - GPIO_Lib: stop() called but GPIO_Lib not running
+2026-02-07T19:18:48.579 - GPIO_Lib: send_worker started
+2026-02-07T19:18:49.180 - GPIO_Lib: Starting handshake to wait for device ready banner...
+2026-02-07T19:18:49.180 - GPIO_Lib: Waiting for device ready banner...
+2026-02-07T19:18:49.230 - GPIO_Lib: USBTransport <- recv_bytes(b'ESP-ROM:esp32s3-20210327\r\nBuild:Mar 27 2021\r\nrst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)\r\nSaved PC:0x4202182e\r\nSPIWP:0xee\r\nmode:DIO, clock div:1\r\nload:0x3fce3808,len:0x4bc\r\nload:0x403c9700,len:0xbd8\r\nload:0x403cc700,len:0x2a0c\r\nentry 0x403c98d0\r\nserial: initialized at 115200 baud\nboard: initializing board module\ngpio: initializing gpio module\nfastled: initializing fastled module\nGPIO_READY\r\ngpio: set pin 13 MODE=OUTPUT\r\ngpio: digital_write pin=13 val=0\r\ngpio: digital_write pin=13 val=1\r\n')
+2026-02-07T19:18:49.230 - GPIO_Lib: received ready banner data: ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4202182e
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce3808,len:0x4bc
+load:0x403c9700,len:0xbd8
+load:0x403cc700,len:0x2a0c
+entry 0x403c98d0
+serial: initialized at 115200 baud
+board: initializing board module
+gpio: initializing gpio module
+fastled: initializing fastled module
+GPIO_READY
+gpio: set pin 13 MODE=OUTPUT
+gpio: digital_write pin=13 val=0
+gpio: digital_write pin=13 val=1
+2026-02-07T19:18:49.230 - GPIO_Lib: handshake: ready=True
+2026-02-07T19:18:49.230 - GPIO_Lib: recv_worker started
+2026-02-07T19:18:49.230 - GPIO_Lib: #### GPIO_Lib started successfully ####
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0000, LEN=1, PAYLOAD=0a, CHK=0x0B
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=7 wait_ack=False hex=aa000001000a0b
+Blinking pin 10 (LED_BUILTIN) on COM7 - 100 times
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.230 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.230 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a00, CHK=0x1D
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a001d
+2026-02-07T19:18:49.231 - GPIO_Lib: Building packet: CMD=0x0011, LEN=2, PAYLOAD=0a01, CHK=0x1E
+2026-02-07T19:18:49.231 - GPIO_Lib: enqueue packet len=8 wait_ack=False hex=aa110002000a011e
+Done blinking
+2026-02-07T19:18:49.231 - GPIO_Lib: sending(hex): aa000001000a0b
+2026-02-07T19:18:49.231 - GPIO_Lib: USBTransport -> send(b'\xaa\x00\x00\x01\x00\n\x0b')
+2026-02-07T19:18:49.232 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.232 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.232 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: set pin 10 MODE=OUTPUT\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.232 - GPIO_Lib: Received data: b'gpio: set pin 10 MODE=OUTPUT\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: set pin 10 MODE=OUTPUT
+2026-02-07T19:18:49.232 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.233 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.233 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.233 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.233 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.233 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.233 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.233 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.233 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.233 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.233 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.234 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.234 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.234 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.234 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.234 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.234 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.234 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.234 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.234 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.234 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.235 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.235 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.235 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.235 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.235 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.236 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.236 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.236 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.236 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.236 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.236 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.236 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.236 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.236 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.236 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.237 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.237 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.237 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.237 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.237 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.237 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.237 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.238 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.238 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.238 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.238 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.238 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.238 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.238 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.238 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.239 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.239 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.239 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.239 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.239 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.239 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.239 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.239 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.239 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.239 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.240 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.240 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.240 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.240 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.240 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.241 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.241 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.241 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.241 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.241 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.241 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.241 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.241 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.241 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.241 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.242 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.242 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.242 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.242 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.242 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.242 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.242 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.242 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.242 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.242 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.243 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.243 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.243 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.243 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.243 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.244 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.244 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.244 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00gpio: digital_write pin=10 val=1\r\n')
+2026-02-07T19:18:49.244 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00gpio: digital_write pin=10 val=1\r\n'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.244 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.244 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.244 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.244 - GPIO_Lib: USBTransport <- recv_bytes(b'\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.244 - GPIO_Lib: Received data: b'\xaa\x00\x10\x00\x00\x00'
+2026-02-07T19:18:49.244 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.245 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.245 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.245 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.245 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.245 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.245 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.245 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.245 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.245 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.245 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.246 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.246 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.246 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.246 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.246 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.247 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.247 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.247 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.247 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.247 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.247 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.247 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.247 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.247 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.247 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.248 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.248 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.248 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.248 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.248 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.248 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.248 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.248 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.248 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.248 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.249 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.249 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.249 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.249 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.249 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.250 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.250 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.250 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.250 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.250 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.250 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.250 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.250 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.250 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.250 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.251 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.251 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.251 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.251 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.251 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.251 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.251 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.251 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.251 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.251 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.252 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.252 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.252 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.252 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.252 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.253 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.253 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.253 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.253 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.253 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.253 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.253 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.253 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.253 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.253 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.254 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.254 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.254 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.254 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.254 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.254 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.254 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.254 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.254 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.254 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.255 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.255 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.255 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.255 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.255 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.256 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.256 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.256 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.256 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.256 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.256 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.256 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.256 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.256 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.256 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.257 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.257 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.257 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.257 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.257 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.257 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.257 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.257 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.257 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.257 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.258 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.258 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.258 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.258 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.258 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.259 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.259 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.259 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.259 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.259 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.259 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.259 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.259 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.259 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.259 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.260 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.260 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.260 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.260 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.260 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.260 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.260 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.260 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.260 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.260 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.261 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.261 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.261 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.261 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.261 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.262 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.262 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.262 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.262 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.262 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.262 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.262 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.262 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.262 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.262 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.263 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.263 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.263 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.263 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.263 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.263 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.263 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.263 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.263 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.263 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.264 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.264 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.264 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.264 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.264 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.265 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.265 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.265 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.265 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.265 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.265 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.265 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.265 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.265 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.265 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.266 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.266 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.266 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.266 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.266 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.266 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.266 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.266 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.266 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.266 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.267 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.267 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.267 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.267 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.267 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.268 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.268 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.268 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.268 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.268 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.268 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.268 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.268 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.268 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.268 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.269 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.269 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.269 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.269 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.269 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.269 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.269 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.269 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.269 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.269 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.270 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.270 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.270 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.270 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.270 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.271 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.271 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.271 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.271 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.271 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.271 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.271 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.271 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.271 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.271 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.272 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.272 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.272 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00gpio: digital_write pin=13 val=0\r\n')
+2026-02-07T19:18:49.272 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00gpio: digital_write pin=13 val=0\r\n'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.272 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.272 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.272 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.272 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.272 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.272 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.273 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.273 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.273 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.273 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.273 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.274 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.274 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.274 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.274 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.274 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.274 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.274 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.274 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.274 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.274 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.275 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.275 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.275 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.275 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.275 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.275 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.275 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.275 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.275 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.275 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.276 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.276 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.276 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.276 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.276 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.277 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.277 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.277 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.277 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.277 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.277 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.277 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.277 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.277 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.277 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.278 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.278 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.278 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.278 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.278 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.278 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.278 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.278 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.278 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.278 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.279 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.279 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.279 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.279 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.279 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.280 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.280 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.280 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.280 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.280 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.280 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.280 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.280 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.280 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.280 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.281 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.281 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.281 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.281 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.281 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.281 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.281 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.281 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.281 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.281 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.282 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.282 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.282 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.282 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.282 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.283 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.283 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.283 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.283 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.283 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.283 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.283 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.283 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.283 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.283 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.284 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.284 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.284 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.284 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.284 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.284 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.284 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.284 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.284 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.284 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.285 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.285 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.285 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.285 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.285 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.286 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.286 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.286 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.286 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.286 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.286 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.286 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.286 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.286 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.286 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.287 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.287 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.287 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.287 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.287 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.287 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.287 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.287 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.287 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.287 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.288 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.288 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.288 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.288 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.288 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.289 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.289 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.289 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.289 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.289 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.289 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.289 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.289 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.289 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.289 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.290 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.290 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.290 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.290 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.290 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.290 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.290 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.290 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.290 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.290 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.291 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.291 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.291 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.291 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.291 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.292 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.292 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.292 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.292 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.292 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.292 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.292 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.292 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.292 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.292 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.293 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.293 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.293 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.293 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.293 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.293 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.293 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.293 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.293 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.293 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.294 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.294 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.294 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.294 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.294 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.295 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.295 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.295 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.295 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.295 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.295 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.295 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.295 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.295 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.295 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.296 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.296 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.296 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.296 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.296 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.296 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.296 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.296 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.296 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.296 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.297 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.297 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.297 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.297 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.297 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.298 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.298 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.298 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.298 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.298 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.298 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.298 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.298 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.298 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.298 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.299 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.299 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.299 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.299 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.299 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.299 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.299 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.299 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.299 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.299 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.300 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.300 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.300 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.300 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.300 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.301 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.301 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.301 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.301 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.301 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.301 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.301 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.301 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.301 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.301 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.302 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.302 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.302 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.302 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.302 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.302 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.302 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.302 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.302 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.302 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.303 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.303 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.303 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.303 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.303 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.304 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.304 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.304 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.304 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.304 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.304 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.304 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.304 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.304 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.304 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.305 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.305 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.305 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.305 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.305 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.305 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.305 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.305 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.305 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.305 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.306 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.306 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.306 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.306 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.306 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.307 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.307 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.307 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.307 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.307 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.307 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.307 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.307 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.307 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.307 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.308 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.308 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.308 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.308 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.308 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.308 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.308 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.308 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.308 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.308 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.309 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.309 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.309 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.309 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.309 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.310 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.310 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.310 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.310 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.310 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.310 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.310 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.310 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.310 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.310 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.311 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.311 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.311 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.311 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.311 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.311 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.311 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.311 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.311 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.311 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.312 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.312 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.312 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.312 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.312 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.313 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.313 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.313 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.313 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.313 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.313 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.313 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.313 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.313 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.313 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.314 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.314 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.314 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.314 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.314 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.314 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.314 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.314 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.314 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.314 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.315 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.315 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.315 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.315 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.315 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.316 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.316 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.316 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.316 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.316 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.316 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.316 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.316 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.316 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.316 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.317 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.317 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.317 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.317 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.317 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.317 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.317 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.317 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.317 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.317 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.318 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.318 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.318 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.318 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.318 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.319 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.319 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.319 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.319 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.319 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.319 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.319 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.319 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.319 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.319 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.320 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.320 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.320 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.320 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.320 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.320 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.320 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.320 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.320 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.320 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.321 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.321 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.321 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.321 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.321 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.322 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.322 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.322 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.322 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.322 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.322 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.322 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.322 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.322 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.322 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.323 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.323 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.323 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.323 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.323 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.323 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.323 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.323 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.323 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.323 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.324 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.324 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.324 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.324 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.324 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.325 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.325 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.325 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.325 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.325 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.325 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.325 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.325 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.325 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.325 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.326 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.326 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.326 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.326 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.326 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.326 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.326 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.326 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.326 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.326 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.327 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.327 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.327 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.327 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.327 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.328 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.328 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.328 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.328 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.328 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.328 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.328 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.328 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.328 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.328 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.329 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.329 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.329 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.329 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.329 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.329 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.329 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.329 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.329 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.329 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.330 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.330 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.330 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.330 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.330 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.331 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.331 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.331 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.331 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.331 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.331 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.331 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.331 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.331 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.331 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.332 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.332 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.332 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.332 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.332 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.332 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.332 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.332 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.332 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.332 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.333 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.333 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.333 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.333 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.333 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.334 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.334 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.334 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.334 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.334 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.334 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.334 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.334 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.334 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.334 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.335 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.335 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.335 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.335 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.335 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.335 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.335 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.335 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.335 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.335 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.336 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.336 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.336 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.336 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.336 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.337 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.337 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.337 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.337 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.337 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.337 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.337 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.337 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.337 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.337 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.338 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.338 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.338 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.338 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.338 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.338 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.338 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.338 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.338 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.338 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.339 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.339 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.339 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.339 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.339 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.339 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.339 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.340 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.340 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.340 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.340 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.340 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.340 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.340 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.340 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.341 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.341 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.341 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.341 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.341 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.341 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.341 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.341 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.341 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.341 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.342 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.342 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.342 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.342 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.342 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.343 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.343 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.343 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.343 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.343 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.343 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.343 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.343 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.343 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.343 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.344 - GPIO_Lib: sending(hex): aa110002000a001d2026-02-07T19:18:49.344 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.344 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.344 - GPIO_Lib: device: OK
+
+2026-02-07T19:18:49.344 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.344 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.344 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.344 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.344 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.344 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.345 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.345 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.345 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.345 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.345 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.345 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.345 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.346 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.346 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.346 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.346 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.346 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.346 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.346 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.346 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.347 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.347 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.347 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.347 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.347 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.347 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.347 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.347 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.348 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.348 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.348 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.348 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.348 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.348 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.348 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.348 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.348 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.348 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.349 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.349 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.349 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.349 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.349 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.349 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.349 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.350 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.350 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.350 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.350 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.350 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.351 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.351 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.351 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.351 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.351 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.351 - GPIO_Lib: sending(hex): aa110002000a001d
+2026-02-07T19:18:49.351 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x00\x1d')
+2026-02-07T19:18:49.351 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.351 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.351 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.352 - GPIO_Lib: sending(hex): aa110002000a011e
+2026-02-07T19:18:49.352 - GPIO_Lib: USBTransport -> send(b'\xaa\x11\x00\x02\x00\n\x01\x1e')
+2026-02-07T19:18:49.352 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.352 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=0\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=0
+2026-02-07T19:18:49.352 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.352 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00')
+2026-02-07T19:18:49.352 - GPIO_Lib: Received data: b'gpio: digital_write pin=10 val=1\r\n\xaa\x00\x10\x00\x00\x00'
+device-debug: gpio: digital_write pin=10 val=1
+2026-02-07T19:18:49.352 - GPIO_Lib: device: OK
+2026-02-07T19:18:49.522 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=13 val=1\r\n')
+2026-02-07T19:18:49.522 - GPIO_Lib: Received data: b'gpio: digital_write pin=13 val=1\r\n'
+device-debug: gpio: digital_write pin=13 val=1
+2026-02-07T19:18:49.772 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=13 val=0\r\n')
+2026-02-07T19:18:49.772 - GPIO_Lib: Received data: b'gpio: digital_write pin=13 val=0\r\n'
+device-debug: gpio: digital_write pin=13 val=0
+2026-02-07T19:18:50.022 - GPIO_Lib: USBTransport <- recv_bytes(b'gpio: digital_write pin=13 val=1\r\n')
+2026-02-07T19:18:50.022 - GPIO_Lib: Received data: b'gpio: digital_write pin=13 val=1\r\n'
+device-debug: gpio: digital_write pin=13 val=1
+2026-02-07T19:18:50.231 - GPIO_Lib: Waiting for send thread to terminate...
+2026-02-07T19:18:50.232 - GPIO_Lib: recv_worker exiting
+2026-02-07T19:18:50.355 - GPIO_Lib: send_worker exiting
+2026-02-07T19:18:50.355 - GPIO_Lib: Waiting for recv thread to terminate...
+2026-02-07T19:18:50.361 - GPIO_Lib: GPIO_Lib stopped
 

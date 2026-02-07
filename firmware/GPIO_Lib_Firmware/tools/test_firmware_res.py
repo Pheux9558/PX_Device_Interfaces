@@ -3,7 +3,7 @@
 # test fireware response of PX devices
 import serial
 import serial.tools.list_ports
-import pytest
+# import pytest
 import struct
 import time
 from pathlib import Path
@@ -98,6 +98,14 @@ def test_firmware_response():
         else:
             major, minor, patch = struct.unpack('<BBB', resp_payload)
             print(f"Firmware Version: {major}.{minor}.{patch}")
+        
+        # Test Firmware Build flags command
+        resp_cmd, resp_payload = send_command(ser, 0xFFFD)
+        if resp_cmd != 0xFFFD:
+            print(f"Unexpected response for build flags: {resp_cmd}")
+        else:
+            flags_str = resp_payload.decode('utf-8', errors='replace').strip('\x00').strip()
+            print(f"Firmware Build Flags: {flags_str}")
 
 if __name__ == "__main__":
     ports = serial.tools.list_ports.comports()

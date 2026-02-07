@@ -92,6 +92,16 @@ class USBTransport(BaseTransport):
             self.timeout = timeout
             if self._serial:
                 self._serial.timeout = timeout
+    
+    def resetDevice(self):
+        """Reset the connected device by toggling DTR."""
+        if not self._serial or not self.is_connected:
+            raise RuntimeError("USBTransport not connected")
+        with self._lock:
+            self._serial.dtr = False
+            time.sleep(0.1)
+            self._serial.dtr = True
+            time.sleep(0.5)  # wait for device to reboot
 
     def connect(self) -> bool:
         """Open the serial port connection. Return True on success."""

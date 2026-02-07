@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from enum import IntEnum
 import os
 import threading
 import time
@@ -98,6 +99,22 @@ CMD_TOUCHSCREEN_SAVE_SETTINGS       = 0x00FF # Save Touchscreen settings to non-
 CMD_SERVO_ATTACH                    = 0x0100 # Attach servo to pin
 CMD_SERVO_DETACH                    = 0x0101 # Detach servo from pin
 CMD_SERVO_WRITE                     = 0x0102 # Write angle to servo
+
+# region FastLed CMDs
+CMD_FASTLED_CREATE                  = 0x0110 # Create FastLED instance, payload: (identifier[2 bytes])
+CMD_FASTLED_SET_DATA_PIN            = 0x0111 # Set FastLED data pin, payload: (identifier[2 bytes], pin number)
+CMD_FASTLED_SET_CLOCK_PIN           = 0x0112 # Set FastLED clock pin, payload: (identifier[2 bytes], pin number)
+CMD_FASTLED_SET_LED_TYPE            = 0x0113 # Set FastLED LED type, payload: (identifier[2 bytes], led type[1 byte]) # types defined below
+CMD_FASTLED_SET_NUM_LEDS            = 0x0114 # Set FastLED number of LEDs, payload: (identifier[2 bytes], number of LEDs[2 bytes])
+CMD_FASTLED_SHOW                    = 0x0115 # Stream LED data to FastLED and update display, payload: (identifier[2 bytes], LED color data bytes...)
+CMD_FASTLED_SET_BRIGHTNESS          = 0x0116 # Set FastLED brightness, payload: (identifier[2 bytes], brightness[1 byte])
+
+# FastLED LED type definitions in Enum-like class
+class FastLED_Types(IntEnum):
+    """FastLED LED type definitions."""
+    APA102 = 0x00
+    WS2812 = 0x01
+
 
 # region UART CMDs
 # Command definitions for UART operations (0x020X)
@@ -203,11 +220,11 @@ class GPIO_Lib:
     def __init__(
         self,
         transport_config: BaseTransportConfig,
-        debug_enabled: bool = False,
         require_ack_on_send: bool = False,
         send_ack_timeout: float = 2.0,
         send_ready_timeout: float = 1.0,
         loop_delay: float = 0.0005,
+        debug_enabled: bool | None = None,
     ):
         # Required parameters
         if transport_config is None:
@@ -217,11 +234,13 @@ class GPIO_Lib:
         self.handshake_timeout = 5.0
         self.transport_config = transport_config
 
+        self.reset_on_start = True
+
 
         # [ ] TODO test auto_io behavior and sync() calls
         self.auto_io = self.transport_config.auto_io
 
-        self.debug_enabled = debug_enabled
+        self.debug_enabled = debug_enabled or self.transport_config.debug
 
 
 
@@ -408,6 +427,12 @@ class GPIO_Lib:
         # start send thread
         self._send_thread = threading.Thread(target=self._send_worker, name="GPIO_send", daemon=True)
         self._send_thread.start()
+
+        # Reset on startup
+
+        self._transport.resetDevice()
+
+
 
         # wait for device ready banner (handshake) before starting receiver
         if self.handshake_enabled:
@@ -599,6 +624,10 @@ class GPIO_Lib:
         """
         end = time.time() + float(timeout) if timeout is not None else None
         while True:
+            if not self._transport or not self._transport.is_connected:
+                return False
+            if not self._running:
+                return False            
             if self._send_q.empty() and not self._send_in_progress:
                 return True
             if end is not None and time.time() > end:
@@ -640,6 +669,13 @@ class GPIO_Lib:
                 try:
                     self._transport.send(packet)
                 except Exception as e:
+                    # On "[ERRNO 5] Input/Output error" => dissconect
+                    # [ ] TODO Fix broken exception
+                    if "input/output error" in str(e).lower():
+                        self.log_debug_message("I/O Reeoe detected")
+                        self.stop()
+                    
+
                     if self.debug_enabled:
                         self.log_debug_message(f"send error: {e}")
                 # optionally wait for device OK
@@ -730,8 +766,110 @@ class GPIO_Lib:
 
 
 
+    class FastLED:        
+        """FastLED peripheral handler."""
+        total_instances = 0
+        def __init__(self, gpio_lib: GPIO_Lib, led_type: FastLED_Types, data_pin: int, clock_pin: int, led_count: int) -> None:
+            self.gpio_lib = gpio_lib
+            self.identifier = gpio_lib.FastLED.total_instances
+            gpio_lib.FastLED.total_instances += 1
 
+            self.led_type: FastLED_Types = led_type
+            self.data_pin: int = data_pin
+            self.clock_pin: int = clock_pin
+            self.led_count: int = led_count
+            self.led_data: bytearray = bytearray()
 
+            self._setup_complete: bool = False
+
+        def setup(self) -> None:
+            """Send FastLED configuration commands to the device."""
+            print("FastLED setup called")
+
+            # Sanyti check GPIO_Lib transport
+            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                raise RuntimeError("FastLED: GPIO_Lib transport not connected")
+            
+            # Validate parameters
+            if not isinstance(self.led_type, FastLED_Types):
+                raise ValueError("FastLED: invalid led_type")
+            if self.data_pin < 0 or self.data_pin > 0xFFFF:
+                raise ValueError("FastLED: data_pin out of range")
+            if self.clock_pin < 0 or self.clock_pin > 0xFFFF:
+                raise ValueError("FastLED: clock_pin out of range")
+            if self.led_count <= 0 or self.led_count > 0xFFFF:
+                raise ValueError("FastLED: num_leds out of range")
+
+            # Create instance
+            payload = self.identifier.to_bytes(2, "little")
+            packet = self.gpio_lib._build_packet(CMD_FASTLED_CREATE, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            # Set data pin
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.data_pin)
+            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_DATA_PIN, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            # Set clock pin
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.clock_pin)
+            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_CLOCK_PIN, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            # Set LED type
+            payload = self.identifier.to_bytes(2, "little") + bytes([self.led_type.value])
+            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_LED_TYPE, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            # Set number of LEDs
+            payload = self.identifier.to_bytes(2, "little") + int(self.led_count).to_bytes(2, "little")
+            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_NUM_LEDS, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            self._setup_complete = True
+        
+        def send_led_data(self, led_data: list[tuple[int, int, int]]) -> None:
+            """Send LED data to the device for updating the LED strip."""
+            # Sanyti check GPIO_Lib transport
+            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                raise RuntimeError("FastLED: GPIO_Lib transport not connected")
+
+            # Ensure setup is complete
+            if not self._setup_complete:
+                self.setup()
+
+            # Validate led_data
+            if len(led_data) != self.led_count:
+                raise ValueError("FastLED: led_data length does not match number of LEDs")
+            
+            # Prepare LED data bytes (RGB format)
+            led_bytes = bytearray()
+            for r, g, b in led_data:
+                if r < 0 or r > 255 or g < 0 or g > 255 or b < 0 or b > 255:
+                    raise ValueError("FastLED: LED color values must be in range 0-255")
+                led_bytes.extend(bytes([r & 0xFF, g & 0xFF, b & 0xFF]))
+            
+            # Final sanity check
+            if len(led_bytes) != self.led_count * 3:
+                raise ValueError("FastLED: led_data length does not match number of LEDs")
+
+            # Send LED data
+            payload = self.identifier.to_bytes(2, "little") + led_bytes
+            packet = self.gpio_lib._build_packet(CMD_FASTLED_SHOW, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+        
+        def setBrightness(self, brightness: int) -> None:
+            """Set the brightness for the LED strip (0-255)."""
+            if brightness < 0 or brightness > 255:
+                raise ValueError("FastLED: brightness must be in range 0-255")
+            
+            # Sanyti check GPIO_Lib transport
+            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                raise RuntimeError("FastLED: GPIO_Lib transport not connected")
+
+            # Send brightness command
+            payload = self.identifier.to_bytes(2, "little") + bytes([brightness & 0xFF])
+            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_BRIGHTNESS, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
 
 

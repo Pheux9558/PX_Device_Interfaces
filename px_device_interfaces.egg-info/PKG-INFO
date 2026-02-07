@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: px-device-interfaces
-Version: 1.0.0
+Version: 1.0.1
 Summary: PX Device Interfaces: connection and GPIO helper libraries
 Author: Yannik Dolde
 License-Expression: MIT

@@ -11,9 +11,11 @@ const char *board_module_flags() {
 
     // Prioritize very specific board/MCU macros first
 #if defined(ESP32_PICO_D4)
-    snprintf(buf, sizeof(buf), "BOARD=esp32 MCU=esp32-pico-d4");
+    snprintf(buf, sizeof(buf), "BOARD=esp32 MCU=pico-d4");
 #elif defined(ESP32)
     snprintf(buf, sizeof(buf), "BOARD=esp32 MCU=esp32");
+#elif defined(dongles3)
+    snprintf(buf, sizeof(buf), "BOARD=dongles3 MCU=esp32");
 #elif defined(ESP8266)
     snprintf(buf, sizeof(buf), "BOARD=esp8266 MCU=esp8266");
 #elif defined(ARDUINO_AVR_MEGA2560) || defined(__AVR_ATmega2560__)
@@ -53,7 +55,7 @@ void board_init() {
     if (s && s[0]) {
         // split tokens on space and register each separately for clarity
         // simplest approach: register the full string and also split components
-        modules_add_flag(s);
+        // modules_add_flag(s);
         // register individual tokens if present
         // find first space
         const char *p = s;

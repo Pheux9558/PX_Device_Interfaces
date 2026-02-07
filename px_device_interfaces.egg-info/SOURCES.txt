@@ -3,6 +3,7 @@ MANIFEST.in
 README.md
 pyproject.toml
 px_device_interfaces/GPIO_Lib.py
+px_device_interfaces/GPIO_Lib_OPCUA.py
 px_device_interfaces/__init__.py
 px_device_interfaces/connection_organiser_adapter.py
 px_device_interfaces.egg-info/PKG-INFO
@@ -13,8 +14,10 @@ px_device_interfaces.egg-info/top_level.txt
 px_device_interfaces/examples/blink_led13.py
 px_device_interfaces/examples/blink_led13_configured.py
 px_device_interfaces/examples/blink_pin_configured.py
+px_device_interfaces/tests/opcua_transport_speed.py
+px_device_interfaces/tests/test_FastLed.py
+px_device_interfaces/tests/test_gpio_lib_opcua.py
 px_device_interfaces/tests/test_gpio_mock.py
-px_device_interfaces/tests/test_opcua_transport_real.py
 px_device_interfaces/tests/test_send_worker.py
 px_device_interfaces/tests/test_transports.py
 px_device_interfaces/tools/opcua_list_nodes.py

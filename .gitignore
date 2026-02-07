@@ -6,3 +6,5 @@ dist/
 *.pyc
 *.code-workspace
 old_system_files/
+*.log
+*.png

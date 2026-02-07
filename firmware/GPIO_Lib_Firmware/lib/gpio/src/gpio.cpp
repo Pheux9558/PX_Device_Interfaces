@@ -152,6 +152,6 @@ bool gpio_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
 }
 
 const char *gpio_module_flags() {
-	return "GPIO_MODULE=1.0";
+	return "GPIO";
 }
 #endif

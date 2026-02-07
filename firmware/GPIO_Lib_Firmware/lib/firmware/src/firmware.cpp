@@ -11,6 +11,9 @@
 #elif defined(ESP32_PICO_D4)
   // specific includes or definitions for ESP32 Pico D4 can go here
   # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_ESP32_Pico_D4"
+#elif defined(DONGLES3)
+  // specific includes or definitions for ESP32 Dev can go here
+  # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_ESP32_DONGLE_S3"
 #else
   // default includes or definitions
   # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_Generic"
@@ -72,8 +75,4 @@ bool firmware_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
         default:
             return false;
     }
-}
-
-const char *firmware_module_flags() {
-    return "FIRMWARE=1.0";
 }

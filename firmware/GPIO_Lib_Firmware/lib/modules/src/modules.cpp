@@ -2,13 +2,9 @@
 #include <string.h>
 #include <stdio.h>
 
-#ifdef LARGE_BUFFERS
-#define MAX_MODULE_FLAGS 24
-#define MAX_FLAG_LEN 64
-#else
-#define MAX_MODULE_FLAGS 8
-#define MAX_FLAG_LEN 32
-#endif
+
+#define MAX_MODULE_FLAGS 16
+#define MAX_FLAG_LEN 16
 
 static char g_flags[MAX_MODULE_FLAGS][MAX_FLAG_LEN];
 static int g_flags_count = 0;

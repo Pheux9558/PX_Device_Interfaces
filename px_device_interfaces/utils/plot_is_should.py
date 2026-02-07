@@ -33,7 +33,7 @@ LOG_PATH = Path(__file__).resolve().parent / "blink_run.log"
 OUT_PNG = Path(__file__).resolve().parent / "is_should_plot.png"
 
 # Threshold and styling for hardware max delay visualization
-MAX_HARDWARE_DELAY = 0.01  # seconds (10 ms)
+MAX_HARDWARE_DELAY = 0.001  # seconds (10 ms)
 MAX_HARDWARE_LINE_COLOR = 'purple'
 EXCEED_POINT_COLOR = 'darkred'
 EXCEED_POINT_SIZE = 36
@@ -281,7 +281,28 @@ def plot_events(sends, oks, out_png: Path, show: bool = False, max_points: int =
             # fallback: open the saved PNG using OS default program (Windows)
             try:
                 import os
-                os.startfile(out_png)
+                import sys
+                import subprocess
+                startfile = getattr(os, "startfile", None)
+                if startfile:
+                    startfile(out_png)
+                else:
+                    # macOS
+                    if sys.platform == "darwin":
+                        subprocess.run(["open", str(out_png)], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    # Linux (desktop)
+                    elif sys.platform.startswith("linux"):
+                        # If there's no desktop display (headless), skip trying to open via xdg-open.
+                        if not (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY") or os.environ.get("XDG_SESSION_TYPE")):
+                            print("No desktop display detected; saved to", out_png)
+                        else:
+                            # Suppress noisy Qt DBus warnings from the launched viewer by redirecting output.
+                            try:
+                                subprocess.run(["xdg-open", str(out_png)], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                            except Exception:
+                                print("Could not show plot interactively; saved to", out_png)
+                    else:
+                        print("Could not show plot interactively; saved to", out_png)
             except Exception:
                 print("Could not show plot interactively; saved to", out_png)
 
