@@ -121,8 +121,9 @@ class USBTransport(BaseTransport):
                 self._serial.flush()
                 self._connected = True
             return True
-        except Exception:
+        except Exception as e:
             # do not raise here; callers can inspect is_connected
+            self.log_debug_message(f"USBTransport failed to connect to {self.port} at baud {self.baud}: {e}")
             self._serial = None
             self._connected = False
             return False
