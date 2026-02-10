@@ -34,7 +34,7 @@ def main() -> int:
         gpio.start()
 
         # configure pin 10 as OUTPUT with name LED_BUILTIN
-        gpio.pin_mode(led_pin, "OUTPUT", name="LED_BUILTIN")
+        gpio.pinMode(led_pin, "OUTPUT", name="LED_BUILTIN")
 
         print(f"Blinking pin {led_pin} (LED_BUILTIN) on COM7 - {blink_count} times")
         for i in range(blink_count):

@@ -2,7 +2,7 @@
 # Create and activate a Python 3.13.7 virtual environment in `.venv` and install dev deps.
 set -euo pipefail
 
-PYTHON=${PYTHON:-python3.13}
+PYTHON=${PYTHON:-python3}
 VENV_DIR=".venv"
 
 if ! command -v "$PYTHON" >/dev/null 2>&1; then

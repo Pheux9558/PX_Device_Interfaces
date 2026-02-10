@@ -40,7 +40,7 @@ def main() -> None:
     try:
         gpio.start()
         # configure pin mapping at runtime (no filesystem writes)
-        gpio.pin_mode(13, "OUTPUT", name="LED13")
+        gpio.pinMode(13, "OUTPUT", name="LED13")
         print("Turning LED13 ON")
         gpio.digital_write("LED13", True)
         time.sleep(1.0)

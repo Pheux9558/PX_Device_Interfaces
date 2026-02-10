@@ -47,6 +47,7 @@ pio run -t upload --upload-port /dev/ttyACM0
 Important integration notes
 - External deps: `pyserial` and `opcua` are primary runtime dependencies; GUI demos use `tkinter`.
 - Transport types: USB serial, TCP (WiFi), and OPC‑UA are implemented — see [px_device_interfaces/transports/](px_device_interfaces/transports/).
+- Optional firmware features: the `FASTLED` module is controlled by the build flag `-DFASTLED`. Remove `-DFASTLED` (or use the `T-Dongle-S3-minimal` env) to exclude the FastLED module and save flash/RAM.
 
 Guidance for AI agents working in this repo
 - Always prefer changing APIs in the host package first and keep host and firmware command lists synchronized.

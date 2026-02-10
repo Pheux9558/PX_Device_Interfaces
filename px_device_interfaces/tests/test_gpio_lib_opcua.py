@@ -86,6 +86,14 @@ def test_opcua_transport_read_write():
 
 
 def test_gpio_lib_opcua_set_input_output():
+    # Skip the test early if the OPC UA server is not available in the environment
+    t = None
+    try:
+        t = _connect_or_skip(CONFIG)
+    finally:
+        if t is not None:
+            t.disconnect()
+
     gpio = GPIO_Lib_OPCUA.GPIO_Lib_OPCUA(transport_config=CONFIG, debug_enabled=True)
     try:
         gpio._transport_config.auto_io = False  # disable auto io for testing

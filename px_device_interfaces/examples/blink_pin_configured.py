@@ -62,7 +62,7 @@ def main() -> None:
     try:
         gpio.start()
         # configure pin mapping at runtime
-        gpio.pin_mode(pin, "OUTPUT", name=name)
+        gpio.pinMode(pin, "OUTPUT", name=name)
         print(f"Blinking pin {pin} as '{name}' (invert={args.invert})")
         for i in range(args.count):
             # write True for ON; invert if requested

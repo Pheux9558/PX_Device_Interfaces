@@ -10,11 +10,8 @@ static struct handler_entry g_handlers[CMD_MAX_HANDLERS];
 static int g_handler_count = 0;
 
 // simple circular buffer for incoming bytes
-#ifdef LARGE_BUFFERS
+// Larger buffer is required for LCD bitmap packets.
 #define CMD_BUFSZ 2048
-#else
-#define CMD_BUFSZ 512
-#endif
 static uint8_t g_buf[CMD_BUFSZ];
 static size_t g_buf_len = 0;
 

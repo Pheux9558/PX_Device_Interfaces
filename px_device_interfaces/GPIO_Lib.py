@@ -47,6 +47,14 @@ CMD_DIGITAL_INPUT_PULLUP            = 0x0002 # Digital input with internal pullu
 CMD_DIGITAL_INPUT_PULLDOWN          = 0x0003 # Digital input with internal pulldown resistor enabled, payload: (pin number)
 CMD_ANALOG_OUTPUT                   = 0x0008 # Analog output (PWM), payload: (pin number)
 CMD_ANALOG_INPUT                    = 0x0009 # Analog input, payload: (pin number)
+
+class PinMode(IntEnum):
+    OUTPUT = 0x00
+    INPUT = 0x01
+    INPUT_PULLUP = 0x02
+    INPUT_PULLDOWN = 0x03
+    ANALOG_OUTPUT = 0x08
+    ANALOG_INPUT = 0x09
 # ANALOG MAX command to set the max value for analog writes/reads in GPIO_Lib and on the device
 CMD_ANALOG_MAX                      = 0x000A # Set analog max value, payload: (max value[e.g. 255 or 1023. depending on board ADC resolution]) 
 CMD_ANALOG_TOLERANCE                = 0x000B # Set analog read tolerance, payload: (tolerance value[e.g. 4]) update only if change exceeds this value
@@ -62,15 +70,26 @@ CMD_ANALOG_WRITE                    = 0x0013 # Analog write, payload: (pin numbe
 # LCD commands (0x002X)
 CMD_LCD_CREATE                      = 0x0020 # Create LCD instance, payload: (identifier[2 bytes])
 CMD_LCD_SETUP_I2C                   = 0x0021 # Setup LCD I2C, payload: (identifier[2 bytes], width[2 byte], height[2 byte], i2c identifier[2 bytes], i2c address[1 byte])
-CMD_LCD_SETUP_SPI                   = 0x0022 # Setup LCD SPI, payload: (identifier[2 bytes], width[2 byte], height[2 byte], spi identifier[2 bytes], cs pin[1 byte], rs pin[1 byte], enable pin[1 byte])
+CMD_LCD_SETUP_SPI                   = 0x0022 # Setup LCD SPI, payload: (identifier[2 bytes], width[2 byte], height[2 byte], spi identifier[2 bytes], cs pin[1 byte], rs pin[1 byte], enable pin[1 byte], optional: backlight pin[1 byte], optional: backlight inverted[1 byte])
 CMD_LCD_CLEAR                       = 0x0025 # Clear LCD display, payload: (identifier[2 bytes])
-CMD_LCD_SET_CURSOR                  = 0x0026 # Set cursor position on LCD, payload: (identifier[2 bytes], row, column)    
+CMD_LCD_SET_CURSOR                  = 0x0026 # Set cursor position on LCD, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes])
 CMD_LCD_WRITE_TEXT                  = 0x0027 # Write text to LCD, payload: (identifier[2 bytes], text bytes in UTF-8)
 CMD_LCD_WRITE_TEXT_CENTER           = 0x0028 # Write centered text to LCD, payload: (identifier[2 bytes], text bytes in UTF-8)
-CMD_LCD_WRITE_BITMAP                = 0x0029 # Write bitmap to LCD, payload: (identifier[2 bytes], Custom Characters by pixel data bytes)
-CMD_LCD_SET_BACKGROUND              = 0x002A # Set LCD background color, payload: (identifier[2 bytes], R, G, B) only for RGB backlit LCDs
+CMD_LCD_WRITE_BITMAP                = 0x0029 # Write bitmap to LCD, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes], x_len[2 bytes], y_len[2 bytes], RGB565 little-endian bytes)
+CMD_LCD_SET_BRIHGHTNESS             = 0x002A # Set LCD brightness, payload: (identifier[2 bytes], brightness level[0-255]) only for LCDs that support it (PWM backlight control)
 CMD_LCD_SET_CONTRAST                = 0x002B # Set LCD contrast, payload: (identifier[2 bytes], contrast level) 0-255 only for LCDs that support it
-CMD_LCD_SAVE_SETTINGS               = 0x002F # Save LCD settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
+CMD_LCD_SET_ROTATION                = 0x002C # Set LCD rotation, payload: (identifier[2 bytes], rotation[0-3])
+# [ ] TODO Save LCD settings command to save LCD configuration to non-volatile memory for automatic setup on startup
+# CMD_LCD_SAVE_SETTINGS               = 0x002F # Save LCD settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
+
+class LCDTypes(IntEnum):
+    """LCD type definitions."""
+    LCD_16X2 = 0x00                 # 16x2 character LCD, commonly with HD44780 controller, supports parallel communication and monochrome backlight
+    LCD_20X4 = 0x01                 # 20x4 character LCD, commonly with HD44780 controller, supports parallel communication and monochrome backlight
+    LCD_IPS_ST7735 = 0x02           # 16-bit color LCD with ST7735 controller, commonly 1.8" TFT displays, supports SPI communication and RGB backlight
+    # Leave room for future LCD types (0x03-0xFF) 
+
+
 # OLED commands (0x003X)
 CMD_OLED_CREATE                     = 0x0030 # Create OLED instance, payload: (identifier[2 bytes])
 CMD_OLED_SETUP_I2C                  = 0x0031 # Setup OLED I2C, payload: (identifier[2 bytes], width[2 byte], height[2 byte], i2c identifier[2 bytes], i2c address[1 byte])
@@ -81,9 +100,10 @@ CMD_OLED_WRITE_TEXT                 = 0x0037 # Write text to OLED, payload: (ide
 CMD_OLED_WRITE_TEXT_CENTER          = 0x0038 # Write centered text to OLED, payload: (identifier[2 bytes], text bytes in UTF-8)
 CMD_OLED_CREATE_BUTTON              = 0x0039 # Create OLED button, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes], width[2 bytes], height[2 bytes], corner radius[1 byte], color button[3 bytes], color label[3 bytes], label bytes in UTF-8)
 CMD_OLED_WRITE_BITMAP               = 0x003A # Write bitmap to OLED, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes], x_len[2 bytes], y_len[2 bytes], pixel data bytes)
-CMD_OLED_SET_BRIGHTNESS             = 0x003B # Set OLED brightness, payload: (identifier[2 bytes], brightness level)
+CMD_OLED_SET_BRIGHTNESS             = 0x003B # Set OLED brightness, payload: (identifier[2 bytes], brightness level[0-255]) only for OLEDs that support it
 CMD_OLED_SET_CONTRAST               = 0x003C # Set OLED contrast, payload: (identifier[2 bytes], contrast level)
-CMD_OLED_SAVE_SETTINGS              = 0x003F # Save OLED settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
+# [ ] TODO Save OLED settings command to save OLED configuration to non-volatile memory for automatic setup on startup
+# CMD_OLED_SAVE_SETTINGS              = 0x003F # Save OLED settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
 # Leave room for future display types (0x004X - 0x00EX)
 
 # region Touchscreen CMDs
@@ -92,7 +112,8 @@ CMD_TOUCHSCREEN_CREATE              = 0x00F0 # Create Touchscreen instance, payl
 # Command definitions for Touchscreen I2C setup and configuration is not yet defined
 CMD_TOUCHSCREEN_SETUP_SPI           = 0x00F2 # Setup Touchscreen SPI, payload: (identifier[2 bytes], spi identifier[2 bytes], cs pin[1 byte], dc pin[1 byte], reset pin[1 byte])
 CMD_TOUCHSCREEN_READ_XY             = 0x00F5 # Read touchscreen X,Y coordinates, payload: (identifier[2 bytes]), returns: (x[2 bytes], y[2 bytes], pressed[1 byte])
-CMD_TOUCHSCREEN_SAVE_SETTINGS       = 0x00FF # Save Touchscreen settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
+# [ ] TODO Save Touchscreen settings command to save Touchscreen configuration to non-volatile memory for automatic setup on startup
+# CMD_TOUCHSCREEN_SAVE_SETTINGS       = 0x00FF # Save Touchscreen settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
 
 # region Servo CMDs
 # Command definitions for Servo operations (0x010X)
@@ -112,8 +133,28 @@ CMD_FASTLED_SET_BRIGHTNESS          = 0x0116 # Set FastLED brightness, payload: 
 # FastLED LED type definitions in Enum-like class
 class FastLED_Types(IntEnum):
     """FastLED LED type definitions."""
-    APA102 = 0x00
-    WS2812 = 0x01
+    APA102 = 0x00                   # APA102 (DotStar) addressable RGB LEDs with separate clock and data lines
+    WS2812 = 0x01                   # WS2812 (NeoPixel) addressable RGB LEDs with single data line and timing-based protocol
+
+
+class UARTParity(IntEnum):
+    NONE = 0x00
+    EVEN = 0x01
+    ODD = 0x02
+
+
+class UARTFlowControl(IntEnum):
+    NONE = 0x00
+    RTS = 0x01
+    CTS = 0x02
+    RTS_CTS = 0x03
+
+
+class SPIMode(IntEnum):
+    MODE0 = 0x00
+    MODE1 = 0x01
+    MODE2 = 0x02
+    MODE3 = 0x03
 
 
 # region UART CMDs
@@ -128,7 +169,8 @@ CMD_UART_SET_PIN_TX                 = 0x0206 # Set UART TX pin, payload: (identi
 CMD_UART_SET_PIN_RX                 = 0x0207 # Set UART RX pin, payload: (identifier[2 bytes], pin number)
 CMD_UART_READ                       = 0x0208 # UART read, payload: (identifier[2 bytes], length), returns: (data bytes)
 CMD_UART_WRITE                      = 0x0209 # UART write, payload: (identifier[2 bytes], data bytes...)
-CMD_UART_SAVE_SETTINGS              = 0x020F # Save UART settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
+# [ ] TODO Save UART settings command to save UART configuration to non-volatile memory for automatic setup on startup
+# CMD_UART_SAVE_SETTINGS              = 0x020F # Save UART settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
 
 # region I2C CMDs
 # Command definitions for I2C operations (0x021X)
@@ -138,6 +180,9 @@ CMD_I2C_SET_PIN_CLOCK               = 0x0212 # Set I2C clock pin, payload: (iden
 CMD_I2C_SET_PIN_DATA                = 0x0213 # Set I2C data pin, payload: (identifier[2 bytes], pin number)
 CMD_I2C_READ                        = 0x0214 # I2C read, payload: (identifier[2 bytes], device address[1 byte], length), returns: (data bytes)
 CMD_I2C_WRITE                       = 0x0215 # I2C write, payload: (identifier[2 bytes], device address[1 byte], data bytes...)
+CMD_I2C_WRITE_READ                  = 0x0216 # I2C write then read, payload: (identifier[2 bytes], device address[1 byte], write_len[2 bytes], write bytes..., read_len[2 bytes]), returns: (identifier[2 bytes], data bytes)
+CMD_I2C_FULL_ADDRESS_SCAN           = 0x021E # I2C full address scan, payload: (identifier[2 bytes]), returns: (identifier[2 bytes], list of device addresses found[1 byte each])
+# [ ] TODO Save I2C settings command to save I2C configuration to non-volatile memory for automatic setup on startup
 CMD_I2C_SAVE_SETTINGS               = 0x021F # Save I2C settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
 
 # region SPI CMDs
@@ -150,7 +195,9 @@ CMD_SPI_SET_PIN_MOSI                = 0x0224 # Set SPI MOSI pin, payload: (ident
 CMD_SPI_SET_PIN_MISO                = 0x0225 # Set SPI MISO pin, payload: (identifier[2 bytes], pin number)
 CMD_SPI_READ                        = 0x0226 # SPI transfer, payload: (identifier[2 bytes], data bytes...), returns: (data bytes)
 CMD_SPI_WRITE                       = 0x0227 # SPI write, payload: (identifier[2 bytes], data bytes...)
-CMD_SPI_SAVE_SETTINGS               = 0x022F # Save SPI settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
+
+# [ ] TODO Save SPI settings command to save SPI configuration to non-volatile memory for automatic setup on startup
+# CMD_SPI_SAVE_SETTINGS               = 0x022F # Save SPI settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
 # CS pin lives inside peripherals since multiple CS pins may be used per SPI instance or can be managed manually by the user via digital writes.
 
 # region Bluetooth CMDs
@@ -195,7 +242,6 @@ CMD_FIRMWARE_VERSION                = 0xFFFF # Response with firmware version, r
 # Controll Banners
 CMD_BANNER_GPIO_READY               = "GPIO_READY" # GPIO_READY banner indicating device is ready for operation
 # endregion Return codes from device
-
 
 
 # region GPIO_Lib class
@@ -281,6 +327,9 @@ class GPIO_Lib:
         self._ready_cv = threading.Condition()
         # record per-OK timestamps for plotting/diagnostics (list of datetime objects)
         self._ok_timestamps: List[datetime] = []
+        # response capture for request/response commands (UART/I2C/SPI reads)
+        self._resp_cv = threading.Condition()
+        self._responses: Dict[tuple[int, int], bytes] = {}
 
     # region Debug handling
     def log_debug_message(self, msg: str, timestamp: Optional[str] = None) -> None:
@@ -872,14 +921,401 @@ class GPIO_Lib:
             self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
 
+    class UART:
+        """UART peripheral handler."""
+        total_instances = 0
+
+        def __init__(
+            self,
+            gpio_lib: GPIO_Lib,
+            tx_pin: int,
+            rx_pin: int,
+            baudrate: int = 115200,
+            data_bits: int = 8,
+            parity: UARTParity = UARTParity.NONE,
+            stop_bits: int = 1,
+            flow_control: UARTFlowControl = UARTFlowControl.NONE,
+        ) -> None:
+            self.gpio_lib = gpio_lib
+            self.identifier = gpio_lib.UART.total_instances
+            gpio_lib.UART.total_instances += 1
+
+            self.tx_pin = int(tx_pin)
+            self.rx_pin = int(rx_pin)
+            self.baudrate = int(baudrate)
+            self.data_bits = int(data_bits)
+            self.parity = UARTParity(parity)
+            self.stop_bits = int(stop_bits)
+            self.flow_control = UARTFlowControl(flow_control)
+
+            self._setup_complete = False
+
+        def setup(self) -> None:
+            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                raise RuntimeError("UART: GPIO_Lib transport not connected")
+            if self.tx_pin < 0 or self.tx_pin > 0xFFFF:
+                raise ValueError("UART: tx_pin out of range")
+            if self.rx_pin < 0 or self.rx_pin > 0xFFFF:
+                raise ValueError("UART: rx_pin out of range")
+
+            payload = self.identifier.to_bytes(2, "little")
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_CREATE, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.tx_pin)
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_SET_PIN_TX, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.rx_pin)
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_SET_PIN_RX, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + int(self.baudrate).to_bytes(4, "little")
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_SET_BAUDRATE, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + bytes([self.data_bits & 0xFF])
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_SET_DATA_BITS, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + bytes([self.parity.value & 0xFF])
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_SET_PARITY, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + bytes([self.stop_bits & 0xFF])
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_SET_STOPBITS, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + bytes([self.flow_control.value & 0xFF])
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_UART_SET_FLOWCONTROL, payload), wait_ack=False)
+
+            self._setup_complete = True
+
+        def write(self, data: bytes | bytearray) -> None:
+            if not self._setup_complete:
+                self.setup()
+            if not isinstance(data, (bytes, bytearray)):
+                raise ValueError("UART: data must be bytes-like")
+            payload = self.identifier.to_bytes(2, "little") + bytes(data)
+            packet = self.gpio_lib._build_packet(CMD_UART_WRITE, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def read(self, length: int, timeout: float = 1.0) -> bytes:
+            if not self._setup_complete:
+                self.setup()
+            if length <= 0 or length > 0xFFFF:
+                raise ValueError("UART: length out of range")
+            payload = self.identifier.to_bytes(2, "little") + int(length).to_bytes(2, "little")
+            packet = self.gpio_lib._build_packet(CMD_UART_READ, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            return self.gpio_lib._await_response(CMD_UART_READ, self.identifier, timeout=timeout)
 
 
+    class I2C:
+        """I2C peripheral handler."""
+        total_instances = 0
+
+        def __init__(
+            self,
+            gpio_lib: GPIO_Lib,
+            clock_pin: int,
+            data_pin: int,
+            frequency: int = 400_000,
+        ) -> None:
+            self.gpio_lib = gpio_lib
+            self.identifier = gpio_lib.I2C.total_instances
+            gpio_lib.I2C.total_instances += 1
+
+            self.clock_pin = int(clock_pin)
+            self.data_pin = int(data_pin)
+            self.frequency = int(frequency)
+
+            self._setup_complete = False
+
+        def setup(self) -> None:
+            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                raise RuntimeError("I2C: GPIO_Lib transport not connected")
+            if self.clock_pin < 0 or self.clock_pin > 0xFFFF:
+                raise ValueError("I2C: clock_pin out of range")
+            if self.data_pin < 0 or self.data_pin > 0xFFFF:
+                raise ValueError("I2C: data_pin out of range")
+
+            payload = self.identifier.to_bytes(2, "little")
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_CREATE, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.clock_pin)
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_PIN_CLOCK, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.data_pin)
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_PIN_DATA, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + int(self.frequency).to_bytes(4, "little")
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_FREQUENCY, payload), wait_ack=False)
+
+            self._setup_complete = True
+
+        def write(self, address: int, data: bytes | bytearray) -> None:
+            if not self._setup_complete:
+                self.setup()
+            if address < 0 or address > 0x7F:
+                raise ValueError("I2C: address out of range")
+            if not isinstance(data, (bytes, bytearray)):
+                raise ValueError("I2C: data must be bytes-like")
+            payload = self.identifier.to_bytes(2, "little") + bytes([address & 0x7F]) + bytes(data)
+            packet = self.gpio_lib._build_packet(CMD_I2C_WRITE, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def read(self, address: int, length: int, timeout: float = 1.0) -> bytes:
+            if not self._setup_complete:
+                self.setup()
+            if address < 0 or address > 0x7F:
+                raise ValueError("I2C: address out of range")
+            if length <= 0 or length > 0xFFFF:
+                raise ValueError("I2C: length out of range")
+            payload = self.identifier.to_bytes(2, "little") + bytes([address & 0x7F]) + int(length).to_bytes(2, "little")
+            packet = self.gpio_lib._build_packet(CMD_I2C_READ, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            return self.gpio_lib._await_response(CMD_I2C_READ, self.identifier, timeout=timeout)
+
+        def write_read(
+            self,
+            address: int,
+            write_data: bytes | bytearray,
+            read_length: int,
+            timeout: float = 1.0,
+        ) -> bytes:
+            if not self._setup_complete:
+                self.setup()
+            if address < 0 or address > 0x7F:
+                raise ValueError("I2C: address out of range")
+            if read_length <= 0 or read_length > 0xFFFF:
+                raise ValueError("I2C: read_length out of range")
+            if not isinstance(write_data, (bytes, bytearray)):
+                raise ValueError("I2C: write_data must be bytes-like")
+            write_len = len(write_data)
+            payload = (
+                self.identifier.to_bytes(2, "little")
+                + bytes([address & 0x7F])
+                + int(write_len).to_bytes(2, "little")
+                + bytes(write_data)
+                + int(read_length).to_bytes(2, "little")
+            )
+            packet = self.gpio_lib._build_packet(CMD_I2C_WRITE_READ, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            return self.gpio_lib._await_response(CMD_I2C_WRITE_READ, self.identifier, timeout=timeout)
+
+        def full_address_scan(self, timeout: float = 2.0) -> List[int]:
+            if not self._setup_complete:
+                self.setup()
+            payload = self.identifier.to_bytes(2, "little")
+            packet = self.gpio_lib._build_packet(CMD_I2C_FULL_ADDRESS_SCAN, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            resp = self.gpio_lib._await_response(CMD_I2C_FULL_ADDRESS_SCAN, self.identifier, timeout=timeout)
+            return list(resp)
 
 
+    class SPI:
+        """SPI peripheral handler."""
+        total_instances = 0
+
+        def __init__(
+            self,
+            gpio_lib: GPIO_Lib,
+            data_pin: int,
+            clock_pin: int,
+            miso_pin: Optional[int] = None,
+            frequency: int = 40_000_000,
+            mode: SPIMode = SPIMode.MODE0,
+        ) -> None:
+            self.gpio_lib = gpio_lib
+            self.identifier = gpio_lib.SPI.total_instances
+            gpio_lib.SPI.total_instances += 1
+
+            self.data_pin = int(data_pin)
+            self.clock_pin = int(clock_pin)
+            self.miso_pin = int(miso_pin) if miso_pin is not None else None
+            self.frequency = int(frequency)
+            self.mode = SPIMode(mode)
+
+            self._setup_complete = False
+
+        def setup(self) -> None:
+            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                raise RuntimeError("SPI: GPIO_Lib transport not connected")
+            if self.data_pin < 0 or self.data_pin > 0xFFFF:
+                raise ValueError("SPI: data_pin out of range")
+            if self.clock_pin < 0 or self.clock_pin > 0xFFFF:
+                raise ValueError("SPI: clock_pin out of range")
+
+            payload = self.identifier.to_bytes(2, "little")
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_SPI_CREATE, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.clock_pin)
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_SPI_SET_PIN_CLOCK, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.data_pin)
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_SPI_SET_PIN_MOSI, payload), wait_ack=False)
+
+            if self.miso_pin is not None:
+                payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.miso_pin)
+                self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_SPI_SET_PIN_MISO, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + int(self.frequency).to_bytes(4, "little")
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_SPI_SET_FREQUENCY, payload), wait_ack=False)
+
+            payload = self.identifier.to_bytes(2, "little") + bytes([self.mode.value & 0xFF])
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_SPI_SET_MODE, payload), wait_ack=False)
+
+            self._setup_complete = True
+
+        def write(self, data: bytes | bytearray) -> None:
+            if not self._setup_complete:
+                self.setup()
+            if not isinstance(data, (bytes, bytearray)):
+                raise ValueError("SPI: data must be bytes-like")
+            payload = self.identifier.to_bytes(2, "little") + bytes(data)
+            packet = self.gpio_lib._build_packet(CMD_SPI_WRITE, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def transfer(self, data: bytes | bytearray, timeout: float = 1.0) -> bytes:
+            if not self._setup_complete:
+                self.setup()
+            if not isinstance(data, (bytes, bytearray)):
+                raise ValueError("SPI: data must be bytes-like")
+            payload = self.identifier.to_bytes(2, "little") + bytes(data)
+            packet = self.gpio_lib._build_packet(CMD_SPI_READ, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            return self.gpio_lib._await_response(CMD_SPI_READ, self.identifier, timeout=timeout)
 
 
+    class Display:
+        """ST7735 LCD display handler (SPI)."""
+        total_instances = 0
 
+        def __init__(
+            self,
+            gpio_lib: GPIO_Lib,
+            spi: GPIO_Lib.SPI,
+            cs_pin: int,
+            rs_pin: int,
+            enable_pin: int,
+            backlight_pin: Optional[int] = None,
+            backlight_inverted: bool = False,
+            width: int = 80,
+            height: int = 160,
+            lcd_type: LCDTypes = LCDTypes.LCD_IPS_ST7735,
+        ) -> None:
+            self.gpio_lib = gpio_lib
+            self.identifier = gpio_lib.Display.total_instances
+            gpio_lib.Display.total_instances += 1
 
+            self.spi = spi
+            self.cs_pin = int(cs_pin)
+            self.rs_pin = int(rs_pin)
+            self.enable_pin = int(enable_pin)
+            self.backlight_pin = int(backlight_pin) if backlight_pin is not None else None
+            self.backlight_inverted = bool(backlight_inverted)
+            self.width = int(width)
+            self.height = int(height)
+            self.lcd_type = LCDTypes(lcd_type)
+
+            self._setup_complete = False
+
+        def setup(self) -> None:
+            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                raise RuntimeError("Display: GPIO_Lib transport not connected")
+            if self.width <= 0 or self.width > 0xFFFF or self.height <= 0 or self.height > 0xFFFF:
+                raise ValueError("Display: width/height out of range")
+            for pin_name, pin in ("cs_pin", self.cs_pin), ("rs_pin", self.rs_pin), ("enable_pin", self.enable_pin):
+                if pin < 0 or pin > 0xFF:
+                    raise ValueError(f"Display: {pin_name} out of range (0-255)")
+            if self.backlight_pin is not None and (self.backlight_pin < 0 or self.backlight_pin > 0xFF):
+                raise ValueError("Display: backlight_pin out of range (0-255)")
+
+            if not self.spi._setup_complete:
+                self.spi.setup()
+
+            payload = self.identifier.to_bytes(2, "little")
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_LCD_CREATE, payload), wait_ack=False)
+
+            payload = (
+                self.identifier.to_bytes(2, "little")
+                + int(self.width).to_bytes(2, "little")
+                + int(self.height).to_bytes(2, "little")
+                + int(self.spi.identifier).to_bytes(2, "little")
+                + bytes([self.cs_pin & 0xFF, self.rs_pin & 0xFF, self.enable_pin & 0xFF])
+            )
+            if self.backlight_pin is not None:
+                payload += bytes([self.backlight_pin & 0xFF, 1 if self.backlight_inverted else 0])
+            packet = self.gpio_lib._build_packet(CMD_LCD_SETUP_SPI, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            self._setup_complete = True
+
+        def set_backlight(self, enabled: bool) -> None:
+            if not self._setup_complete:
+                self.setup()
+            if self.backlight_pin is None:
+                raise RuntimeError("Display: backlight_pin not configured")
+            level = 255 if enabled else 0
+            payload = self.identifier.to_bytes(2, "little") + bytes([level & 0xFF])
+            packet = self.gpio_lib._build_packet(CMD_LCD_SET_BRIHGHTNESS, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def set_rotation(self, rotation: int) -> None:
+            if not self._setup_complete:
+                self.setup()
+            rot = int(rotation)
+            if rot < 0 or rot > 3:
+                raise ValueError("Display: rotation must be 0-3")
+            payload = self.identifier.to_bytes(2, "little") + bytes([rot & 0xFF])
+            packet = self.gpio_lib._build_packet(CMD_LCD_SET_ROTATION, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def clear(self) -> None:
+            if not self._setup_complete:
+                self.setup()
+            payload = self.identifier.to_bytes(2, "little")
+            packet = self.gpio_lib._build_packet(CMD_LCD_CLEAR, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def set_cursor(self, x: int, y: int) -> None:
+            if not self._setup_complete:
+                self.setup()
+            payload = self.identifier.to_bytes(2, "little") + int(x).to_bytes(2, "little") + int(y).to_bytes(2, "little")
+            packet = self.gpio_lib._build_packet(CMD_LCD_SET_CURSOR, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def write_text(self, text: str, x: int = 0, y: int = 0) -> None:
+            if not self._setup_complete:
+                self.setup()
+            self.set_cursor(x, y)
+            payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
+            packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_TEXT, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def write_text_center(self, text: str) -> None:
+            if not self._setup_complete:
+                self.setup()
+            payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
+            packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_TEXT_CENTER, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        def write_bitmap(self, bitmap_data: bytes | bytearray | List[int], x_pos: int, y_pos: int, x_len: int, y_len: int) -> None:
+            if not self._setup_complete:
+                self.setup()
+            if x_len <= 0 or y_len <= 0:
+                raise ValueError("Display: bitmap size must be positive")
+            if isinstance(bitmap_data, list):
+                bitmap_bytes = bytes(bitmap_data)
+            else:
+                bitmap_bytes = bytes(bitmap_data)
+            expected = int(x_len) * int(y_len) * 2
+            if len(bitmap_bytes) != expected:
+                raise ValueError(f"Display: bitmap_data length must be {expected} bytes for RGB565")
+            payload = (
+                self.identifier.to_bytes(2, "little")
+                + int(x_pos).to_bytes(2, "little")
+                + int(y_pos).to_bytes(2, "little")
+                + int(x_len).to_bytes(2, "little")
+                + int(y_len).to_bytes(2, "little")
+                + bitmap_bytes
+            )
+            packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, payload)
+            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
 
 
@@ -952,11 +1388,16 @@ class GPIO_Lib:
             return bytes([p & 0xFF])
         return bytes([p & 0xFF, (p >> 8) & 0xFF])
 
-    def pin_mode(self, pin: int | str, mode: str, name: Optional[str] = None) -> None:
+    def pinMode(self, pin: int | str, mode: PinMode, name: Optional[str] = None) -> None:
         """Configure `pin` with `mode` and optional `name`.
 
-        mode: one of 'INPUT', 'OUTPUT', 'INPUT_PULLUP', 'INPUT_PULLDOWN',
-              'ANALOG_INPUT', 'ANALOG_OUTPUT'
+        mode: PinMode class:
+            INPUT
+            OUTPUT
+            INPUT_PULLUP
+            INPUT_PULLDOWN
+            ANALOG_INPUT
+            ANALOG_OUTPUT
 
         If `pin` is a string name, a numeric pin must be provided via `name`
         mapping elsewhere; prefer numeric pin values.
@@ -968,28 +1409,27 @@ class GPIO_Lib:
             self.pin_to_name[pin_num] = name
 
         # update mirrors
-        m = mode.upper()
-        if m == "OUTPUT":
+        if mode == PinMode.OUTPUT:
             self.outputs.setdefault(name or str(pin_num), {"pin": pin_num, "value": 0, "type": "digital"})
             cmd = CMD_DIGITAL_OUTPUT
             payload = self._encode_pin(pin_num)
-        elif m == "INPUT":
+        elif mode == PinMode.INPUT:
             self.inputs.setdefault(name or str(pin_num), {"pin": pin_num, "value": 0, "type": "digital"})
             cmd = CMD_DIGITAL_INPUT
             payload = self._encode_pin(pin_num)
-        elif m == "INPUT_PULLUP":
+        elif mode == PinMode.INPUT_PULLUP:
             self.inputs.setdefault(name or str(pin_num), {"pin": pin_num, "value": 0, "type": "digital"})
             cmd = CMD_DIGITAL_INPUT_PULLUP
             payload = self._encode_pin(pin_num)
-        elif m == "INPUT_PULLDOWN":
+        elif mode == PinMode.INPUT_PULLDOWN:
             self.inputs.setdefault(name or str(pin_num), {"pin": pin_num, "value": 0, "type": "digital"})
             cmd = CMD_DIGITAL_INPUT_PULLDOWN
             payload = self._encode_pin(pin_num)
-        elif m == "ANALOG_INPUT":
+        elif mode == PinMode.ANALOG_INPUT:
             self.inputs.setdefault(name or str(pin_num), {"pin": pin_num, "value": 0, "type": "analog"})
             cmd = CMD_ANALOG_INPUT
             payload = self._encode_pin(pin_num)
-        elif m == "ANALOG_OUTPUT":
+        elif mode == PinMode.ANALOG_OUTPUT:
             self.outputs.setdefault(name or str(pin_num), {"pin": pin_num, "value": 0, "type": "analog"})
             cmd = CMD_ANALOG_OUTPUT
             payload = self._encode_pin(pin_num)
@@ -1004,9 +1444,6 @@ class GPIO_Lib:
             except Exception:
                 if self.debug_enabled:
                     self.log_debug_message("pin_mode: enqueue failed")
-
-    # Arduino-style alias
-    pinMode = pin_mode
 
     def attach_servo(self, pin: int, index: Optional[int] = None, name: Optional[str] = None) -> int:
         """Attach a servo to `pin`. Returns the servo index used."""
@@ -1122,6 +1559,23 @@ class GPIO_Lib:
                 return int(self.inputs[name]["value"])
             return 0
 
+    def set_analog_threshold(self, pin: int | str, threshold: int) -> None:
+        if isinstance(pin, str) and not pin.isnumeric():
+            name = pin
+            entry = self.inputs.get(name)
+            if entry is None:
+                raise ValueError(f"input name not found: {name}")
+            pin_num = int(entry["pin"])
+        else:
+            pin_num = int(pin)
+        thresh = int(threshold) & 0xFF
+        if pin_num <= 0xFF:
+            payload = bytes([pin_num & 0xFF, thresh])
+        else:
+            payload = bytes([pin_num & 0xFF, (pin_num >> 8) & 0xFF, thresh])
+        packet = self._build_packet(CMD_ANALOG_TOLERANCE, payload)
+        self._add_packet_to_send_queue(packet, wait_ack=False)
+
     def servo_write(self, index: int, val: int) -> None:
         self.servo_array[index] = int(val)
         if self.auto_io and self._transport and self._transport.is_connected:
@@ -1130,12 +1584,12 @@ class GPIO_Lib:
             packet = self._build_packet(cmd, payload)
             self._add_packet_to_send_queue(packet, wait_ack=False)
 
-    def lcd_write(self, text: str) -> None:
+    def lcd_write(self, text: str, identifier: int = 0) -> None:
         # simple append model; device is expected to handle display payloads
         self.lcd_lines.append(text)
         if self.auto_io and self._transport and self._transport.is_connected:
             cmd = CMD_LCD_WRITE_TEXT
-            b = text.encode(errors="replace")
+            b = int(identifier).to_bytes(2, "little") + text.encode(errors="replace")
             packet = self._build_packet(cmd, b)
             self._add_packet_to_send_queue(packet, wait_ack=False)
 
@@ -1175,7 +1629,25 @@ class GPIO_Lib:
             time.sleep(0.0005)
 
     # --- internals ------------------------------------------------
-    
+
+    def _record_response(self, cmd: int, identifier: int, payload: bytes) -> None:
+        key = (int(cmd), int(identifier))
+        with self._resp_cv:
+            self._responses[key] = payload
+            self._resp_cv.notify_all()
+
+    def _await_response(self, cmd: int, identifier: int, timeout: float = 1.0) -> bytes:
+        key = (int(cmd), int(identifier))
+        end = time.time() + float(timeout)
+        with self._resp_cv:
+            while True:
+                if key in self._responses:
+                    return self._responses.pop(key)
+                remaining = end - time.time()
+                if remaining <= 0:
+                    return b""
+                self._resp_cv.wait(timeout=remaining)
+
 
     def _handle_packet(self, cmd: int, payload: bytes) -> None:
         # handle incoming command frames (device -> host updates)
@@ -1202,6 +1674,12 @@ class GPIO_Lib:
         if cmd == CMD_DEVICE_ERROR:
             if self.debug_enabled:
                 print("device: ERROR", payload)
+            return
+
+        # UART/I2C/SPI read responses: payload = id(2) + data
+        if cmd in (CMD_UART_READ, CMD_I2C_READ, CMD_I2C_WRITE_READ, CMD_I2C_FULL_ADDRESS_SCAN, CMD_SPI_READ) and len(payload) >= 2:
+            identifier = int(payload[0]) | (int(payload[1]) << 8)
+            self._record_response(cmd, identifier, payload[2:])
             return
 
         # Digital read responses
@@ -1269,9 +1747,9 @@ class GPIO_Lib:
             return
 
         # LCD text
-        if cmd == CMD_LCD_WRITE_TEXT and len(payload) >= 1:
+        if cmd == CMD_LCD_WRITE_TEXT and len(payload) >= 3:
             try:
-                text = payload.decode(errors="replace")
+                text = payload[2:].decode(errors="replace")
             except Exception:
                 text = ""
             self.lcd_lines.append(text)

@@ -38,8 +38,13 @@ known_ports = [
 AUTO_YES = "--yes" in sys.argv
 # Build flags to add for device configuration
 build_flag_list = [
-    '-DDEBUG',          # Enable debug output
-    '-DFASTLED',       # Enable FastLED module
+    '-DDEBUG',                      # Enable debug output
+    '-DFASTLED_SUPPORT',            # Enable FastLED module
+    '-DI2C_SUPPORT',                # Enable I2C module
+    '-DSPI_SUPPORT',                # Enable SPI module
+    '-DUART_SUPPORT',               # Enable UART module
+    '-DLCD_SUPPORT',                # Enable LCD module
+    '-DIPS_SUPPORT',                # Enable IPS display support
 ]
 
 def print_seperator():
@@ -478,6 +483,12 @@ def update_ini(device) -> bool:
 
     # Compute build flags: merge device build_flags and default if needed
     device_flags = (device.get('build_flags') or '').strip()
+    # Auto-enable common peripherals for Dongle S3 if not already present
+    if target_env == 'T-Dongle-S3':
+        auto_flags = ['-DI2C_SUPPORT', '-DSPI_SUPPORT', '-DUART_SUPPORT', '-DLCD_SUPPORT', '-DIPS_SUPPORT']
+        for flag in auto_flags:
+            if flag not in device_flags.split():
+                device_flags = (device_flags + ' ' + flag).strip()
     default_flags = meta.get('default_build_flags', '').strip()
     # merge preserving order and avoiding duplicates
     def merge_flags(a: str, b: str) -> str:
@@ -530,6 +541,9 @@ def update_ini(device) -> bool:
     # Do NOT enable interactive pre/post hooks by default; keep them commented
     lines.append('[env]')
     lines.append('extra_scripts = pre:tools/pio_pre_hook.py, post:tools/pio_post_hook.py')
+    lines.append('lib_deps =')
+    lines.append('	adafruit/Adafruit GFX Library@^1.11.9')
+    lines.append('	adafruit/Adafruit ST7735 and ST7789 Library@^1.9.3')
     lines.append('')
     lines.append(f'[env:{target_env}]')
     lines.append(f'platform = {device.get("platform") or meta["platform"]}')

@@ -2,6 +2,7 @@
 #include "cmd.h"
 #include "modules.h"
 #include "serial.h"
+#if defined(FASTLED_SUPPORT)
 #if defined(ARDUINO)
 #include <Arduino.h>
 #else
@@ -9,7 +10,11 @@
 #include <stdio.h>
 #endif
 #include <stdlib.h>
+#else
+// FASTLED not defined: compile as empty stub to avoid linker errors
+#endif
 
+#if defined(FASTLED_SUPPORT)
 // Simple FastLED support implementation with APA102 (bit-banged SPI).
 // Supports multiple instances identified by a 16-bit identifier.
 
@@ -68,7 +73,7 @@ void fastled_init() {
 }
 
 const char *fastled_module_flags() {
-    return "FASTLED";
+    return "FASTLED_SUPPORT";
 }
 
 #if defined(ARDUINO)
@@ -208,6 +213,7 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             }
             return true;
         case 0x0116: // CMD_FASTLED_SET_BRIGHTNESS
+            // payload: id(2) + brightness(1)
             if (len < 3) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
@@ -215,6 +221,11 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 struct fastled_instance_t *inst = find_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->brightness = brightness;
+#if defined(ARDUINO)
+                if (inst->type == FASTLED_TYPE_APA102 && inst->buf && inst->num_leds > 0) {
+                    apa102_send(inst->data_pin, inst->clock_pin, inst->buf, inst->num_leds, inst->brightness);
+                }
+#endif
                 cmd_send_ok();
             }
             return true;
@@ -222,3 +233,5 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             return false;
     }
 }
+
+#endif // FASTLED_SUPPORT

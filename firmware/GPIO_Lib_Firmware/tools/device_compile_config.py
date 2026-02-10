@@ -49,17 +49,17 @@ known_ports = [
 
 # Build flags to add for device configuration
 build_flag_list = [
-    '-DDEBUG',          # Enable debug output
-    '-DI2C',            # Enable I2C
-    '-DSPI',            # Enable SPI
-    '-DUART',           # Enable UART
-    '-DWiFi',           # Enable WiFi
-    '-DBLUETOOTH',      # Enable Bluetooth
-    '-DLCD',            # Enable LCD
-    '-DSD_CARD',        # Enable SD Card
-    '-DOLED',           # Enable OLED
-    '-DIPS_DISPLAY',    # Enable IPS Display
-    '-DTOUCHSCREEN',    # Enable Touchscreen
+    '-DDEBUG',                 # Enable debug output
+    '-DI2C_SUPPORT',           # Enable I2C
+    '-DSPI_SUPPORT',           # Enable SPI
+    '-DUART_SUPPORT',          # Enable UART
+    '-DWiFi_SUPPORT',          # Enable WiFi
+    '-DBLUETOOTH_SUPPORT',     # Enable Bluetooth
+    '-DLCD_SUPPORT',           # Enable LCD
+    '-DSD_CARD_SUPPORT',       # Enable SD Card
+    '-DOLED_SUPPORT',          # Enable OLED
+    '-DIPS_SUPPORT',   # Enable IPS Display
+    '-DTOUCHSCREEN_SUPPORT',   # Enable Touchscreen
 ]
 
 def print_seperator():

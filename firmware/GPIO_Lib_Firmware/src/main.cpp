@@ -4,7 +4,21 @@
 #include "gpio.h"
 #include "firmware.h"
 #include "modules.h"
+#if defined(FASTLED_SUPPORT)
 #include "fastled.h"
+#endif
+#if defined(UART_SUPPORT)
+#include "uart.h"
+#endif
+#if defined(I2C_SUPPORT)
+#include "i2c.h"
+#endif
+#if defined(SPI_SUPPORT)
+#include "spi.h"
+#endif
+#if defined(LCD_SUPPORT)
+#include "lcd.h"
+#endif
 #include "board.h"
 #include <string.h>
 #include <stdio.h>
@@ -45,15 +59,51 @@ void setup() {
   gpio_init();
 
   // initialize FastLED module (register flags)
+#if defined(FASTLED_SUPPORT)
   serial_write((const uint8_t *)"fastled: initializing fastled module\n", 37);
   fastled_init();
+#endif
+
+#if defined(UART_SUPPORT)
+  serial_write((const uint8_t *)"uart: initializing uart module\n", 34);
+  uart_init();
+#endif
+
+#if defined(I2C_SUPPORT)
+  serial_write((const uint8_t *)"i2c: initializing i2c module\n", 32);
+  i2c_init();
+#endif
+
+#if defined(SPI_SUPPORT)
+  serial_write((const uint8_t *)"spi: initializing spi module\n", 32);
+  spi_init();
+#endif
+
+#if defined(LCD_SUPPORT)
+  serial_write((const uint8_t *)"lcd: initializing lcd module\n", 32);
+  lcd_init();
+#endif
 
   // Initialize command dispatcher and register module handlers
   cmd_init();
-  cmd_register_handler(0x0000, 0x00FF, gpio_cmd_handler); // gpio setup & similar
-  // FastLED command range: 0x0110 - 0x0115
-  cmd_register_handler(0x0110, 0x0115, fastled_cmd_handler);
-  cmd_register_handler(0xFFFD, 0xFFFF, firmware_cmd_handler);
+  cmd_register_handler(0x0000, 0x001F, gpio_cmd_handler); // gpio setup & similar
+  
+#if defined(FASTLED_SUPPORT)
+  cmd_register_handler(0x0110, 0x011F, fastled_cmd_handler);    // FastLED control
+#endif
+#if defined(UART_SUPPORT)
+  cmd_register_handler(0x0200, 0x020F, uart_cmd_handler);       // UART control
+#endif
+#if defined(I2C_SUPPORT)
+  cmd_register_handler(0x0210, 0x021F, i2c_cmd_handler);        // I2C control
+#endif
+#if defined(SPI_SUPPORT)
+  cmd_register_handler(0x0220, 0x022F, spi_cmd_handler);        // SPI control
+#endif
+#if defined(LCD_SUPPORT)
+  cmd_register_handler(0x0020, 0x002F, lcd_cmd_handler);        // LCD control
+#endif
+  cmd_register_handler(0xFFFD, 0xFFFF, firmware_cmd_handler);   // firmware-level cmds like reset, etc.
 
 
 #if defined(DEBUG)
@@ -89,6 +139,8 @@ void loop() {
       cmd_process_bytes(inbuf, idx);
     }
   }
+
+  gpio_poll_inputs();
 
   // replace with dynamic delay based on activity
   delay(5);

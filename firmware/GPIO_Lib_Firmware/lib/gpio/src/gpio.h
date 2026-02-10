@@ -27,6 +27,10 @@ void gpio_attach_servo(uint16_t pin, uint8_t index);
 typedef void (*gpio_debug_cb_t)(const char *msg);
 void gpio_set_debug_cb(gpio_debug_cb_t cb);
 
+// Poll configured input pins and emit change notifications.
+// Call this regularly from the main loop.
+void gpio_poll_inputs();
+
 // Command handler exported by the GPIO module. Returns true if it handled
 // the command (and sent any responses), false otherwise.
 bool gpio_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len);
