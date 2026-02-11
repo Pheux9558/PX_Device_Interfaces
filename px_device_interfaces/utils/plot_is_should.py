@@ -33,7 +33,7 @@ LOG_PATH = Path(__file__).resolve().parent / "blink_run.log"
 OUT_PNG = Path(__file__).resolve().parent / "is_should_plot.png"
 
 # Threshold and styling for hardware max delay visualization
-MAX_HARDWARE_DELAY = 0.001  # seconds (10 ms)
+MAX_HARDWARE_DELAY = 0.01  # seconds (10 ms)
 MAX_HARDWARE_LINE_COLOR = 'purple'
 EXCEED_POINT_COLOR = 'darkred'
 EXCEED_POINT_SIZE = 36

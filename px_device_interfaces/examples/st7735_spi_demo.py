@@ -39,7 +39,7 @@ random_str_list = [
 
 
 def main() -> None:
-    config = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=False, timeout=0)
+    config = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=True)
     gpio = GPIO_Lib(transport_config=config, require_ack_on_send=True, send_ack_timeout=1)
     
 
@@ -131,6 +131,7 @@ def main() -> None:
         lcd.write_text(f"{size}x{size}", x=5 + size + 5, y=5 + size + 5)
         time.sleep(1)
 
+    gpio.await_send_empty()
     lcd.clear()
     lcd.write_text("Demo complete!", x=5, y=5)
 

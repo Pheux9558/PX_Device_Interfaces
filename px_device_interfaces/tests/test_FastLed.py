@@ -75,7 +75,7 @@ if False:
 
 
 if True:
-    for i in range(2):
+    for i in range(20):
         # Smoothly transition from red to green to blue every cycle
         for r in range(255, -1, steps_between_colors):
             g = 255 - r
@@ -116,7 +116,7 @@ if False:
 
 
 
-if True:
+if False:
     # temp digital read test
     gpio_lib.pinMode(0, PinMode.INPUT, "Test Input")
     gpio_lib.sync()  # Ensure we're in sync with the device before starting the test

@@ -22,7 +22,7 @@ class USBTransportConfig(BaseTransportConfig):
 
     port: Optional[str] = None
     baud: int = 921600
-    timeout: float = 0.001
+    timeout_connect: float = 5.0
     debug: bool = False
     auto_io: bool = True
 
@@ -34,7 +34,7 @@ class USBTransportConfig(BaseTransportConfig):
             "\nUSBTransportConfig fields:\n"
             "  - port: serial device path (e.g. COM3 or /dev/ttyACM0)\n"
             "  - baud: baud rate\n"
-            "  - timeout: read timeout in seconds\n"
+            "  - timeout_connect: connection timeout in seconds\n"
             "  - debug: enable debug prints\n"
             "  - auto_io: whether to automatically handle I/O\n"
         )
@@ -46,7 +46,7 @@ class USBTransport(BaseTransport):
     Settings accepted from the factory or from stanalone constructor:
     - `port`: serial device path (required)
     - `baud`: baud rate (default: 115200)
-    - `timeout`: read timeout in seconds (default: 0.1)
+    - `timeout_connect`: connection timeout in seconds (default: 5.0)
     - `debug`: enable debug prints (default: True)
 
     This transport sends and receives raw bytes. For backwards compatibility,
@@ -65,8 +65,8 @@ class USBTransport(BaseTransport):
         """Initialize USBTransport with explicit parameters."""
         self.config = config
         self.port = config.port if config and config.port is not None else port
-        self.baud = config.baud if config and config.baud is not None else (baud if baud is not None else 115200)
-        self.timeout = config.timeout if config and config.timeout is not None else 0.001
+        self.baud = config.baud if config and config.baud is not None else (baud if baud is not None else 921600)
+        self.timeout_connect = config.timeout_connect if config and config.timeout_connect is not None else 5.0
         self.debug = config.debug if config and config.debug is not None else False
         self._serial = None
         self._lock = threading.RLock()
@@ -85,13 +85,6 @@ class USBTransport(BaseTransport):
           - `debug_function`: a callable that takes `msg: str` and `timestamp: Optional[str]`
         """
         self.log_debug_message = debug_function
-
-    def set_time_out(self, timeout: float) -> None:
-        """Set the read timeout in seconds."""
-        with self._lock:
-            self.timeout = timeout
-            if self._serial:
-                self._serial.timeout = timeout
     
     def resetDevice(self):
         """Reset the connected device by toggling DTR."""
@@ -111,7 +104,7 @@ class USBTransport(BaseTransport):
             raise ValueError("USBTransport requires 'baud' setting")
         try:
             with self._lock:
-                self._serial = serial.Serial(self.port, baudrate=self.baud, timeout=self.timeout)
+                self._serial = serial.Serial(self.port, baudrate=self.baud, timeout=self.timeout_connect)
                 # Give Arduino a short time to reset and the bootloader to finish
                 # so initial configuration packets aren't lost. Then flush input.
                 # short delay to allow serial open to settle; handshake will
@@ -164,15 +157,10 @@ class USBTransport(BaseTransport):
 
         # if timeout specified, do a blocking read with that timeout
         try:
-            if self.timeout and self.timeout > 0:
-                # read up to 4096 bytes or until timeout
-                raw = self._serial.read(length if length is not None else 4096)
-            else:
-                # non-blocking: read available bytes
-                n = getattr(self._serial, "in_waiting", 0)
-                if not n:
-                    return None
-                raw = self._serial.read(n)
+            n = getattr(self._serial, "in_waiting", 0)
+            if not n:
+                return None
+            raw = self._serial.read(n)
         except Exception:
             return None
 
@@ -202,20 +190,10 @@ class USBTransport(BaseTransport):
             raise RuntimeError("USBTransport not connected")    
 
         try:
-            if self.timeout and self.timeout > 0:
-                old = getattr(self._serial, "timeout", None)
-                self._serial.timeout = self.timeout
-                try:
-                    # read up to 4096 bytes or until timeout
-                    raw = self._serial.read(4096)
-                finally:
-                    if old is not None:
-                        self._serial.timeout = old
-            else:
-                n = getattr(self._serial, "in_waiting", 0)
-                if not n:
-                    return None
-                raw = self._serial.read(n)
+            n = getattr(self._serial, "in_waiting", 0)
+            if not n:
+                return None
+            raw = self._serial.read(n)
 
             if isinstance(raw, (bytes, bytearray)) and self.debug:
                 if not raw == b'' and not raw == b'\r\n':
