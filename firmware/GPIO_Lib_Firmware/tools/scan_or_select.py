@@ -78,30 +78,30 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'platform': 'atmelavr',
             'board': 'uno',
             'framework': 'arduino',
-            'monitor_speed': '115200',
+            'monitor_speed': '921600',
             'upload_speed': '',
             'default_build_flags': '-DARDUINO_UNO -Ilib'
         }
     # Dongles3 specific metadata (prefer this when info contains S3 tokens)
-    if 'esp32' in info:
-        return {
-            'env': 'esp32',
-            'platform': 'espressif32',
-            'board': 'esp32dev',
-            'framework': 'arduino',
-            'monitor_speed': '115200',
-            'upload_speed': '921600',
-            'default_build_flags': '-DESP32_PICO_D4 -Ilib'
-        }
     if 'dongles3' in info or "dongle_s3" in info:
         return {
             'env': 'T-Dongle-S3',
             'platform': 'espressif32',
             'board': 'dongles3',
             'framework': 'arduino',
-            'monitor_speed': '115200',
+            'monitor_speed': '921600',
             'upload_speed': '921600',
             'default_build_flags': '-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -Ilib -DDONGLES3'
+        }
+    if 'esp32' in info:
+        return {
+            'env': 'esp32',
+            'platform': 'espressif32',
+            'board': 'esp32dev',
+            'framework': 'arduino',
+            'monitor_speed': '921600',
+            'upload_speed': '921600',
+            'default_build_flags': '-DESP32_PICO_D4 -Ilib'
         }
     if 'stm32' in info:
         return {
@@ -109,7 +109,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'platform': 'ststm32',
             'board': 'genericSTM32F103C',
             'framework': 'arduino',
-            'monitor_speed': '115200',
+            'monitor_speed': '921600',
             'upload_speed': '',
             'default_build_flags': '-DARDUINO_STM32 -Ilib'
         }
@@ -119,7 +119,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'platform': 'raspberrypi',
             'board': 'raspberry-pi-pico',
             'framework': 'arduino',
-            'monitor_speed': '115200',
+            'monitor_speed': '921600',
             'upload_speed': '',
             'default_build_flags': '-DRP2040 -Ilib'
         }
@@ -129,7 +129,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'platform': 'nordicnrf52',
             'board': 'pca10040',
             'framework': 'arduino',
-            'monitor_speed': '115200',
+            'monitor_speed': '921600',
             'upload_speed': '',
             'default_build_flags': '-DNORDIC_NRF52 -Ilib'
         }
@@ -139,7 +139,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'platform': 'atmelsam',
             'board': 'arduino_zero',
             'framework': 'arduino',
-            'monitor_speed': '115200',
+            'monitor_speed': '921600',
             'upload_speed': '',
             'default_build_flags': '-DSAMD21 -Ilib'
         }
@@ -149,7 +149,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'platform': 'atmelavr',
             'board': 'megaatmega2560',
             'framework': 'arduino',
-            'monitor_speed': '115200',
+            'monitor_speed': '921600',
             'upload_speed': '',
             'default_build_flags': '-DARDUINO_MEGAAVR -Ilib'
         }
@@ -159,7 +159,7 @@ def determine_device_metadata(firmware_info: str) -> dict:
         'platform': 'espressif32',
         'board': 'esp32dev',
         'framework': 'arduino',
-        'monitor_speed': '115200',
+        'monitor_speed': '921600',
         'upload_speed': '921600',
         'default_build_flags': '-Ilib'
     }
@@ -175,12 +175,12 @@ def map_board_mcu_to_metadata(board_token: str | None, mcu_token: str | None) ->
     if 'uno' in b or 'arduino_uno' in b or 'atmega328p' in m:
         return {
             'env': 'uno', 'platform': 'atmelavr', 'board': 'uno', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '', 'default_build_flags': '-DARDUINO_UNO -Ilib'
+            'monitor_speed': '921600', 'upload_speed': '', 'default_build_flags': '-DARDUINO_UNO -Ilib'
         }
     if 'dongles3' in b or 'dongles3' in m:
         return {
             'env': 'T-Dongle-S3', 'platform': 'espressif32', 'board': 'dongles3', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '921600', 'default_build_flags': '-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -Ilib'
+            'monitor_speed': '921600', 'upload_speed': '921600', 'default_build_flags': '-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -Ilib'
         }
 
     if 'esp32' in b or 'esp32' in m:
@@ -188,37 +188,37 @@ def map_board_mcu_to_metadata(board_token: str | None, mcu_token: str | None) ->
         default = '-DESP32_PICO_D4 -Ilib' if 'pico' in m or 'pico_d4' in m else '-Ilib'
         return {
             'env': 'esp32', 'platform': 'espressif32', 'board': 'esp32dev', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '921600', 'default_build_flags': default
+            'monitor_speed': '921600', 'upload_speed': '921600', 'default_build_flags': default
         }
     if 'esp8266' in b or 'esp8266' in m:
         return {
             'env': 'esp8266', 'platform': 'espressif8266', 'board': 'esp12e', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '', 'default_build_flags': '-Ilib'
+            'monitor_speed': '921600', 'upload_speed': '', 'default_build_flags': '-Ilib'
         }
     if 'rp2040' in b or 'rp2040' in m or 'pico' in b:
         return {
             'env': 'rp2040', 'platform': 'raspberrypi', 'board': 'raspberry-pi-pico', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '', 'default_build_flags': '-DRP2040 -Ilib'
+            'monitor_speed': '921600', 'upload_speed': '', 'default_build_flags': '-DRP2040 -Ilib'
         }
     if 'nrf' in b or 'nrf' in m:
         return {
             'env': 'nrf52', 'platform': 'nordicnrf52', 'board': 'pca10040', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '', 'default_build_flags': '-DNORDIC_NRF52 -Ilib'
+            'monitor_speed': '921600', 'upload_speed': '', 'default_build_flags': '-DNORDIC_NRF52 -Ilib'
         }
     if 'samd' in b or 'samd' in m:
         return {
             'env': 'samd', 'platform': 'atmelsam', 'board': 'arduino_zero', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '', 'default_build_flags': '-DSAMD21 -Ilib'
+            'monitor_speed': '921600', 'upload_speed': '', 'default_build_flags': '-DSAMD21 -Ilib'
         }
     if 'stm32' in b or 'stm32' in m:
         return {
             'env': 'stm32', 'platform': 'ststm32', 'board': 'genericSTM32F103C', 'framework': 'arduino',
-            'monitor_speed': '115200', 'upload_speed': '', 'default_build_flags': '-DARDUINO_STM32 -Ilib'
+            'monitor_speed': '921600', 'upload_speed': '', 'default_build_flags': '-DARDUINO_STM32 -Ilib'
         }
     # fallback
     return {
         'env': 'esp32', 'platform': 'espressif32', 'board': 'esp32dev', 'framework': 'arduino',
-        'monitor_speed': '115200', 'upload_speed': '921600', 'default_build_flags': '-Ilib'
+        'monitor_speed': '921600', 'upload_speed': '921600', 'default_build_flags': '-Ilib'
     }
 
 

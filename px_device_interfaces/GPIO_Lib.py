@@ -75,7 +75,7 @@ CMD_LCD_CLEAR                       = 0x0025 # Clear LCD display, payload: (iden
 CMD_LCD_SET_CURSOR                  = 0x0026 # Set cursor position on LCD, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes])
 CMD_LCD_WRITE_TEXT                  = 0x0027 # Write text to LCD, payload: (identifier[2 bytes], text bytes in UTF-8)
 CMD_LCD_WRITE_TEXT_CENTER           = 0x0028 # Write centered text to LCD, payload: (identifier[2 bytes], text bytes in UTF-8)
-CMD_LCD_WRITE_BITMAP                = 0x0029 # Write bitmap to LCD, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes], x_len[2 bytes], y_len[2 bytes], RGB565 little-endian bytes)
+CMD_LCD_WRITE_BITMAP                = 0x0029 # Write bitmap to LCD, payload: (identifier[2 bytes], func[1 byte], func-specific data)
 CMD_LCD_SET_BRIHGHTNESS             = 0x002A # Set LCD brightness, payload: (identifier[2 bytes], brightness level[0-255]) only for LCDs that support it (PWM backlight control)
 CMD_LCD_SET_CONTRAST                = 0x002B # Set LCD contrast, payload: (identifier[2 bytes], contrast level) 0-255 only for LCDs that support it
 CMD_LCD_SET_ROTATION                = 0x002C # Set LCD rotation, payload: (identifier[2 bytes], rotation[0-3])
@@ -1238,12 +1238,24 @@ class GPIO_Lib:
 
             self._setup_complete = True
 
-        def set_backlight(self, enabled: bool) -> None:
+        def set_backlight(self, brightness: bool | int) -> None:
+            """Set backlight brightness.
+            
+            Args:
+                brightness: Either a boolean (True=255, False=0) or an integer (0-255)
+            """
             if not self._setup_complete:
                 self.setup()
             if self.backlight_pin is None:
                 raise RuntimeError("Display: backlight_pin not configured")
-            level = 255 if enabled else 0
+            
+            if isinstance(brightness, bool):
+                level = 255 if brightness else 0
+            else:
+                level = int(brightness)
+                if level < 0 or level > 255:
+                    raise ValueError("Display: brightness must be 0-255")
+            
             payload = self.identifier.to_bytes(2, "little") + bytes([level & 0xFF])
             packet = self.gpio_lib._build_packet(CMD_LCD_SET_BRIHGHTNESS, payload)
             self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
@@ -1287,7 +1299,7 @@ class GPIO_Lib:
             packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_TEXT_CENTER, payload)
             self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-        def write_bitmap(self, bitmap_data: bytes | bytearray | List[int], x_pos: int, y_pos: int, x_len: int, y_len: int) -> None:
+        def write_bitmap(self, bitmap_data: bytes | bytearray | List[int], x_pos: int, y_pos: int, x_len: int, y_len: int, random_rows: bool = False) -> None:
             if not self._setup_complete:
                 self.setup()
             if x_len <= 0 or y_len <= 0:
@@ -1299,16 +1311,48 @@ class GPIO_Lib:
             expected = int(x_len) * int(y_len) * 2
             if len(bitmap_bytes) != expected:
                 raise ValueError(f"Display: bitmap_data length must be {expected} bytes for RGB565")
-            payload = (
+            x = int(x_pos)
+            y = int(y_pos)
+            w = int(x_len)
+            h = int(y_len)
+            begin_payload = (
                 self.identifier.to_bytes(2, "little")
-                + int(x_pos).to_bytes(2, "little")
-                + int(y_pos).to_bytes(2, "little")
-                + int(x_len).to_bytes(2, "little")
-                + int(y_len).to_bytes(2, "little")
-                + bitmap_bytes
+                + bytes([1])
+                + x.to_bytes(2, "little")
+                + y.to_bytes(2, "little")
+                + w.to_bytes(2, "little")
+                + h.to_bytes(2, "little")
             )
-            packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            self.gpio_lib._add_packet_to_send_queue(
+                self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, begin_payload),
+                wait_ack=False,
+            )
+
+            row_len = w * 2
+            row_indices = list(range(h))
+            if random_rows:
+                import random
+                random.shuffle(row_indices)
+            for row_idx in row_indices:
+                start = row_idx * row_len
+                end = start + row_len
+                row_bytes = bitmap_bytes[start:end]
+                row_payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + bytes([2])
+                    + int(row_idx).to_bytes(2, "little")
+                    + row_bytes
+                )
+                self.gpio_lib._add_packet_to_send_queue(
+                    self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, row_payload),
+                    wait_ack=False,
+                )
+
+            end_payload = self.identifier.to_bytes(2, "little") + bytes([3])
+            self.gpio_lib._add_packet_to_send_queue(
+                self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, end_payload),
+                wait_ack=False,
+            )
 
 
 
@@ -1501,6 +1545,8 @@ class GPIO_Lib:
             self._add_packet_to_send_queue(packet, wait_ack=False)
 
     def digital_read(self, pin: int | str) -> bool:
+        if not self._transport or not self._transport.is_connected:
+            return False
         if isinstance(pin, str) and not pin.isnumeric():
             name = pin
             entry = self.inputs.get(name)
@@ -1539,6 +1585,8 @@ class GPIO_Lib:
             self._add_packet_to_send_queue(packet, wait_ack=False)
 
     def analog_read(self, pin: int | str) -> int:
+        if not self._transport or not self._transport.is_connected:
+            return 0
         if isinstance(pin, str) and not pin.isnumeric():
             name = pin
             entry = self.inputs.get(name)

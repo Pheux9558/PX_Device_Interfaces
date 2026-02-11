@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stdio.h>
 
+u_int32_t millis_last_cmd = 0;
 
 // Simple main that initializes subsystems and echoes valid packets
 
@@ -34,6 +35,20 @@ static void debug_to_serial(const char *msg) {
   const uint8_t nl[2] = {'\r', '\n'};
   serial_write(nl, 2);
 }
+
+
+
+#if defined(ARDUINO_UNO)
+  // on Arduino Uno, use pin 13
+  static uint16_t blink_pin = 13;
+#elif defined(ESP32_PICO_D4)
+  // on ESP32 Dev, use pin 10
+  static uint16_t blink_pin = 10;
+#else
+  // default blink pin
+  static uint16_t blink_pin = 13;
+#endif
+  
 #endif
 
 void setup() {
@@ -109,6 +124,7 @@ void setup() {
 #if defined(DEBUG)
   // set callback
   gpio_set_debug_cb(debug_to_serial);
+  gpio_set_mode(blink_pin, OUTPUT);
 #endif
   // send a ready banner so host can handshake and avoid race with bootloader
   const char *ready = "GPIO_READY\r\n";
@@ -125,10 +141,21 @@ static uint8_t checksum_for(uint16_t cmd, uint16_t len, const uint8_t *payload) 
   return (uint8_t)(sum & 0xFF);
 }
 
+int calc_delay() {
+  // simple heuristic: if we've gone a long time since last command, delay more to save power
+  if (millis() - millis_last_cmd < 50) return 0;
+  if (millis() - millis_last_cmd < 100) return 5;
+  if (millis() - millis_last_cmd < 500) return 10;
+  if (millis() - millis_last_cmd < 1000) return 50;
+  if (millis() - millis_last_cmd < 2500) return 100;
+  if (millis() - millis_last_cmd < 5000) return 250;
+  return 500;
+}
+
 void loop() {
   // read bytes from serial and pass them to the command dispatcher
   if (serial_available() > 0) {
-    uint8_t inbuf[256];
+    uint8_t inbuf[2048];
     size_t idx = 0;
     while (serial_available() > 0 && idx < sizeof(inbuf)) {
       int c = serial_read();
@@ -136,46 +163,23 @@ void loop() {
       inbuf[idx++] = (uint8_t)c;
     }
     if (idx) {
+      millis_last_cmd = millis();
       cmd_process_bytes(inbuf, idx);
     }
   }
 
+
   gpio_poll_inputs();
 
   // replace with dynamic delay based on activity
-  // delay(5);
+  delay(calc_delay());
 
   // Simple blink helper (paste into loop) - only enabled in DEBUG builds
 #if defined(DEBUG)
-  
-  #if defined(ARDUINO_UNO)
-    // on Arduino Uno, use pin 13
-    static uint16_t blink_pin = 13;
-  #elif defined(ESP32_PICO_D4)
-    // on ESP32 Dev, use pin 10
-    static uint16_t blink_pin = 10;
-  #else
-    // default blink pin
-    static uint16_t blink_pin = 13;
-  #endif
-  static uint32_t blink_interval_ms = 250; // blink period in ms
-  static uint32_t blink_last_ms = 0;
-  static uint8_t  blink_state = 0;
-  static bool     blink_inited = false;
 
-  if (!blink_inited) {
-    // ensure pin set as digital output once
-    gpio_set_mode(blink_pin, 1);
-    gpio_digital_write(blink_pin, 0);
-    blink_inited = true;
-    blink_last_ms = millis();
-  }
+  // Blink built-in LED at a regular interval to show we're alive (and also to help with debugging timing issues)
+  // Dynamic delay based on activity: faster blinking when commands are received, slower when idle
+  gpio_digital_write(blink_pin, gpio_digital_read(blink_pin) ? 0 : 1);
 
-  uint32_t now = millis();
-  if ((uint32_t)(now - blink_last_ms) >= blink_interval_ms) {
-    blink_state = (blink_state ? 0 : 1);
-    gpio_digital_write(blink_pin, blink_state);
-    blink_last_ms = now;
-  }
 #endif
 }

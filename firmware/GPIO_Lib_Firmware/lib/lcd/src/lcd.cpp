@@ -23,6 +23,11 @@ struct lcd_instance_t {
     bool backlight_inverted;
     uint16_t cursor_x;
     uint16_t cursor_y;
+    bool stream_active;
+    uint16_t stream_x;
+    uint16_t stream_y;
+    uint16_t stream_w;
+    uint16_t stream_h;
     Adafruit_ST7735 *tft;
     bool used;
 };
@@ -51,6 +56,11 @@ static lcd_instance_t *alloc_instance(uint16_t id) {
             g_instances[i].backlight_inverted = false;
             g_instances[i].cursor_x = 0;
             g_instances[i].cursor_y = 0;
+            g_instances[i].stream_active = false;
+            g_instances[i].stream_x = 0;
+            g_instances[i].stream_y = 0;
+            g_instances[i].stream_w = 0;
+            g_instances[i].stream_h = 0;
             g_instances[i].tft = NULL;
             return &g_instances[i];
         }
@@ -210,29 +220,64 @@ bool lcd_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             }
             return true;
         case 0x0029: // CMD_LCD_WRITE_BITMAP
-        // [ ] TODO REWORK because broken
-            if (len < 12) { cmd_send_error(); return true; }
+            if (len < 3) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint16_t x = (uint16_t)payload[2] | ((uint16_t)payload[3] << 8);
-                uint16_t y = (uint16_t)payload[4] | ((uint16_t)payload[5] << 8);
-                uint16_t w = (uint16_t)payload[6] | ((uint16_t)payload[7] << 8);
-                uint16_t h = (uint16_t)payload[8] | ((uint16_t)payload[9] << 8);
-                const uint8_t *data = &payload[10];
-                uint16_t data_len = (uint16_t)(len - 10);
-                uint32_t expected = (uint32_t)w * (uint32_t)h * 2u;
+                uint8_t func = payload[2];
                 lcd_instance_t *inst = find_instance(id);
                 if (!inst || !inst->tft) { cmd_send_error(); return true; }
-                if ((uint32_t)data_len < expected) { cmd_send_error(); return true; }
-                uint16_t *pix = (uint16_t *)malloc(expected);
-                if (!pix) { cmd_send_error(); return true; }
-                for (uint32_t i = 0; i < expected; i += 2) {
-                    pix[i / 2] = (uint16_t)data[i] | ((uint16_t)data[i + 1] << 8);
+
+                if (func == 1) { // BITMAP_BEGIN
+                    if (len < 11) { cmd_send_error(); return true; }
+                    uint16_t x = (uint16_t)payload[3] | ((uint16_t)payload[4] << 8);
+                    uint16_t y = (uint16_t)payload[5] | ((uint16_t)payload[6] << 8);
+                    uint16_t w = (uint16_t)payload[7] | ((uint16_t)payload[8] << 8);
+                    uint16_t h = (uint16_t)payload[9] | ((uint16_t)payload[10] << 8);
+                    inst->stream_active = true;
+                    inst->stream_x = x;
+                    inst->stream_y = y;
+                    inst->stream_w = w;
+                    inst->stream_h = h;
+                    cmd_send_ok();
+                    return true;
                 }
-                inst->tft->swapBytes(pix, (uint32_t)w * (uint32_t)h, pix);
-                inst->tft->drawRGBBitmap(x, y, pix, w, h);
-                free(pix);
-                cmd_send_ok();
+
+                if (func == 2) { // BITMAP_ROW
+                    if (len < 5) { cmd_send_error(); return true; }
+                    if (!inst->stream_active) { cmd_send_error(); return true; }
+                    uint16_t row_idx = (uint16_t)payload[3] | ((uint16_t)payload[4] << 8);
+                    if (row_idx >= inst->stream_h) { cmd_send_error(); return true; }
+                    uint16_t row_bytes = (uint16_t)(len - 5);
+                    uint16_t expected = (uint16_t)(inst->stream_w * 2u);
+                    if (row_bytes != expected) { cmd_send_error(); return true; }
+
+                    const uint8_t *data = &payload[5];
+                    uint16_t *pix = (uint16_t *)malloc(expected);
+                    if (!pix) { cmd_send_error(); return true; }
+                    // Convert RGB565 to BGR565 and invert (transformation 5)
+                    for (uint16_t i = 0; i < expected; i += 2) {
+                        uint16_t rgb565 = (uint16_t)data[i] | ((uint16_t)data[i + 1] << 8);
+                        uint16_t r = (rgb565 >> 11) & 0x1F;
+                        uint16_t g = (rgb565 >> 5) & 0x3F;
+                        uint16_t b = rgb565 & 0x1F;
+                        uint16_t bgr565 = (b << 11) | (g << 5) | r;
+                        pix[i / 2] = bgr565 ^ 0xFFFF;  // Invert bits
+                    }
+                    inst->tft->drawRGBBitmap(inst->stream_x, inst->stream_y + row_idx, pix, inst->stream_w, 1);
+                    free(pix);
+                    cmd_send_ok();
+                    return true;
+                }
+
+                if (func == 3) { // BITMAP_END (also abort)
+                    inst->stream_active = false;
+                    inst->stream_w = 0;
+                    inst->stream_h = 0;
+                    cmd_send_ok();
+                    return true;
+                }
+
+                cmd_send_error();
             }
             return true;
         case 0x002A: // CMD_LCD_SET_BRIHGHTNESS
