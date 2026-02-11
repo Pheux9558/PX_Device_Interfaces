@@ -9,14 +9,14 @@ from px_device_interfaces.GPIO_Lib import GPIO_Lib, FastLED_Types, PinMode
 delay = .2  # seconds
 
 
-delay_transition = 0.02  # seconds
+delay_transition = 0.0  # seconds
 steps_between_colors = -25
 
 
 
 port = '/dev/ttyACM0'  # Adjust as necessary for your system
-baud = 115200
-config = USBTransportConfig(port=port, baud=baud, debug=False)
+baud = 921600
+config = USBTransportConfig(port=port, baud=baud, debug=True)
 gpio_lib = GPIO_Lib(transport_config=config, require_ack_on_send=True, send_ack_timeout=.5)
 gpio_lib.start()
 
@@ -74,7 +74,7 @@ if False:
 
 
 
-if False:
+if True:
     for i in range(2):
         # Smoothly transition from red to green to blue every cycle
         for r in range(255, -1, steps_between_colors):
@@ -116,16 +116,17 @@ if False:
 
 
 
-
-# temp digital read test
-gpio_lib.pinMode(0, PinMode.INPUT, "Test Input")
-# test btn stat for 5 seconds
-print("Testing digital read on pin 0 for 5 seconds. Press and release button if connected.")
-deadline = time.time() + 10
-while time.time() < deadline:
-    val = gpio_lib.digital_read("Test Input")
-    print(f"Pin 0 value: {val} \r", end="")
-    time.sleep(0.1)
+if True:
+    # temp digital read test
+    gpio_lib.pinMode(0, PinMode.INPUT, "Test Input")
+    gpio_lib.sync()  # Ensure we're in sync with the device before starting the test
+    # test btn stat for 5 seconds
+    print("Testing digital read on pin 0 for 5 seconds. Press and release button if connected.")
+    deadline = time.time() + 10
+    while time.time() < deadline:
+        val = gpio_lib.digital_read("Test Input")
+        print(f"Pin 0 value: {val} \r", end="")
+        time.sleep(0.1)
 
 gpio_lib.await_send_empty()
 gpio_lib.stop()

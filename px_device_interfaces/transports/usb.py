@@ -21,8 +21,8 @@ class USBTransportConfig(BaseTransportConfig):
     transport_type: ClassVar[str] = "USB"
 
     port: Optional[str] = None
-    baud: int = 115200
-    timeout: float = 0.1
+    baud: int = 921600
+    timeout: float = 0.001
     debug: bool = False
     auto_io: bool = True
 
@@ -66,7 +66,7 @@ class USBTransport(BaseTransport):
         self.config = config
         self.port = config.port if config and config.port is not None else port
         self.baud = config.baud if config and config.baud is not None else (baud if baud is not None else 115200)
-        self.timeout = config.timeout if config and config.timeout is not None else 0.1
+        self.timeout = config.timeout if config and config.timeout is not None else 0.001
         self.debug = config.debug if config and config.debug is not None else False
         self._serial = None
         self._lock = threading.RLock()
@@ -180,7 +180,8 @@ class USBTransport(BaseTransport):
             if not raw:
                 return None
             if isinstance(raw, (bytes, bytearray)) and self.debug:
-                self.log_debug_message(f"USBTransport <- recv({raw})", datetime.now().isoformat(timespec='milliseconds'))
+                if not raw == b'' and not raw == b'\r\n':
+                    self.log_debug_message(f"USBTransport <- recv({raw})", datetime.now().isoformat(timespec='milliseconds'))
             # decode for backwards compatibility
             if isinstance(raw, (bytes, bytearray)):
                 try:
@@ -217,7 +218,8 @@ class USBTransport(BaseTransport):
                 raw = self._serial.read(n)
 
             if isinstance(raw, (bytes, bytearray)) and self.debug:
-                self.log_debug_message(f"USBTransport <- recv_bytes({raw})", datetime.now().isoformat(timespec='milliseconds'))
+                if not raw == b'' and not raw == b'\r\n':
+                    self.log_debug_message(f"USBTransport <- recv_bytes({raw})", datetime.now().isoformat(timespec='milliseconds'))
 
             return raw if raw else None
         except Exception:

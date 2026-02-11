@@ -37,10 +37,10 @@ static void debug_to_serial(const char *msg) {
 #endif
 
 void setup() {
-  serial_begin(115200);
+  serial_begin(921600);
   // Give USB CDC a moment to enumerate on some boards (ESP32-S3, Pico etc.)
   delay(100);
-  serial_write((const uint8_t *)"serial: initialized at 115200 baud\n", 35);
+  serial_write((const uint8_t *)"serial: initialized at 921600 baud\n", 35);
   
   // initialize modules registry first so module init() calls can register flags
   modules_init();
@@ -143,7 +143,7 @@ void loop() {
   gpio_poll_inputs();
 
   // replace with dynamic delay based on activity
-  delay(5);
+  // delay(5);
 
   // Simple blink helper (paste into loop) - only enabled in DEBUG builds
 #if defined(DEBUG)

@@ -6,7 +6,7 @@ Usage: run manually on the host connected to the device on COM7.
 from __future__ import annotations
 
 import time
-from px_device_interfaces.GPIO_Lib import GPIO_Lib
+from px_device_interfaces.GPIO_Lib import GPIO_Lib, PinMode
 from px_device_interfaces.transports.usb import USBTransportConfig
 import platform
 import os
@@ -19,7 +19,7 @@ _default_ports = {
     "Linux": "/dev/ttyACM0",
 }
 port = os.environ.get("PX_PORT", _default_ports.get(platform.system(), "/dev/ttyACM0"))
-baud = 115200
+baud = 921600
 led_pin = 10
 blink_count = 100
 
@@ -29,12 +29,12 @@ def main() -> int:
     # Create GPIO_Lib with explicit transport config (USB on COM7)
     print(f"Using serial port {port} (OS: {platform.system()})")
     conf = USBTransportConfig(port=port, baud=baud, debug=True, auto_io=True, timeout=0)
-    gpio = GPIO_Lib(transport_config=conf, require_ack_on_send=False)
+    gpio = GPIO_Lib(transport_config=conf, require_ack_on_send=True)
     try:
         gpio.start()
 
         # configure pin 10 as OUTPUT with name LED_BUILTIN
-        gpio.pinMode(led_pin, "OUTPUT", name="LED_BUILTIN")
+        gpio.pinMode(led_pin, PinMode.OUTPUT, name="LED_BUILTIN")
 
         print(f"Blinking pin {led_pin} (LED_BUILTIN) on COM7 - {blink_count} times")
         for i in range(blink_count):

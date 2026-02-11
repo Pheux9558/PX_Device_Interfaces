@@ -83,17 +83,6 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'default_build_flags': '-DARDUINO_UNO -Ilib'
         }
     # Dongles3 specific metadata (prefer this when info contains S3 tokens)
-    if 'dongles3' in info or "dongle_s3":
-        return {
-            'env': 'T-Dongle-S3',
-            'platform': 'espressif32',
-            'board': 'dongles3',
-            'framework': 'arduino',
-            'monitor_speed': '115200',
-            'upload_speed': '921600',
-            'default_build_flags': '-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -Ilib -DDONGLES3'
-        }
-
     if 'esp32' in info:
         return {
             'env': 'esp32',
@@ -103,6 +92,16 @@ def determine_device_metadata(firmware_info: str) -> dict:
             'monitor_speed': '115200',
             'upload_speed': '921600',
             'default_build_flags': '-DESP32_PICO_D4 -Ilib'
+        }
+    if 'dongles3' in info or "dongle_s3" in info:
+        return {
+            'env': 'T-Dongle-S3',
+            'platform': 'espressif32',
+            'board': 'dongles3',
+            'framework': 'arduino',
+            'monitor_speed': '115200',
+            'upload_speed': '921600',
+            'default_build_flags': '-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -Ilib -DDONGLES3'
         }
     if 'stm32' in info:
         return {

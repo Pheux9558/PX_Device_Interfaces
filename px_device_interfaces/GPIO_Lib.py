@@ -6,7 +6,7 @@ import threading
 import time
 import queue
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional
 
 from px_device_interfaces.transports import BaseTransport
 from px_device_interfaces.transports.base import BaseTransportConfig
@@ -287,13 +287,6 @@ class GPIO_Lib:
         self.auto_io = self.transport_config.auto_io
 
         self.debug_enabled = debug_enabled or self.transport_config.debug
-
-
-
-
-
-
-
 
         self.debug_ok_received = 0
 
@@ -1770,3 +1763,6 @@ class GPIO_Lib:
 
 
 __all__ = ["GPIO_Lib"]
+
+
+

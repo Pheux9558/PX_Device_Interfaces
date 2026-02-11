@@ -14,6 +14,8 @@ px_device_interfaces.egg-info/top_level.txt
 px_device_interfaces/examples/blink_led13.py
 px_device_interfaces/examples/blink_led13_configured.py
 px_device_interfaces/examples/blink_pin_configured.py
+px_device_interfaces/examples/i2c_scan_dual_pins.py
+px_device_interfaces/examples/st7735_spi_demo.py
 px_device_interfaces/tests/opcua_transport_speed.py
 px_device_interfaces/tests/test_FastLed.py
 px_device_interfaces/tests/test_gpio_lib_opcua.py
