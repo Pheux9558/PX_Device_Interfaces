@@ -66,6 +66,7 @@ static const bool DEBUG_LED_ACTIVE_LOW_VAL = true;
 static const bool DEBUG_LED_ACTIVE_LOW_VAL = false;
 #endif
 
+#if defined(DEBUG_USE_GPIO)
 static inline uint8_t debug_pwm_duty(uint8_t duty) {
     return DEBUG_LED_ACTIVE_LOW_VAL ? (uint8_t)(255 - duty) : duty;
 }
@@ -77,6 +78,8 @@ static inline void debug_gpio_write_digital(bool on) {
         digitalWrite(LED_PIN, on ? HIGH : LOW);
     }
 }
+#endif
+
 
 #if defined(DEBUG_USE_FASTLED)
 static const uint16_t DEBUG_FASTLED_INSTANCE_ID = 0xFFF0; // reserved ID for debug
