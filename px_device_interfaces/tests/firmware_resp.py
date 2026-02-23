@@ -4,6 +4,7 @@ import time
 from px_device_interfaces.transports.usb import USBTransportConfig
 from px_device_interfaces.GPIO_Lib import GPIO_Lib, PinMode
 
+start_time = time.time()
 def test_firmware_info():
     cfg = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=False, reset_on_start=True)
     gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
@@ -20,3 +21,5 @@ def test_firmware_info():
         gpio.stop()
 
 test_firmware_info()
+
+print(f"Test completed in {time.time() - start_time:.2f} seconds")

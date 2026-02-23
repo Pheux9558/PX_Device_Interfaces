@@ -29,7 +29,7 @@ def acquire_lock():
         # If lock exists and is recent (less than 5 seconds old), skip execution
         if os.path.exists(LOCK_FILE):
             age = time.time() - os.path.getmtime(LOCK_FILE)
-            if age < 5:
+            if age < 20:
                 return False
         
         # Create/update lock file
@@ -79,7 +79,7 @@ if not os.path.isfile(SCANNER):
 
 # Check if we should skip execution (already ran in this session)
 if not acquire_lock():
-    print("Configurator already executed in this session. Skipping.")
+    print("### Configurator already executed in this session. Skipping ###")
     sys.exit(0)
 
 try:
@@ -107,6 +107,15 @@ try:
         if ret != 0:
             print('Configurator returned non-zero. Aborting.')
             sys.exit(ret)
+        
+        # Force clean build to remove cached objects compiled with old flags
+        print("Cleaning build artifacts to apply new flags...")
+        try:
+            subprocess.check_call(['pio', 'run', '-t', 'clean'], cwd=PRJ_ROOT)
+            print("Clean completed.")
+        except subprocess.CalledProcessError as e:
+            print(f"Warning: Clean failed ({e}), continuing anyway...")
+        
         # After interactive configuration, relock to prevent accidental re-execution in the same session if the user takes too long
         relock()
     else:

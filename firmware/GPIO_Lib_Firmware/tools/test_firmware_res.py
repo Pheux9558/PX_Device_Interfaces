@@ -16,6 +16,7 @@ def get_firmware_info(port: str, debug: bool = True) -> tuple[tuple[int, int, in
     cfg = USBTransportConfig(port=port, baud=921600, debug=False, reset_on_start=True)
     gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
     gpio.setHandshakeEnabled(True)
+    start_time = time.time()
     try:
         gpio.start()
         if not gpio.requestFirmwareInfo():
@@ -26,6 +27,7 @@ def get_firmware_info(port: str, debug: bool = True) -> tuple[tuple[int, int, in
             print(f"Port {port}: build flags     = {gpio.firmware_build_flags}")
     finally:
         gpio.stop()
+    print(f"Port {port}: info query completed in {time.time() - start_time:.2f} seconds")
     return gpio.firmware_version, gpio.firmware_name, gpio.firmware_build_flags
 
 
@@ -42,3 +44,4 @@ if __name__ == "__main__":
             get_firmware_info(port)
         except Exception as e:
             print(f"Error testing port {port}: {e}")
+        

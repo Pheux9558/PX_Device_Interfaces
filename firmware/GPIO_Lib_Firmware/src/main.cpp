@@ -32,6 +32,9 @@ void loop() {
 #if defined(LCD_SUPPORT)
 #include "lcd.h"
 #endif
+#if defined(DEBUG)
+#include "debug.h"
+#endif
 #include "board.h"
 #include <string.h>
 #include <stdio.h>
@@ -94,6 +97,11 @@ void setup() {
   lcd_init();
 #endif
 
+#if defined(DEBUG)
+  serial_write((const uint8_t *)"debug: initializing debug module\n", 34);
+  debug_init();
+#endif
+
   // Initialize command dispatcher and register module handlers
   cmd_init();
   cmd_register_handler(0x0000, 0x001F, gpio_cmd_handler); // gpio setup & similar
@@ -139,6 +147,11 @@ int calc_delay() {
 }
 
 void loop() {
+  // Non-blocking debug heartbeat LED
+#if defined(DEBUG)
+  debug_heartbeat();
+#endif
+
   // read bytes from serial and pass them to the command dispatcher
   if (serial_available() > 0) {
     uint8_t inbuf[BUFFER_SIZE];

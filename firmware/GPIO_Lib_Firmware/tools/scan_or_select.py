@@ -179,7 +179,7 @@ def scan_known_ports(ports_list) -> list[dict]:
 import select
 
 
-def ask(prompt: str, timeout: float | None = 2) -> str:
+def ask(prompt: str, timeout: float | None = 5) -> str:
     """Prompt user and optionally time‑out if no input.
 
     ``timeout`` is a number of seconds to wait for a line.  When it elapses
@@ -249,8 +249,19 @@ def update_platformio_ini(device: dict) -> bool:
     device_flags = normalize_flags_for_display(device['build_flags'])
     formatted_flags = format_flags_for_ini(device_flags)
     
+    # Filter device_based_flags to only include ones compatible with enabled modules
     if 'device_based_flags' in config:
-        formatted_flags = config['device_based_flags'] + formatted_flags
+        filtered_device_flags = []
+        for flag in config['device_based_flags']:
+            # Check if this flag depends on a module being enabled
+            # DEBUG_FASTLED_* flags require FASTLED_SUPPORT
+            if 'DEBUG_FASTLED_' in flag:
+                if 'FASTLED' in device_flags:
+                    filtered_device_flags.append(flag)
+            else:
+                # All other device flags are always included
+                filtered_device_flags.append(flag)
+        formatted_flags = filtered_device_flags + formatted_flags
     
     all_flags = [f'-DBOARD={board_id}'] + formatted_flags
     build_flags_str = ' '.join(all_flags)

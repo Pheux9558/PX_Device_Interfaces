@@ -57,7 +57,13 @@
     "upload_speed": 921600,
     "monitor_speed": 921600,
     "framework": "arduino",
-    "device_based_flags": ["-DARDUINO_USB_MODE=1", "-DARDUINO_USB_CDC_ON_BOOT=1"]
+    "device_based_flags": [
+      "-DARDUINO_USB_MODE=1",
+      "-DARDUINO_USB_CDC_ON_BOOT=1",
+      "-DDEBUG_FASTLED_DATA_PIN=40",
+      "-DDEBUG_FASTLED_CLOCK_PIN=39",
+      "-DDEBUG_FASTLED_TYPE=FASTLED_TYPE_APA102"
+    ]
   },
   "ESP32_Pico_D4": {
     "manufacturer": "ESP32",
@@ -67,6 +73,6 @@
     "upload_speed": 921600,
     "monitor_speed": 921600,
     "framework": "arduino",
-    "device_based_flags": []
+    "device_based_flags": ["-DDEBUG_LED_PIN=10", "-DDEBUG_BRIGHTNESS=64", "-DDEBUG_LED_ACTIVE_LOW"]
   }
 }

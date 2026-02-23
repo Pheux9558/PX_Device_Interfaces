@@ -14,3 +14,10 @@ const char *fastled_module_flags();
 #define FASTLED_TYPE_APA102 0x00
 #define FASTLED_TYPE_WS2812 0x01
 
+// Helper function for debug module: set a single LED color immediately
+// Returns true if successful, false if instance not found or not configured
+bool fastled_set_single_led(uint16_t instance_id, uint8_t r, uint8_t g, uint8_t b);
+
+// Helper function for debug module: create a simple FastLED instance
+// Returns true if successful
+bool fastled_create_debug_instance(uint16_t instance_id, uint16_t data_pin, uint16_t clock_pin, uint8_t led_type);

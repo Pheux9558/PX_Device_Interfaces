@@ -234,4 +234,82 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
     }
 }
 
+// Helper functions for debug module
+bool fastled_create_debug_instance(uint16_t instance_id, uint16_t data_pin, uint16_t clock_pin, uint8_t led_type) {
+    // Check if instance already exists
+    if (find_instance(instance_id)) {
+        return true; // already exists
+    }
+    
+    // Allocate new instance
+    struct fastled_instance_t *inst = alloc_instance(instance_id);
+    if (!inst) {
+        return false; // no space
+    }
+    
+    // Configure for single LED
+    inst->data_pin = data_pin;
+    inst->clock_pin = clock_pin;
+    inst->type = led_type;
+    inst->num_leds = 1;
+    inst->brightness = 255; // full brightness
+    
+    // Allocate buffer for 1 LED (3 bytes RGB)
+    inst->buf = (uint8_t*)malloc(3);
+    if (!inst->buf) {
+        free_instance(inst);
+        return false;
+    }
+    memset(inst->buf, 0, 3); // start with LED off
+    
+    // Validate config for APA102
+    if (inst->type == FASTLED_TYPE_APA102 && inst->clock_pin == 0xFFFF) {
+        free_instance(inst);
+        return false;
+    }
+
+    return true;
+}
+
+bool fastled_set_single_led(uint16_t instance_id, uint8_t r, uint8_t g, uint8_t b) {
+    struct fastled_instance_t *inst = find_instance(instance_id);
+    if (!inst || !inst->buf || inst->num_leds != 1) {
+        return false; // instance not found or not configured for single LED
+    }
+    
+    // Set RGB values in buffer
+    inst->buf[0] = r;
+    inst->buf[1] = g;
+    inst->buf[2] = b;
+    
+#if defined(ARDUINO)
+    // Send to LED based on type
+    if (inst->type == FASTLED_TYPE_APA102) {
+        apa102_send(inst->data_pin, inst->clock_pin, inst->buf, inst->num_leds, inst->brightness);
+    } else if (inst->type == FASTLED_TYPE_WS2812) {
+        // For now, WS2812 is not implemented in bit-banging
+        // This would require precise timing which is challenging without a library
+        // TODO: Add WS2812 bit-banging implementation or use Adafruit_NeoPixel library
+        // For debugging purposes, you might want to add Adafruit NeoPixel library to platformio.ini:
+        // lib_deps = adafruit/Adafruit NeoPixel@^1.10.0
+        return false; // not yet supported
+    }
+#endif
+    
+    return true;
+}
+
+#else // !FASTLED_SUPPORT
+
+// Stub implementations when FASTLED_SUPPORT is not defined
+bool fastled_create_debug_instance(uint16_t instance_id, uint16_t data_pin, uint16_t clock_pin, uint8_t led_type) {
+    (void)instance_id; (void)data_pin; (void)clock_pin; (void)led_type;
+    return false;
+}
+
+bool fastled_set_single_led(uint16_t instance_id, uint8_t r, uint8_t g, uint8_t b) {
+    (void)instance_id; (void)r; (void)g; (void)b;
+    return false;
+}
+
 #endif // FASTLED_SUPPORT
