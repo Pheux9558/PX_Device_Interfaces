@@ -3,7 +3,7 @@
 # test fireware response of PX devices
 import serial
 import serial.tools.list_ports
-# import pytest
+import pytest
 import struct
 import time
 from pathlib import Path
@@ -74,7 +74,7 @@ def test_firmware_response():
     acm_ports = [p.device for p in ports if 'ACM' in p.device]
     port = acm_ports[0] if acm_ports else ports[0].device
 
-    with serial.Serial(port, 115200, timeout=1) as ser:
+    with serial.Serial(port, 921600, timeout=1) as ser:
         # Test firmware info command
         time.sleep(2)  # wait for device to be ready
 

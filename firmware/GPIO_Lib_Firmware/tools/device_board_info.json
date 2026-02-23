@@ -1,0 +1,72 @@
+{
+  "ARDUINO_UNO": {
+    "manufacturer": "Arduino",
+    "model": "UNO R3",
+    "platform": "atmelavr",
+    "board": "uno",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": []
+  },
+  "ARDUINO_MEGA2560": {
+    "manufacturer": "Arduino",
+    "model": "Mega 2560",
+    "platform": "atmelavr",
+    "board": "megaatmega2560",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": []
+  },
+  "ARDUINO_UNO_R4_MINI": {
+    "manufacturer": "Arduino",
+    "model": "UNO R4",
+    "platform": "megaavr",
+    "board": "uno_r4_minima",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": []
+  },
+  "ARDUINO_UNO_R4_WIFI": {
+    "manufacturer": "Arduino",
+    "model": "UNO R4 WiFi",
+    "platform": "megaavr",
+    "board": "uno_r4_wifi",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": []
+  },
+  "ESP32_DEV": {
+    "manufacturer": "ESP32",
+    "model": "dev",
+    "platform": "espressif32",
+    "board": "esp32dev",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": []
+  },
+  "ESP32_T_DONGLE_S3": {
+    "manufacturer": "ESP32",
+    "model": "T-Dongle-S3",
+    "platform": "espressif32",
+    "board": "lilygo-t-display-s3",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": ["-DARDUINO_USB_MODE=1", "-DARDUINO_USB_CDC_ON_BOOT=1"]
+  },
+  "ESP32_PICO_D4": {
+    "manufacturer": "ESP32",
+    "model": "Pico D4",
+    "platform": "espressif32",
+    "board": "esp32dev",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": []
+  }
+}

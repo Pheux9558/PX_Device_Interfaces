@@ -76,3 +76,52 @@ def test_mock_large_bitmap_and_response(tmp_path):
         gpio._running = False
         if gpio._recv_thread is not None:
             gpio._recv_thread.join(0.2)
+
+def test_display_write_bitmap_host_conversion():
+    """Display.write_bitmap() should convert RGB565->BGR565+invert on the host before sending rows."""
+    mock = MockTransport(loopback=False)
+    cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
+    gpio._transport = mock
+    mock.connect()
+
+    gpio._running = True
+    gpio._recv_thread = threading.Thread(target=gpio._recv_worker, daemon=True)
+    gpio._recv_thread.start()
+
+    try:
+        spi = gpio.SPI(gpio, data_pin=23, clock_pin=18)
+        lcd = gpio.Display(gpio, spi, cs_pin=5, rs_pin=16, enable_pin=17, width=2, height=1)
+
+        # clear setup frames
+        mock.pop_sent()
+
+        # 2x1 RGB565 bitmap: [red, blue]
+        # red RGB565 = 0xF800 -> bytes [0x00, 0xF8]
+        # blue RGB565 = 0x001F -> bytes [0x1F, 0x00]
+        bmp = bytes([0x00, 0xF8, 0x1F, 0x00])
+        lcd.write_bitmap(bmp, x_pos=0, y_pos=0, x_len=2, y_len=1)
+
+        sent = mock.pop_sent(raw=True)
+        row_payload = None
+        for pkt in sent:
+            cmd = int.from_bytes(pkt[1:3], "little")
+            if cmd != CMD_LCD_WRITE_BITMAP:
+                continue
+            length = int.from_bytes(pkt[3:5], "little")
+            payload = pkt[5:5+length]
+            if payload[2] == 2:
+                row_payload = payload
+                break
+
+        assert row_payload is not None
+        pixel_bytes = row_payload[5:]
+        # expected converted pixels:
+        # red -> rgb565 0xF800 => bgr565 0x001F ^ 0xFFFF = 0xFFE0 -> bytes [0xE0, 0xFF]
+        # blue -> rgb565 0x001F => bgr565 0xF800 ^ 0xFFFF = 0x07FF -> bytes [0xFF, 0x07]
+        assert pixel_bytes == bytes([0xE0, 0xFF, 0xFF, 0x07])
+
+    finally:
+        gpio._running = False
+        if gpio._recv_thread is not None:
+            gpio._recv_thread.join(0.2)

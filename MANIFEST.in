@@ -4,3 +4,4 @@ recursive-include arduino *
 recursive-include Firmware_Remote *
 recursive-include GPIO_Lib_master *
 recursive-include gpio_lib_firmware_update_test *
+recursive-include firmware *

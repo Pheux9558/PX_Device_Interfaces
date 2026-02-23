@@ -69,6 +69,10 @@ static lcd_instance_t *alloc_instance(uint16_t id) {
 }
 
 void lcd_init() {
+    // Turn Off LCD Backlight
+    pinMode(38, OUTPUT);
+    digitalWrite(38, HIGH);
+
     for (int i = 0; i < MAX_LCD_INSTANCES; ++i) {
         g_instances[i].used = false;
         g_instances[i].tft = NULL;

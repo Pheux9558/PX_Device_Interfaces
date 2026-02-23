@@ -19,3 +19,6 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 include = ["px_device_interfaces*"]
+
+[tool.setuptools]
+include-package-data = true

@@ -1,3 +1,16 @@
+#if defined(RESET_DEVICE)
+void setup() {
+  // clear controller from firmware. Deleding firmware from flash will cause the device to be unresponsive until reprogrammed
+
+}
+void loop() {
+  // do nothing
+  delay(1000);
+}
+#else
+
+#define BUFFER_SIZE 2048
+
 #include <Arduino.h>
 #include "serial.h"
 #include "cmd.h"
@@ -129,9 +142,6 @@ void setup() {
   // send a ready banner so host can handshake and avoid race with bootloader
   const char *ready = "GPIO_READY\r\n";
   serial_write((const uint8_t *)ready, (size_t)strlen(ready));
-  // Turn Off LCD Backlight
-  pinMode(38, OUTPUT);
-  digitalWrite(38, HIGH);
 }
 
 
@@ -155,7 +165,7 @@ int calc_delay() {
 void loop() {
   // read bytes from serial and pass them to the command dispatcher
   if (serial_available() > 0) {
-    uint8_t inbuf[2048];
+    uint8_t inbuf[BUFFER_SIZE];
     size_t idx = 0;
     while (serial_available() > 0 && idx < sizeof(inbuf)) {
       int c = serial_read();
@@ -183,3 +193,4 @@ void loop() {
 
 #endif
 }
+#endif

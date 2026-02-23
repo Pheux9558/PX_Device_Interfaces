@@ -11,14 +11,24 @@
 #elif defined(ESP32_PICO_D4)
   // specific includes or definitions for ESP32 Pico D4 can go here
   # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_ESP32_Pico_D4"
-#elif defined(DONGLES3)
+  // if BOARD=ESP32_T_DONGLE_S3 is defined
+#elif defined(BOARD) && BOARD == ESP32_T_DONGLE_S3
   // specific includes or definitions for ESP32 Dev can go here
   # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_ESP32_DONGLE_S3"
 #else
   // default includes or definitions
   # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_Generic"
 #endif
-    
+
+// if cutom name via -DNAME = <Name> is set use "GPIO_Lib_Firmware_" + NAME, otherwise use default
+#ifndef GPIO_LIB_FIRMWARE_NAME
+    #ifdef GPIO_LIB_FIRMWARE_CUSTOM_NAME
+        #define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_" GPIO_LIB_FIRMWARE_CUSTOM_NAME
+    #else
+        #define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_Generic"
+    #endif
+#endif
+
 static const char *s_firmware_name = GPIO_LIB_FIRMWARE_NAME;
 static const uint8_t s_fw_major = 1;
 static const uint8_t s_fw_minor = 0;

@@ -266,7 +266,7 @@ class GPIO_Lib:
     def __init__(
         self,
         transport_config: BaseTransportConfig,
-        require_ack_on_send: bool = False,
+        require_ack_on_send: bool = True,
         send_ack_timeout: float = 2.0,
         send_ready_timeout: float = 1.0,
         loop_delay: float = 0.0005,
@@ -289,6 +289,8 @@ class GPIO_Lib:
         self.debug_enabled = debug_enabled or self.transport_config.debug
 
         self.debug_ok_received = 0
+        self.total_sent_bytes = 0
+        self.total_received_bytes = 0
 
 
         # mirrors (dict-based, dynamic)
@@ -428,6 +430,12 @@ class GPIO_Lib:
     def getOkTimestamps(self) -> List[datetime]:
         """Return a copy of recorded OK timestamps (datetime objects)."""
         return list(self._ok_timestamps)
+    
+    # region Read Firmware Info/Version/Build Flags
+    def requestFirmwareInfo(self):
+        """
+        # [ ] TODO implement requestFirmwareInfo() method to send CMD_FIRMWARE_INFO and wait for response
+        """
 
     # region Legacy connect/disconnect
     def connect(self) -> bool:
@@ -471,8 +479,16 @@ class GPIO_Lib:
         self._send_thread.start()
 
         # Reset on startup
-
-        self._transport.resetDevice()
+        if hasattr(self._transport, "resetDevice") and callable(getattr(self._transport, "resetDevice")):
+            if getattr(self.transport_config, "reset_on_start", False):
+                self.log_debug_message("Resetting device on startup...")
+                try:
+                    self._transport.resetDevice()
+                    self.log_debug_message("Device reset command sent successfully")
+                except Exception as e:
+                    self.log_debug_message(f"Error sending reset command: {e}")
+            else:
+                self.log_debug_message("Device reset on startup is disabled; skipping reset")
 
 
 
@@ -525,6 +541,10 @@ class GPIO_Lib:
             self._transport.disconnect()
 
         self.log_debug_message("GPIO_Lib stopped")
+        print("") # newline for readability after stop
+        # Print summary of debug info
+        print(f"Total sent: {self.total_sent_bytes} bytes, Total received: {self.total_received_bytes} bytes")
+        print(f"Total OK frames received: {self.debug_ok_received}")
 
     # region Handshake / Ready Banner
     # [ ] TODO refactor formate (_await_device_ready())
@@ -584,7 +604,10 @@ class GPIO_Lib:
         chk = (int(cmd) + length + sum(payload)) & 0xFF
         cmd_bytes = int(cmd).to_bytes(2, "little")
         len_bytes = int(length).to_bytes(2, "little")
-        self.log_debug_message(f"Building packet: CMD=0x{int(cmd):04X}, LEN={length}, PAYLOAD={payload.hex()}, CHK=0x{chk:02X}")
+        if self.debug_enabled:
+            self.log_debug_message(
+                f"Building packet: CMD=0x{int(cmd):04X}, LEN={length}, PAYLOAD={payload.hex()}, CHK=0x{chk:02X}"
+            )
         return bytes([CMD_START_BYTE]) + cmd_bytes + len_bytes + payload + bytes([chk])
 
     # region Packet parsing
@@ -646,16 +669,17 @@ class GPIO_Lib:
         return ((cmd + length + sum(payload)) & 0xFF) == chk
 
     # region queueing
-    def _add_packet_to_send_queue(self, packet: bytes, wait_ack: bool = False) -> bool:
+    def _add_packet_to_send_queue(self, packet: bytes, wait_ack: bool = False, validate: bool = True) -> bool:
         """Enqueue a framed packet for delivery by the send worker.
 
         Returns True when enqueued (convenience for callers/tests).
         """
         # Sanity check packet for external callers
-        if self._validatePacket(packet) is False:
+        if validate and self._validatePacket(packet) is False:
             raise ValueError("enqueue_packet: invalid packet checksum")
-        
-        self.log_debug_message(f"enqueue packet len={len(packet)} wait_ack={wait_ack} hex={packet.hex()}")
+
+        if self.debug_enabled:
+            self.log_debug_message(f"enqueue packet len={len(packet)} wait_ack={wait_ack} hex={packet.hex()}")
         self._send_q.put((packet, bool(wait_ack)))
         return True
     
@@ -688,13 +712,11 @@ class GPIO_Lib:
         self.log_debug_message("send_worker started")
 
         while self._running:
-            # small pause to yield to other threads
-            time.sleep(self.loop_delay)
-
             try:
-                packet, wait_ack = self._send_q.get(timeout=0.2)
+                packet, wait_ack = self._send_q.get(timeout=0.01)
             except Exception:
                 # no packet, continue
+                time.sleep(self.loop_delay)
                 continue
 
             self._send_in_progress = True
@@ -709,6 +731,7 @@ class GPIO_Lib:
                 if self.debug_enabled:
                     self.log_debug_message(f"sending(hex): {packet.hex()}")
                 try:
+                    self.total_sent_bytes += len(packet)
                     self._transport.send(packet)
                 except Exception as e:
                     # On "[ERRNO 5] Input/Output error" => dissconect
@@ -753,6 +776,7 @@ class GPIO_Lib:
             if not data:
                 continue
             self.log_debug_message(f"Received data: {data!r}")
+            self.total_received_bytes += len(data)
 
             # Some firmware builds emit plain-text debug lines (CRLF terminated)
             # on the same serial port when compiled with DEBUG. Detect and
@@ -1307,10 +1331,25 @@ class GPIO_Lib:
             if isinstance(bitmap_data, list):
                 bitmap_bytes = bytes(bitmap_data)
             else:
-                bitmap_bytes = bytes(bitmap_data)
+                bitmap_bytes = bitmap_data
+            bitmap_view = memoryview(bitmap_bytes)
             expected = int(x_len) * int(y_len) * 2
-            if len(bitmap_bytes) != expected:
+            if len(bitmap_view) != expected:
                 raise ValueError(f"Display: bitmap_data length must be {expected} bytes for RGB565")
+            """
+            # Convert on host: RGB565 (LE bytes) -> BGR565 then invert bits (MCU no longer performs this).
+            conv = bytearray(expected)
+            for i in range(0, expected, 2):
+                rgb565 = bitmap_view[i] | (bitmap_view[i + 1] << 8)
+                r = (rgb565 >> 11) & 0x1F
+                g = (rgb565 >> 5) & 0x3F
+                b = rgb565 & 0x1F
+                bgr565 = (b << 11) | (g << 5) | r
+                pix = bgr565 ^ 0xFFFF
+                conv[i] = pix & 0xFF
+                conv[i + 1] = (pix >> 8) & 0xFF
+            bitmap_view = memoryview(conv)
+            """
             x = int(x_pos)
             y = int(y_pos)
             w = int(x_len)
@@ -1325,33 +1364,33 @@ class GPIO_Lib:
             )
             self.gpio_lib._add_packet_to_send_queue(
                 self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, begin_payload),
-                wait_ack=False,
+                wait_ack=True,
+                validate=False,
             )
 
             row_len = w * 2
-            row_indices = list(range(h))
             if random_rows:
                 import random
+                row_indices = list(range(h))
                 random.shuffle(row_indices)
+            else:
+                row_indices = range(h)
+            id_bytes = self.identifier.to_bytes(2, "little")
             for row_idx in row_indices:
+                # time.sleep(0.005)  # small delay to avoid overwhelming the device
                 start = row_idx * row_len
                 end = start + row_len
-                row_bytes = bitmap_bytes[start:end]
-                row_payload = (
-                    self.identifier.to_bytes(2, "little")
-                    + bytes([2])
-                    + int(row_idx).to_bytes(2, "little")
-                    + row_bytes
-                )
-                self.gpio_lib._add_packet_to_send_queue(
-                    self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, row_payload),
-                    wait_ack=False,
-                )
+                row_view = bitmap_view[start:end]
+                row_payload = id_bytes + bytes([2]) + int(row_idx).to_bytes(2, "little") + row_view.tobytes()
+                packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, row_payload)
+                print(f"Packet size for row {row_idx}: {len(packet)} bytes")
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False, validate=False)
 
             end_payload = self.identifier.to_bytes(2, "little") + bytes([3])
             self.gpio_lib._add_packet_to_send_queue(
                 self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, end_payload),
-                wait_ack=False,
+                wait_ack=True,
+                validate=False,
             )
 
 
@@ -1715,7 +1754,8 @@ class GPIO_Lib:
         if cmd == CMD_DEVICE_ERROR:
             if self.debug_enabled:
                 print("device: ERROR", payload)
-            return
+            print("device: ERROR", payload)
+            # raise RuntimeError("Device send ERROR")
 
         # UART/I2C/SPI read responses: payload = id(2) + data
         if cmd in (CMD_UART_READ, CMD_I2C_READ, CMD_I2C_WRITE_READ, CMD_I2C_FULL_ADDRESS_SCAN, CMD_SPI_READ) and len(payload) >= 2:

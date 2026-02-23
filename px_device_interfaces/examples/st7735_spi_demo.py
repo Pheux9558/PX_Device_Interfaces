@@ -37,10 +37,19 @@ random_str_list = [
     "The jay, pig, fox, zebra, and my wolves quack!",
 ]
 
+def random_pixel_data(width, height):
+    """Generate random pixel data for a bitmap of the given width and height."""
+    data = bytearray()
+    for _ in range(width * height):
+        # Generate a random RGB565 color
+        color = random.randint(0, 0xFFFF)
+        data.extend(color.to_bytes(2, "little"))
+    return data
 
 def main() -> None:
-    config = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=False)
-    gpio = GPIO_Lib(transport_config=config, require_ack_on_send=True, send_ack_timeout=1)
+    bitmap = bytearray()
+    config = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=True, reset_on_start=True)
+    gpio = GPIO_Lib(transport_config=config, send_ack_timeout=1)
     
 
     gpio.start()
@@ -49,7 +58,6 @@ def main() -> None:
     if not gpio._transport:
         raise RuntimeError("Failed to initialize transport")
     # gpio._transport.resetDevice()
-    time.sleep(1)  # wait for device to reset
 
 
     spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=40_000_000)
@@ -65,7 +73,11 @@ def main() -> None:
         height=160,
     )
 
-    lcd.set_backlight(True)
+    lcd.set_backlight(16)
+
+    time.sleep(1)  # wait for device to reset
+
+    """
     lcd.set_rotation(3)
     lcd.clear()
     lcd.write_text("Hello, World!", x=5, y=5)
@@ -139,7 +151,7 @@ def main() -> None:
     # Bitmap max size test. Fill larger getting areas with some colors and print size on screen.
     max_w = 80
     max_h = 160
-    bitmap = bytearray()
+    
     lcd.clear()
 
     gpio.pinMode(0, PinMode.INPUT_PULLUP, "Stop")  # Configure GPIO0 as input to use as a stop button for the demo loop. Connect to GND to stop.
@@ -166,28 +178,64 @@ def main() -> None:
         lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=size, y_len=size)
         lcd.write_text(f"{size}x{size}", x=5, y=5)
         # time.sleep(.25)
+    """
 
+    # rotate to 3, start with widht of 80 and increment it up to 160
+    def incremental_width_test():
+        lcd.set_rotation(3)
+        print("Starting incremental width test. Press the stop button (GPIO0) to end the loop early.")
+        for width in range(80, 161, 1):
+            lcd.write_text(f"Width {width}", x=5, y=5)
+            bitmap.clear()
+            # bitmap.extend(random_pixel_data(width, 80))
+            # only one random color per width increment to make it easier to see the rows and test random row order
+            color = random.randint(0, 0xFFFF)
+            for _ in range(width * 80):
+                bitmap.extend(color.to_bytes(2, "little"))
+            
+            lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=width, y_len=80)
+            lcd.write_text(f"{width}x80", x=5, y=5)
+            time.sleep(0.01)
+
+    incremental_width_test()
 
 
     # fill line for line with random colors until we fill the whole screen, to test the streaming bitmap interface and random row order
-    w = 80
-    h = 160
-    bitmap = bytearray()
-    for _ in range(w * h):
-        color = random.randint(0, 0xFFFF)
-        bitmap.extend(color.to_bytes(2, "little"))
-    lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=w, y_len=h, random_rows=True)
-    lcd.write_text("Random rows", x=5, y=5)
 
+    def random_rot_and_shape():
+        """
+        Cycle through all rotations and set the shape acordingly to test rotation handling with different bitmap sizes.
+        """
+        rotations = [0, 1, 2, 3]
+        for rot in rotations:
+            print(f"Testing random row order with rotation {rot}...")
+            lcd.set_rotation(rot)
+            if rot % 2 == 0:
+                shape = (80, 160)
+            else:
+                shape = (160, 80)
+            bitmap = bytearray()
+            for _ in range(shape[0] * shape[1]):
+                color = random.randint(0, 0xFFFF)
+                bitmap.extend(color.to_bytes(2, "little"))
+            lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=shape[0], y_len=shape[1], random_rows=True)
+            lcd.write_text(f"Rot {rot}", x=5, y=5)
+            time.sleep(1)
 
-    gpio.await_send_empty()
+    # random_rot_and_shape()
+
+    if gpio.await_send_empty(timeout=5):
+        print("All data sent to device.")
+    else:        
+        print("Timeout waiting for data to be sent. There may be unsent data in the buffer.")
+
     time.sleep(2)
     lcd.clear()
     lcd.set_rotation(1)
     lcd.write_text("Demo complete!", x=5, y=5)
 
 
-    gpio.await_send_empty()
+    gpio.await_send_empty(timeout=1)
     gpio.stop()
 
 

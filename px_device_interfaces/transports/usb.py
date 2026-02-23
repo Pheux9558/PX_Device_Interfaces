@@ -25,6 +25,7 @@ class USBTransportConfig(BaseTransportConfig):
     timeout_connect: float = 5.0
     debug: bool = False
     auto_io: bool = True
+    reset_on_start: bool = True
 
     def create_transport(self) -> "USBTransport":
         return USBTransport(port=self.port, baud=self.baud, config=self)
@@ -37,6 +38,7 @@ class USBTransportConfig(BaseTransportConfig):
             "  - timeout_connect: connection timeout in seconds\n"
             "  - debug: enable debug prints\n"
             "  - auto_io: whether to automatically handle I/O\n"
+            "  - reset_on_start: whether to reset the device on start\n"
         )
 
 

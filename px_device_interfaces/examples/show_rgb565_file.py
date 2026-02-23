@@ -33,9 +33,9 @@ def parse_args():
     p.add_argument("--port", default="/dev/ttyACM0", help="Serial port to use (default: /dev/ttyACM0)")
     p.add_argument("--baud", type=int, default=921600, help="Serial baud (default: 921600)")
     p.add_argument("--rotation", type=int, default=1, choices=[0,1,2,3], help="Display rotation")
-    p.add_argument("--random-rows", dest="random_rows", action="store_true", help="Send rows in random order")
-    p.add_argument("--no-backlight", dest="backlight", action="store_false", help="Don't enable backlight")
-    p.set_defaults(backlight=True, random_rows=False)
+    p.add_argument("--random-rows", dest="random_rows", action="store_true", default=False, help="Send rows in random order")
+    p.add_argument("--backlight", dest="backlight", type=int, default=255, help="Backlight brightness (0-255, default: 255)")
+    p.add_argument("--no-reset", dest="reset_on_start", action="store_false", default=True, help="Don't reset device on startup")
     return p.parse_args()
 
 
@@ -55,16 +55,19 @@ def main():
         sys.exit(2)
 
     # Setup transport and GPIO_Lib
-    cfg = USBTransportConfig(port=args.port, baud=args.baud, debug=False)
+    cfg = USBTransportConfig(port=args.port, baud=args.baud, debug=False, reset_on_start=args.reset_on_start)
     gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
 
+    gpio.setHandshakeEnabled(args.reset_on_start)  # If we're not resetting on start, disable handshake to avoid hanging if device is already running
+    
+    print(f"Reset on start: {args.reset_on_start} | Handshake enabled: {gpio.handshake_enabled}")
     try:
         gpio.start()
         gpio.sync()
         time.sleep(0.5)
 
         # SPI / Display wiring (same as st7735_spi_demo)
-        spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=40_000_000)
+        spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=80_000_000)
         lcd = GPIO_Lib.Display(
             gpio_lib=gpio,
             spi=spi,
@@ -78,23 +81,23 @@ def main():
         )
 
         if args.backlight:
-            lcd.set_backlight(16)
+            lcd.set_backlight(args.backlight)
         lcd.set_rotation(args.rotation)
-        lcd.clear()
-        
+        if args.reset_on_start:
+            lcd.clear()
+
         gpio.await_send_empty()
 
-        start_time = time.time()
         print(f"Writing {args.width}x{args.height} bitmap from {file_path} to display at ({args.x},{args.y})")
+        start_time = time.time()
         lcd.write_bitmap(data, x_pos=args.x, y_pos=args.y, x_len=args.width, y_len=args.height, random_rows=args.random_rows)
 
         gpio.await_send_empty()
         total_time = time.time() - start_time
         print(f"Bitmap transfer complete in {total_time:.2f} seconds.\n"
-              f"Transfer speed: {len(data)/1024/total_time:.2f} KB/s\n"
+              f"Transfer speed: {len(data)/1024/total_time:.2f} KB/s [Total Bytes: {len(data)}]\n"
               f"Display should show the image now."
         )
-        time.sleep(3)
 
     except Exception as e:
         print("Error during display operation:", e)

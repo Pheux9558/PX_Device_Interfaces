@@ -4,7 +4,7 @@
 
 
 #define MAX_MODULE_FLAGS 16
-#define MAX_FLAG_LEN 16
+#define MAX_FLAG_LEN 64
 
 static char g_flags[MAX_MODULE_FLAGS][MAX_FLAG_LEN];
 static int g_flags_count = 0;

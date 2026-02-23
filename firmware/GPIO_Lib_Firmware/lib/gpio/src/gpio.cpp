@@ -149,6 +149,7 @@ void gpio_init() {
 	}
 	g_last_poll_ms = 0;
 }
+// Hardware abstraction implementations
 void gpio_digital_write(uint16_t pin, uint8_t value) {
 	digitalWrite((int)pin, value ? HIGH : LOW);
 	char b[64];

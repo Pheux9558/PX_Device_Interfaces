@@ -16,6 +16,7 @@ class BaseTransportConfig:
     debug: bool = False
     timeout: float = 0.1
     auto_io: bool = True
+    reset_on_start: bool = True
 
     # Optional common fields
     # Hardware-specific fields should be added in subclasses

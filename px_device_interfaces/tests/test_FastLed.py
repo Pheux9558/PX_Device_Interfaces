@@ -9,7 +9,7 @@ from px_device_interfaces.GPIO_Lib import GPIO_Lib, FastLED_Types, PinMode
 delay = .2  # seconds
 
 
-delay_transition = 0.0  # seconds
+delay_transition = 0.01  # seconds
 steps_between_colors = -25
 
 
@@ -43,7 +43,7 @@ fast_led = gpio_lib.FastLED(
 
 fast_led.setup()
 
-if False:
+if True:
     fast_led.send_led_data(
         [(255, 0, 0)]
     )  # Show red color
@@ -97,7 +97,7 @@ if True:
 
 
 
-if False:
+if True:
     # Brightness test
     fast_led.send_led_data([(255,255,255)])
 

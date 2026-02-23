@@ -5,3 +5,4 @@ dataclasses-json
 types-PyYAML
 pytest-timeout
 matplotlib
+platformio

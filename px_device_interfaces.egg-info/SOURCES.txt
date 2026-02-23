@@ -2,6 +2,742 @@ LICENSE
 MANIFEST.in
 README.md
 pyproject.toml
+firmware/GPIO_Lib_Firmware/.gitignore
+firmware/GPIO_Lib_Firmware/GUIDELINES.md
+firmware/GPIO_Lib_Firmware/next_tasks.txt
+firmware/GPIO_Lib_Firmware/platformio.ini
+firmware/GPIO_Lib_Firmware/platformio.ini.bak
+firmware/GPIO_Lib_Firmware/.pio/build/project.checksum
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/integrity.dat
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/.clang-format
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_BusIO_Register.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_BusIO_Register.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_GenericDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_GenericDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_I2CDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_I2CDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_I2CRegister.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_SPIDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/Adafruit_SPIDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/LICENSE
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/component.mk
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/genericdevice_uartregtest/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/genericdevice_uartregtest/genericdevice_uartregtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/genericdevice_uarttest/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/genericdevice_uarttest/genericdevice_uarttest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/i2c_address_detect/i2c_address_detect.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/i2c_readwrite/i2c_readwrite.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/i2c_registers/i2c_registers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/i2corspi_register/i2corspi_register.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/spi_modetest/spi_modetest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/spi_readwrite/spi_readwrite.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/spi_register_bits/spi_register_bits.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/examples/spi_registers/spi_registers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/.gitignore
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Adafruit_GFX.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Adafruit_GFX.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Adafruit_GrayOLED.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Adafruit_GrayOLED.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Adafruit_SPITFT.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Adafruit_SPITFT.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Adafruit_SPITFT_Macros.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/component.mk
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/gfxfont.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/glcdfont.c
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/license.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMono12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMono18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMono24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMono9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBoldOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBoldOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBoldOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoBoldOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeMonoOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSans12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSans18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSans24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSans9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBoldOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBoldOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBoldOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansBoldOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSansOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerif12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerif18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerif24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerif9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBoldItalic12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBoldItalic18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBoldItalic24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifBoldItalic9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifItalic12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifItalic18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifItalic24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/FreeSerifItalic9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/Org_01.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/Picopixel.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/Tiny3x3a2pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/Fonts/TomThumb.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/examples/GFXcanvas/GFXcanvas.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/examples/mock_ili9341/mock_ili9341.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/fontconvert/Makefile
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/fontconvert/bdf2adafruit.py
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/fontconvert/fontconvert.c
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/fontconvert/fontconvert_win.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit GFX Library/fontconvert/makefonts.sh
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/.gitignore
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/README.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/ST7796S_demo/ST7796S_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/displayOnOffTest/displayOnOffTest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest/.cpb.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest/graphicstest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/.feather_esp32s2_tft.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/graphicstest_feather_esp32s2_tft.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/.hallowing_m0.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/graphicstest_hallowing_m0.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/.hallowing_m4.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/graphicstest_hallowing_m4.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pybadge.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pygamer.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/graphicstest_pybadge_pygamer.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/.cpb.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/graphicstest_st7789.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.cplayClassic.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.due.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp32.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp8266.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.leonardo.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.mega2560.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/graphicstest_tft_gizmo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/graphicstest_v1_160x80/graphicstest_v1_160x80.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/rotationtest/rotationtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/.leonardo.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/seesaw_shield18_test.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit ST7735 and ST7789 Library/examples/shieldtest/shieldtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_Crickit.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_Crickit.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_NeoKey_1x4.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_NeoKey_1x4.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_NeoTrellis.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_NeoTrellis.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_TFTShield18.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_TFTShield18.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_miniTFTWing.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_miniTFTWing.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_seesaw.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Adafruit_seesaw.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/Doxyfile
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/seesaw_motor.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/seesaw_neopixel.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/seesaw_neopixel.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/seesaw_servo.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/seesaw_servo.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/seesaw_spectrum.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/seesaw_spectrum.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/cap_touch_demo/cap_touch_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/drive/more_drivers/more_drivers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/drive/test_drive/test_drive.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/fulltest/fulltest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/motor/dual_motor/dual_motor.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/servo/more_servos/more_servos.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/servo/test_servo/test_servo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Crickit/signal/test_signal/test_signal.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/EEPROM/EEPROM.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/LEDArcade_1x4/LEDArcade_1x4.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/Mini_I2C_Gamepad_QT/Mini_I2C_Gamepad_QT.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoKey_1x4/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoKey_1x4/basic_callback/basic_callback.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoKey_1x4/basic_multikey/basic_multikey.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoKey_1x4/basic_neoswirl/basic_neoswirl.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoPixel/NeoPixel_strandtest/NeoPixel_strandtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoSlider/Dual_NeoSlider/Dual_NeoSlider.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoSlider/NeoSlider/NeoSlider.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoTrellis/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoTrellis/interrupt/interrupt.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoTrellis/multitrellis/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoTrellis/pattern_game/pattern_game.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/NeoTrellis/ripples/ripples.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/PC_Joystick/PC_Joystick.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/analog/Fade/Fade.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/analog/analogRead/analogRead.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/audio_spectrum/Audio_Spectrum/Audio_Spectrum.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/communication/UART_loopback/UART_loopback.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/digital/attiny_blink/attiny_blink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/digital/blink/blink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/digital/gpio_interrupts/gpio_interrupts.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/digital/multiblink/multiblink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/digital/multiread/multiread.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/.pico_rp2040.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/PID5740_ANOencoder_7Seg_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_demo/PID5740_ANOencoder_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/.feather_esp32s2_tft.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/PID5752_QuadEncoder_TFTDemo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_demo/PID5752_QuadEncoder_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/encoder_basic/encoder_basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder/multiple_encoders/multiple_encoders.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/encoder_delta/encoder_delta.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/.esp32.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/joy_featherwing_ESP32.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_example/joy_featherwing_example.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/joy_featherwing/joy_wing_oled/joy_wing_oled.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit seesaw Library/examples/soil_sensor/soilsensor_example/soilsensor_example.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/integrity.dat
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/.clang-format
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_BusIO_Register.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_BusIO_Register.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_GenericDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_GenericDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_I2CDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_I2CDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_I2CRegister.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_SPIDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/Adafruit_SPIDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/LICENSE
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/component.mk
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/genericdevice_uartregtest/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/genericdevice_uartregtest/genericdevice_uartregtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/genericdevice_uarttest/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/genericdevice_uarttest/genericdevice_uarttest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/i2c_address_detect/i2c_address_detect.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/i2c_readwrite/i2c_readwrite.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/i2c_registers/i2c_registers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/i2corspi_register/i2corspi_register.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/spi_modetest/spi_modetest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/spi_readwrite/spi_readwrite.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/spi_register_bits/spi_register_bits.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit BusIO/examples/spi_registers/spi_registers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/.gitignore
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Adafruit_GFX.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Adafruit_GFX.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Adafruit_GrayOLED.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Adafruit_GrayOLED.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Adafruit_SPITFT.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Adafruit_SPITFT.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Adafruit_SPITFT_Macros.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/component.mk
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/gfxfont.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/glcdfont.c
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/license.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMono12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMono18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMono24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMono9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBoldOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBoldOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBoldOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoBoldOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeMonoOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSans12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSans18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSans24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSans9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBoldOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBoldOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBoldOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansBoldOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSansOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerif12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerif18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerif24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerif9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBoldItalic12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBoldItalic18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBoldItalic24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifBoldItalic9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifItalic12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifItalic18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifItalic24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/FreeSerifItalic9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/Org_01.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/Picopixel.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/Tiny3x3a2pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/Fonts/TomThumb.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/examples/GFXcanvas/GFXcanvas.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/examples/mock_ili9341/mock_ili9341.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/fontconvert/Makefile
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/fontconvert/bdf2adafruit.py
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/fontconvert/fontconvert.c
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/fontconvert/fontconvert_win.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit GFX Library/fontconvert/makefonts.sh
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/.gitignore
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/README.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/ST7796S_demo/ST7796S_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/displayOnOffTest/displayOnOffTest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest/.cpb.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest/graphicstest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/.feather_esp32s2_tft.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/graphicstest_feather_esp32s2_tft.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/.hallowing_m0.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/graphicstest_hallowing_m0.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/.hallowing_m4.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/graphicstest_hallowing_m4.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pybadge.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pygamer.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/graphicstest_pybadge_pygamer.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/.cpb.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/graphicstest_st7789.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.cplayClassic.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.due.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp32.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp8266.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.leonardo.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.mega2560.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/graphicstest_tft_gizmo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/graphicstest_v1_160x80/graphicstest_v1_160x80.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/rotationtest/rotationtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/.leonardo.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/seesaw_shield18_test.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit ST7735 and ST7789 Library/examples/shieldtest/shieldtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_Crickit.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_Crickit.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_NeoKey_1x4.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_NeoKey_1x4.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_NeoTrellis.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_NeoTrellis.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_TFTShield18.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_TFTShield18.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_miniTFTWing.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_miniTFTWing.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_seesaw.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Adafruit_seesaw.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/Doxyfile
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/seesaw_motor.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/seesaw_neopixel.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/seesaw_neopixel.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/seesaw_servo.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/seesaw_servo.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/seesaw_spectrum.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/seesaw_spectrum.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/cap_touch_demo/cap_touch_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/drive/more_drivers/more_drivers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/drive/test_drive/test_drive.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/fulltest/fulltest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/motor/dual_motor/dual_motor.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/servo/more_servos/more_servos.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/servo/test_servo/test_servo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Crickit/signal/test_signal/test_signal.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/EEPROM/EEPROM.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/LEDArcade_1x4/LEDArcade_1x4.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/Mini_I2C_Gamepad_QT/Mini_I2C_Gamepad_QT.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoKey_1x4/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoKey_1x4/basic_callback/basic_callback.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoKey_1x4/basic_multikey/basic_multikey.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoKey_1x4/basic_neoswirl/basic_neoswirl.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoPixel/NeoPixel_strandtest/NeoPixel_strandtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoSlider/Dual_NeoSlider/Dual_NeoSlider.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoSlider/NeoSlider/NeoSlider.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoTrellis/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoTrellis/interrupt/interrupt.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoTrellis/multitrellis/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoTrellis/pattern_game/pattern_game.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/NeoTrellis/ripples/ripples.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/PC_Joystick/PC_Joystick.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/analog/Fade/Fade.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/analog/analogRead/analogRead.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/audio_spectrum/Audio_Spectrum/Audio_Spectrum.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/communication/UART_loopback/UART_loopback.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/digital/attiny_blink/attiny_blink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/digital/blink/blink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/digital/gpio_interrupts/gpio_interrupts.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/digital/multiblink/multiblink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/digital/multiread/multiread.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/.pico_rp2040.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/PID5740_ANOencoder_7Seg_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_demo/PID5740_ANOencoder_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/.feather_esp32s2_tft.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/PID5752_QuadEncoder_TFTDemo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_demo/PID5752_QuadEncoder_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/encoder_basic/encoder_basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder/multiple_encoders/multiple_encoders.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/encoder_delta/encoder_delta.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/.esp32.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/joy_featherwing_ESP32.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_example/joy_featherwing_example.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/joy_featherwing/joy_wing_oled/joy_wing_oled.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/device/Adafruit seesaw Library/examples/soil_sensor/soilsensor_example/soilsensor_example.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/integrity.dat
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/.clang-format
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_BusIO_Register.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_BusIO_Register.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_GenericDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_GenericDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_I2CDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_I2CDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_I2CRegister.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_SPIDevice.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/Adafruit_SPIDevice.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/LICENSE
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/component.mk
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/genericdevice_uartregtest/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/genericdevice_uartregtest/genericdevice_uartregtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/genericdevice_uarttest/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/genericdevice_uarttest/genericdevice_uarttest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/i2c_address_detect/i2c_address_detect.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/i2c_readwrite/i2c_readwrite.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/i2c_registers/i2c_registers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/i2corspi_register/i2corspi_register.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/spi_modetest/spi_modetest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/spi_readwrite/spi_readwrite.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/spi_register_bits/spi_register_bits.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit BusIO/examples/spi_registers/spi_registers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/.gitignore
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Adafruit_GFX.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Adafruit_GFX.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Adafruit_GrayOLED.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Adafruit_GrayOLED.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Adafruit_SPITFT.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Adafruit_SPITFT.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Adafruit_SPITFT_Macros.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/component.mk
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/gfxfont.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/glcdfont.c
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/license.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMono12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMono18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMono24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMono9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBoldOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBoldOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBoldOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoBoldOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeMonoOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSans12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSans18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSans24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSans9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBoldOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBoldOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBoldOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansBoldOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansOblique12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansOblique18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansOblique24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSansOblique9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerif12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerif18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerif24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerif9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBold12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBold18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBold24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBold9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBoldItalic12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBoldItalic18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBoldItalic24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifBoldItalic9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifItalic12pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifItalic18pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifItalic24pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/FreeSerifItalic9pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/Org_01.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/Picopixel.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/Tiny3x3a2pt7b.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/Fonts/TomThumb.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/examples/GFXcanvas/GFXcanvas.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/examples/mock_ili9341/mock_ili9341.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/fontconvert/Makefile
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/fontconvert/bdf2adafruit.py
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/fontconvert/fontconvert.c
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/fontconvert/fontconvert_win.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit GFX Library/fontconvert/makefonts.sh
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/.gitignore
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST7735.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST7789.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST7796S.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/Adafruit_ST77xx.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/CMakeLists.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/README.txt
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/ST7796S_demo/ST7796S_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/displayOnOffTest/displayOnOffTest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest/.cpb.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest/graphicstest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/.feather_esp32s2_tft.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_feather_esp32s2_tft/graphicstest_feather_esp32s2_tft.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/.hallowing_m0.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m0/graphicstest_hallowing_m0.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/.hallowing_m4.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_hallowing_m4/graphicstest_hallowing_m4.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pybadge.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/.pygamer.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_pybadge_pygamer/graphicstest_pybadge_pygamer.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/.cpb.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_st7789/graphicstest_st7789.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.cplayClassic.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.due.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp32.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.esp8266.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.leonardo.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.mega2560.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/.uno.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/graphicstest_tft_gizmo/graphicstest_tft_gizmo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/miniTFTWing/graphicstest_v1_160x80/graphicstest_v1_160x80.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/rotationtest/rotationtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/.leonardo.test.skip
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/seesaw_shield18_test/seesaw_shield18_test.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit ST7735 and ST7789 Library/examples/shieldtest/shieldtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/.piopm
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_Crickit.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_Crickit.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_NeoKey_1x4.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_NeoKey_1x4.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_NeoTrellis.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_NeoTrellis.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_TFTShield18.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_TFTShield18.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_miniTFTWing.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_miniTFTWing.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_seesaw.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Adafruit_seesaw.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/Doxyfile
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/README.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/library.properties
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/seesaw_motor.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/seesaw_neopixel.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/seesaw_neopixel.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/seesaw_servo.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/seesaw_servo.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/seesaw_spectrum.cpp
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/seesaw_spectrum.h
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/.github/ISSUE_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/.github/PULL_REQUEST_TEMPLATE.md
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/.github/workflows/githubci.yml
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/cap_touch_demo/cap_touch_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/drive/more_drivers/more_drivers.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/drive/test_drive/test_drive.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/fulltest/fulltest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/motor/dual_motor/dual_motor.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/servo/more_servos/more_servos.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/servo/test_servo/test_servo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Crickit/signal/test_signal/test_signal.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/EEPROM/EEPROM.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/LEDArcade_1x4/LEDArcade_1x4.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/Mini_I2C_Gamepad_QT/Mini_I2C_Gamepad_QT.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoKey_1x4/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoKey_1x4/basic_callback/basic_callback.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoKey_1x4/basic_multikey/basic_multikey.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoKey_1x4/basic_neoswirl/basic_neoswirl.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoPixel/NeoPixel_strandtest/NeoPixel_strandtest.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoSlider/Dual_NeoSlider/Dual_NeoSlider.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoSlider/NeoSlider/NeoSlider.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoTrellis/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoTrellis/interrupt/interrupt.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoTrellis/multitrellis/basic/basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoTrellis/pattern_game/pattern_game.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/NeoTrellis/ripples/ripples.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/PC_Joystick/PC_Joystick.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/analog/Fade/Fade.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/analog/analogRead/analogRead.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/audio_spectrum/Audio_Spectrum/Audio_Spectrum.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/communication/UART_loopback/UART_loopback.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/digital/attiny_blink/attiny_blink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/digital/blink/blink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/digital/gpio_interrupts/gpio_interrupts.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/digital/multiblink/multiblink.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/digital/multiread/multiread.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/.pico_rp2040.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_7Seg_demo/PID5740_ANOencoder_7Seg_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/PID5740_ANOencoder_demo/PID5740_ANOencoder_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/.feather_esp32s2_tft.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_TFTDemo/PID5752_QuadEncoder_TFTDemo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/PID5752_QuadEncoder_demo/PID5752_QuadEncoder_demo.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/encoder_basic/encoder_basic.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder/multiple_encoders/multiple_encoders.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/encoder_delta/encoder_delta.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/.esp32.test.only
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_ESP32/joy_featherwing_ESP32.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/joy_featherwing/joy_featherwing_example/joy_featherwing_example.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/joy_featherwing/joy_wing_oled/joy_wing_oled.ino
+firmware/GPIO_Lib_Firmware/.pio/libdeps/esp32/Adafruit seesaw Library/examples/soil_sensor/soilsensor_example/soilsensor_example.ino
+firmware/GPIO_Lib_Firmware/.vscode/c_cpp_properties.json
+firmware/GPIO_Lib_Firmware/.vscode/extensions.json
+firmware/GPIO_Lib_Firmware/.vscode/launch.json
+firmware/GPIO_Lib_Firmware/lib/README
+firmware/GPIO_Lib_Firmware/lib/board/src/board.cpp
+firmware/GPIO_Lib_Firmware/lib/board/src/board.h
+firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.cpp
+firmware/GPIO_Lib_Firmware/lib/cmd/src/cmd.h
+firmware/GPIO_Lib_Firmware/lib/compat/src/undef_spi.h
+firmware/GPIO_Lib_Firmware/lib/fastled/src/fastled.cpp
+firmware/GPIO_Lib_Firmware/lib/fastled/src/fastled.h
+firmware/GPIO_Lib_Firmware/lib/firmware/src/firmware.cpp
+firmware/GPIO_Lib_Firmware/lib/firmware/src/firmware.h
+firmware/GPIO_Lib_Firmware/lib/gpio/src/gpio.cpp
+firmware/GPIO_Lib_Firmware/lib/gpio/src/gpio.h
+firmware/GPIO_Lib_Firmware/lib/i2c/src/i2c.cpp
+firmware/GPIO_Lib_Firmware/lib/i2c/src/i2c.h
+firmware/GPIO_Lib_Firmware/lib/lcd/src/lcd.cpp
+firmware/GPIO_Lib_Firmware/lib/lcd/src/lcd.h
+firmware/GPIO_Lib_Firmware/lib/modules/src/modules.cpp
+firmware/GPIO_Lib_Firmware/lib/modules/src/modules.h
+firmware/GPIO_Lib_Firmware/lib/serial/src/serial.cpp
+firmware/GPIO_Lib_Firmware/lib/serial/src/serial.h
+firmware/GPIO_Lib_Firmware/lib/spi/src/spi.cpp
+firmware/GPIO_Lib_Firmware/lib/spi/src/spi.h
+firmware/GPIO_Lib_Firmware/lib/uart/src/uart.cpp
+firmware/GPIO_Lib_Firmware/lib/uart/src/uart.h
+firmware/GPIO_Lib_Firmware/src/main.cpp
+firmware/GPIO_Lib_Firmware/tools/device_compile_config.py
+firmware/GPIO_Lib_Firmware/tools/pio_post_hook.py
+firmware/GPIO_Lib_Firmware/tools/pio_pre_hook.py
+firmware/GPIO_Lib_Firmware/tools/post_upload_task.py
+firmware/GPIO_Lib_Firmware/tools/recover.py
+firmware/GPIO_Lib_Firmware/tools/scan_or_select.py
+firmware/GPIO_Lib_Firmware/tools/test_firmware_res.py
+firmware/GPIO_Lib_Firmware/tools/__pycache__/device_compile_config.cpython-314.pyc
+firmware/GPIO_Lib_Firmware/tools/__pycache__/test_firmware_res.cpython-314-pytest-9.0.2.pyc
 px_device_interfaces/GPIO_Lib.py
 px_device_interfaces/GPIO_Lib_OPCUA.py
 px_device_interfaces/__init__.py
@@ -14,7 +750,9 @@ px_device_interfaces.egg-info/top_level.txt
 px_device_interfaces/examples/blink_led13.py
 px_device_interfaces/examples/blink_led13_configured.py
 px_device_interfaces/examples/blink_pin_configured.py
+px_device_interfaces/examples/color_format_test.py
 px_device_interfaces/examples/i2c_scan_dual_pins.py
+px_device_interfaces/examples/show_rgb565_file.py
 px_device_interfaces/examples/st7735_spi_demo.py
 px_device_interfaces/tests/opcua_transport_speed.py
 px_device_interfaces/tests/test_FastLed.py
@@ -22,6 +760,7 @@ px_device_interfaces/tests/test_gpio_lib_opcua.py
 px_device_interfaces/tests/test_gpio_mock.py
 px_device_interfaces/tests/test_send_worker.py
 px_device_interfaces/tests/test_transports.py
+px_device_interfaces/tools/flash.py
 px_device_interfaces/tools/opcua_list_nodes.py
 px_device_interfaces/transports/__init__.py
 px_device_interfaces/transports/base.py
