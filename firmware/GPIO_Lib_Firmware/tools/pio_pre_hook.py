@@ -86,6 +86,7 @@ try:
     # Detect if running from PlatformIO IDE vs user terminal
     # IDE: PLATFORMIO_IDE env var present OR no terminal
     is_pio_ide = 'PLATFORMIO_IDE' in os.environ or 'TERM' not in os.environ
+    is_pio_ide = False # --- OVERRIDE FOR TESTING IN TERMINAL ---
     
     # Determine interactive mode from environment variable OR INI file
     # Priority: environment variable > INI file, but NOT in IDE to prevent prompts during automated builds

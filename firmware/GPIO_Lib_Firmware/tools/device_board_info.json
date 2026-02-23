@@ -59,7 +59,7 @@
     "framework": "arduino",
     "device_based_flags": ["-DARDUINO_USB_MODE=1", "-DARDUINO_USB_CDC_ON_BOOT=1"]
   },
-  "ESP32_PICO_D4": {
+  "ESP32_Pico_D4": {
     "manufacturer": "ESP32",
     "model": "Pico D4",
     "platform": "espressif32",

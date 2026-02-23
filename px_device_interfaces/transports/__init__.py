@@ -6,7 +6,11 @@ from .base import BaseTransport
 from .base import BaseTransportConfig
 from .mock import MockTransport
 from .usb import USBTransport
-from .opcua import OPCUATransport
+# OPCUA transport is optional; avoid raising if package is missing
+try:
+    from .opcua import OPCUATransport
+except ImportError:  # pragma: no cover - feature may not be installed
+    OPCUATransport = None
 
 
 def get_transport_config_class(transport_type: str):

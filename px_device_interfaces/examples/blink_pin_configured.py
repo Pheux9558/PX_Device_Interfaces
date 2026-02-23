@@ -26,13 +26,13 @@ repo_root = Path(__file__).resolve().parent.parent.parent
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from px_device_interfaces.GPIO_Lib import GPIO_Lib
+from px_device_interfaces.GPIO_Lib import GPIO_Lib, PinMode
 from px_device_interfaces.transports.usb import USBTransportConfig
 
 
 DEFAULT_DEVICE = "led_test"
 DEFAULT_PORT = "/dev/ttyACM0"
-DEFAULT_BAUD = 115200
+DEFAULT_BAUD = 921600
 
 
 def make_connection_settings(device: str, port: str, baud: int) -> dict:
@@ -58,11 +58,11 @@ def main() -> None:
 
     # create GPIO_Lib with explicit transport config
     cfg = USBTransportConfig(port=args.port, baud=args.baud, timeout=0.1, debug=bool(args.debug))
-    gpio = GPIO_Lib(transport_config=cfg, auto_io=True, debug_enabled=bool(args.debug), require_ack_on_send=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=bool(args.debug))
     try:
         gpio.start()
         # configure pin mapping at runtime
-        gpio.pinMode(pin, "OUTPUT", name=name)
+        gpio.pinMode(pin, PinMode.OUTPUT, name=name)
         print(f"Blinking pin {pin} as '{name}' (invert={args.invert})")
         for i in range(args.count):
             # write True for ON; invert if requested

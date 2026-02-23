@@ -49,19 +49,6 @@ static void debug_to_serial(const char *msg) {
   serial_write(nl, 2);
 }
 
-
-
-#if defined(ARDUINO_UNO)
-  // on Arduino Uno, use pin 13
-  static uint16_t blink_pin = 13;
-#elif defined(ESP32_PICO_D4)
-  // on ESP32 Dev, use pin 10
-  static uint16_t blink_pin = 10;
-#else
-  // default blink pin
-  static uint16_t blink_pin = 13;
-#endif
-  
 #endif
 
 void setup() {
@@ -72,11 +59,6 @@ void setup() {
   
   // initialize modules registry first so module init() calls can register flags
   modules_init();
-
-  #if defined(DEBUG)
-  // Register Flag
-  modules_add_flag("DEBUG");
-  #endif
 
   // initialize board module so it can register board-specific flags
   serial_write((const uint8_t *)"board: initializing board module\n", 33);
@@ -133,12 +115,6 @@ void setup() {
 #endif
   cmd_register_handler(0xFFFD, 0xFFFF, firmware_cmd_handler);   // firmware-level cmds like reset, etc.
 
-
-#if defined(DEBUG)
-  // set callback
-  gpio_set_debug_cb(debug_to_serial);
-  gpio_set_mode(blink_pin, OUTPUT);
-#endif
   // send a ready banner so host can handshake and avoid race with bootloader
   const char *ready = "GPIO_READY\r\n";
   serial_write((const uint8_t *)ready, (size_t)strlen(ready));
@@ -183,14 +159,5 @@ void loop() {
 
   // replace with dynamic delay based on activity
   delay(calc_delay());
-
-  // Simple blink helper (paste into loop) - only enabled in DEBUG builds
-#if defined(DEBUG)
-
-  // Blink built-in LED at a regular interval to show we're alive (and also to help with debugging timing issues)
-  // Dynamic delay based on activity: faster blinking when commands are received, slower when idle
-  gpio_digital_write(blink_pin, gpio_digital_read(blink_pin) ? 0 : 1);
-
-#endif
 }
 #endif

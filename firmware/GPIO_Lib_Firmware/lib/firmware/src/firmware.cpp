@@ -5,27 +5,30 @@
 #include <string.h>
 #include <stdio.h>
 
-#ifdef ARDUINO_UNO
-  // specific includes or definitions for Arduino Uno can go here
-  # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_Arduino_Uno"
-#elif defined(ESP32_PICO_D4)
-  // specific includes or definitions for ESP32 Pico D4 can go here
-  # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_ESP32_Pico_D4"
-  // if BOARD=ESP32_T_DONGLE_S3 is defined
-#elif defined(BOARD) && BOARD == ESP32_T_DONGLE_S3
-  // specific includes or definitions for ESP32 Dev can go here
-  # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_ESP32_DONGLE_S3"
-#else
-  // default includes or definitions
-  # define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_Generic"
-#endif
+// construct firmware name from BOARD and optional custom name
+// format: "GPIO_Lib_Firmware_<BOARD>" with an optional
+// "_<CUSTOM_NAME>" suffix.
 
-// if cutom name via -DNAME = <Name> is set use "GPIO_Lib_Firmware_" + NAME, otherwise use default
+// helpers to stringify a macro value
+#define _STR1(x) #x
+#define _STR(x) _STR1(x)
+
 #ifndef GPIO_LIB_FIRMWARE_NAME
-    #ifdef GPIO_LIB_FIRMWARE_CUSTOM_NAME
-        #define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_" GPIO_LIB_FIRMWARE_CUSTOM_NAME
+    #ifdef BOARD
+        #define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_" _STR(BOARD)
     #else
         #define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_Generic"
+    #endif
+#endif
+
+#ifdef GPIO_LIB_FIRMWARE_CUSTOM_NAME
+    /* append custom name if provided.  This redefines the base name but
+       keeps the BOARD portion intact (or Generic when BOARD missing). */
+    #undef GPIO_LIB_FIRMWARE_NAME
+    #ifdef BOARD
+        #define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_" _STR(BOARD) "_" GPIO_LIB_FIRMWARE_CUSTOM_NAME
+    #else
+        #define GPIO_LIB_FIRMWARE_NAME "GPIO_Lib_Firmware_Generic_" GPIO_LIB_FIRMWARE_CUSTOM_NAME
     #endif
 #endif
 
@@ -39,11 +42,13 @@ bool firmware_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
     switch (cmd) {
         case 0xFFFE: // CMD_FIRMWARE_INFO
             cmd_send_response(0xFFFE, (const uint8_t *)s_firmware_name, (uint16_t)strlen(s_firmware_name));
+            cmd_send_ok();
             return true;
         case 0xFFFF: // CMD_FIRMWARE_VERSION
         {
             uint8_t v[3] = { s_fw_major, s_fw_minor, s_fw_patch };
             cmd_send_response(0xFFFF, v, 3);
+            cmd_send_ok();
             return true;
         }
         case 0xFFFD: // CMD_FIRMWARE_BUILD_FLAGS
@@ -79,6 +84,7 @@ bool firmware_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 while (op > 0 && out[op-1] == ' ') op--;
                 if (op < sizeof(out)) out[op] = '\0';
                 cmd_send_response(0xFFFD, (const uint8_t *)out, op);
+                cmd_send_ok();
             }
             return true;
         }

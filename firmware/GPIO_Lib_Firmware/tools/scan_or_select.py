@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 """Device scanner and configurator for PlatformIO.
 
-Scans serial ports for GPIO_Lib firmware devices, detects device type via BOARD flag,
-and configures platformio.ini with appropriate settings.
-
-Usage:
-  python scan_or_select.py              # Auto-detect and configure (non-interactive)
-  python scan_or_select.py -i           # Interactive mode (prompt user)
-  python scan_or_select.py --force      # Force reconfiguration
+This script lives under the firmware tree, so we need to ensure the
+workspace root is on ``sys.path`` before importing the host library
+package (`px_device_interfaces`).  When the file is executed directly
+(e.g. via ``python tools/scan_or_select.py``) the current working
+directory is usually the firmware folder which is one level too deep.
 """
+
+import sys
+import os
+
+# ensure host package is importable (debug)
+_workspace_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+# insert workspace root into path so host package can be found
+if _workspace_root not in sys.path:
+    sys.path.insert(0, _workspace_root)
 
 import sys
 import serial
@@ -18,6 +25,10 @@ import time
 import os
 import json
 import argparse
+
+# host library imports (workspace root added above)
+from px_device_interfaces.transports.usb import USBTransportConfig
+from px_device_interfaces.GPIO_Lib import GPIO_Lib
 
 # Protocol constants
 CMD_FIRMWARE_BUILD_FLAGS = 0xFFFD
@@ -68,87 +79,43 @@ def load_board_config() -> dict:
         print(f"Error loading board config: {e}")
         return {}
 
-
-def send_command(ser: serial.Serial, cmd: int, payload: bytes = b'') -> tuple[int, bytes]:
-    """Send a framed command and read a framed response.
-    
-    Framing: [0xAA][CMD(2)][LEN(2)][PAYLOAD...][CHK]
-    CHK = (CMD + LEN + sum(PAYLOAD)) & 0xFF
-    """
-    start = bytes([0xAA])
-    cmd_bytes = int(cmd).to_bytes(2, "little")
-    len_bytes = int(len(payload)).to_bytes(2, "little")
-    chk = (cmd + len(payload) + sum(payload)) & 0xFF
-    packet = start + cmd_bytes + len_bytes + payload + bytes([chk])
-
-    ser.write(packet)
-    ser.flush()
-
-    while True:
-        b = ser.read(1)
-        if not b:
-            raise RuntimeError("No response from device")
-        if b[0] == 0xAA:
-            break
-
-    header = ser.read(4)
-    if len(header) < 4:
-        raise RuntimeError("Incomplete header")
-    resp_cmd, resp_len = struct.unpack('<HH', header)
-
-    MAX_PAYLOAD = 64 * 1024
-    if resp_len > MAX_PAYLOAD:
-        raise RuntimeError(f"Payload too large: {resp_len}")
-
-    resp_payload = b''
-    while len(resp_payload) < resp_len:
-        chunk = ser.read(resp_len - len(resp_payload))
-        if not chunk:
-            raise RuntimeError("Incomplete payload")
-        resp_payload += chunk
-
-    chk_b = ser.read(1)
-    if not chk_b:
-        raise RuntimeError("No checksum")
-    
-    if ((resp_cmd + resp_len + sum(resp_payload)) & 0xFF) != chk_b[0]:
-        raise RuntimeError("Checksum mismatch")
-
-    return resp_cmd, resp_payload
+def get_firmware_info(port: str) -> tuple[tuple[int, int, int], str, list[str]]:
+    """Get firmware version, name, and build flags using GPIO_Lib API."""
+    cfg = USBTransportConfig(port=port, baud=921600, debug=False, reset_on_start=True)
+    gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
+    gpio.setHandshakeEnabled(True)
+    try:
+        gpio.start()
+        gpio.requestFirmwareInfo()
+    finally:
+        gpio.stop()
+    return gpio.firmware_version, gpio.firmware_name, gpio.firmware_build_flags
 
 
-def get_firmware_info(ser: serial.Serial) -> tuple[tuple[int, int, int], str, str]:
-    """Get firmware version, info, and build flags."""
-    resp_cmd, data = send_command(ser, CMD_FIRMWARE_VERSION)
-    if resp_cmd != CMD_FIRMWARE_VERSION or len(data) != 3:
-        raise RuntimeError("Bad version response")
-    major, minor, patch = struct.unpack('<BBB', data)
-    
-    resp_cmd, data = send_command(ser, CMD_FIRMWARE_INFO)
-    if resp_cmd != CMD_FIRMWARE_INFO:
-        raise RuntimeError("Bad info response")
-    info = data.decode('utf-8', errors='replace')
-    
-    resp_cmd, data = send_command(ser, CMD_FIRMWARE_BUILD_FLAGS)
-    if resp_cmd != CMD_FIRMWARE_BUILD_FLAGS:
-        raise RuntimeError("Bad flags response")
-    flags = data.decode('utf-8', errors='replace')
-    
-    return (major, minor, patch), info, flags
-
-
-def extract_board_flag(build_flags: str) -> str | None:
+def extract_board_flag(build_flags: list[str]) -> str | None:
     """Extract BOARD=... from build flags."""
-    for token in build_flags.split():
+    for token in build_flags:
         if token.upper().startswith('BOARD='):
             return token.split('=', 1)[1]
     return None
 
 
-def normalize_flags_for_display(build_flags_str: str) -> list[str]:
-    """Convert to display names (remove -D and _SUPPORT)."""
-    flags = []
-    for token in build_flags_str.split():
+def normalize_flags_for_display(build_flags) -> list[str]:
+    """Convert build flags (string or list) to simple display names.
+
+    The firmware returns a list of tokens split by spaces; each token may
+    include a '-D' prefix and/or a '_SUPPORT' suffix.  Items containing an
+    '=' (e.g. BOARD=...) are ignored.  The result is a list of unique
+    flag names suitable for showing to the user.
+    """
+    # accept either a whitespace-separated string or a list of strings
+    if isinstance(build_flags, str):
+        tokens = build_flags.split()
+    else:
+        tokens = list(build_flags or [])
+
+    flags: list[str] = []
+    for token in tokens:
         if '=' in token:
             continue
         flag = token[2:] if token.startswith('-D') else token
@@ -177,45 +144,67 @@ def scan_known_ports(ports_list) -> list[dict]:
     for port in ports_list:
         for baud in BAUD_RATES:
             try:
-                print(f"Scanning {port} @ {baud}... ", end="", flush=True)
-                with serial.Serial(port, baudrate=baud, timeout=1) as ser:
-                    time.sleep(0.5)
-                    version, info, flags = get_firmware_info(ser)
-                    board_id = extract_board_flag(flags)
+                print(f"Scanning {port} @ {baud}... ", flush=True)
+                version, name, flags = get_firmware_info(port)
+                board_id = extract_board_flag(flags)
+                
+                if not board_id:
+                    print(f"[unknown board] Version: {version} | Name: {name} | Flags: {flags}")
+                    continue
+                if board_id not in board_config:
+                    print(f"[unrecognized board: {board_id}] Version: {version} | Name: {name} | Flags: {flags}")
+                    continue
+                
+                config = board_config[board_id]
+                print(f"[OK] {config['manufacturer']} / {config['model']}")
+                
+                detected.append({
+                    'port': port,
+                    'baud': baud,
+                    'firmware_version': version,
+                    'firmware_name': name,
+                    'build_flags': flags,
+                    'board_id': board_id,
+                    'config': config,
+                })
+                break
                     
-                    if not board_id or board_id not in board_config:
-                        print(f"[skip]")
-                        continue
-                    
-                    config = board_config[board_id]
-                    print(f"[OK] {config['manufacturer']} / {config['model']}")
-                    
-                    detected.append({
-                        'port': port,
-                        'baud': baud,
-                        'firmware_version': version,
-                        'firmware_info': info,
-                        'build_flags': flags,
-                        'board_id': board_id,
-                        'config': config,
-                    })
-                    break
-                    
-            except Exception:
+            except Exception as e:
+                print(f"Error scanning port {port} @ {baud}: {e}")
                 continue
     
     return detected
 
 
-def ask(prompt: str) -> str:
-    """Prompt user."""
+import select
+
+
+def ask(prompt: str, timeout: float | None = 2) -> str:
+    """Prompt user and optionally time‑out if no input.
+
+    ``timeout`` is a number of seconds to wait for a line.  When it elapses
+    an empty string is returned.  Passing ``None`` behaves the same as
+    ``sys.stdin.readline()`` and will block indefinitely.
+    """
     sys.stdout.write(prompt)
     sys.stdout.flush()
-    return (sys.stdin.readline() or '').rstrip('\n')
+    if timeout is None:
+        line = sys.stdin.readline()
+    else:
+        # select on stdin file descriptor; works on Unix terminals
+        r, _, _ = select.select([sys.stdin], [], [], timeout)
+        if not r:
+            return ''
+        line = sys.stdin.readline()
+    return (line or '').rstrip('\n')
 
 
-def edit_build_flags(current_flags: str) -> str:
-    """Interactive flag editor."""
+def edit_build_flags(current_flags) -> list[str]:
+    """Interactive flag editor.
+
+    ``current_flags`` may be a string or list; we always return a list of
+    display names representing the selected items.
+    """
     selected = set(normalize_flags_for_display(current_flags))
     
     while True:
@@ -248,7 +237,7 @@ def edit_build_flags(current_flags: str) -> str:
                 except ValueError:
                     pass
     
-    return ' '.join(selected)
+    return list(selected)
 
 
 def update_platformio_ini(device: dict) -> bool:
@@ -349,8 +338,9 @@ def main():
             device = detected[0]
         
         if args.interactive:
+            # user editing returns a list of display names; just store that
             flags = edit_build_flags(device['build_flags'])
-            device['build_flags'] = ' '.join(f + '_SUPPORT' if f not in ['DEBUG', 'GPIO'] else f for f in flags.split())
+            device['build_flags'] = flags
     else:
         device = detected[0]
 

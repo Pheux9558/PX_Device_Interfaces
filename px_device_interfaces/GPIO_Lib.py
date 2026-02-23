@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from enum import IntEnum
 import os
+import struct
+import struct
 import threading
 import time
 import queue
@@ -236,7 +238,7 @@ CMD_DEVICE_ERROR                    = 0x1001 # General ERROR response (e.g. Resp
 
 # Controll codes
 CMD_FIRMWARE_BUILD_FLAGS            = 0xFFFD # Response with build flags, returns: (build flags string in UTF-8)
-CMD_FIRMWARE_INFO                   = 0xFFFE # Response with firmware info, returns (name string in UTF-8) # Name of the device configuration
+CMD_FIRMWARE_NAME                   = 0xFFFE # Response with firmware name, returns (name string in UTF-8) # Name of the device configuration
 CMD_FIRMWARE_VERSION                = 0xFFFF # Response with firmware version, returns: (major, minor, patch)
 
 # Controll Banners
@@ -292,6 +294,9 @@ class GPIO_Lib:
         self.total_sent_bytes = 0
         self.total_received_bytes = 0
 
+        self.firmware_version: Optional[tuple[int, int, int]] = None
+        self.firmware_name: Optional[str] = None
+        self.firmware_build_flags: List[str] = []
 
         # mirrors (dict-based, dynamic)
         # structure: { name: { 'pin': int, 'value': int, 'type': 'digital'|'analog' } }
@@ -431,11 +436,36 @@ class GPIO_Lib:
         """Return a copy of recorded OK timestamps (datetime objects)."""
         return list(self._ok_timestamps)
     
-    # region Read Firmware Info/Version/Build Flags
-    def requestFirmwareInfo(self):
+    # region Read Firmware
+    def requestFirmwareInfo(self, timeout: float = 5.0) -> bool:
         """
-        # [ ] TODO implement requestFirmwareInfo() method to send CMD_FIRMWARE_INFO and wait for response
+        Request firmware information (name, version, build flags) from the device.
+        The information will be stored in the instance variables:
+          - self.firmware_name (str)
+          - self.firmware_version (tuple of (major, minor, patch))
+          - self.firmware_build_flags (list of str)
+        returns True if the information was successfully retrieved, False otherwise.
         """
+        if not self._transport or not self._transport.is_connected:
+            self.log_debug_message("requestFirmwareInfo: transport not connected")
+            return False
+        # Delete any existing firmware info to ensure we get fresh data
+        self.firmware_name = None
+        self.firmware_version = None
+        self.firmware_build_flags = []
+        # Send requests for firmware information; responses will be handled in the receive worker and stored in instance variables
+        self._add_packet_to_send_queue(self._build_packet(CMD_FIRMWARE_NAME, b''))
+        self._add_packet_to_send_queue(self._build_packet(CMD_FIRMWARE_VERSION, b''))
+        self._add_packet_to_send_queue(self._build_packet(CMD_FIRMWARE_BUILD_FLAGS, b''))
+        # Wait for responses with a timeout
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            if self.firmware_name and self.firmware_version and self.firmware_build_flags:
+                return True
+            time.sleep(0.1)
+        self.log_debug_message("requestFirmwareInfo: timeout waiting for firmware information")
+        return False
+
 
     # region Legacy connect/disconnect
     def connect(self) -> bool:
@@ -1729,6 +1759,7 @@ class GPIO_Lib:
                 self._resp_cv.wait(timeout=remaining)
 
 
+    # region packet handling
     def _handle_packet(self, cmd: int, payload: bytes) -> None:
         # handle incoming command frames (device -> host updates)
         # Device-level status
@@ -1834,6 +1865,31 @@ class GPIO_Lib:
             except Exception:
                 text = ""
             self.lcd_lines.append(text)
+            return
+        
+        # Firmeware Build Flags
+        if cmd == CMD_FIRMWARE_BUILD_FLAGS:
+            self.firmware_build_flags = payload.decode('utf-8', errors='replace').strip('\x00').strip().split(' ') if payload else []
+            return
+
+        # Firmware Name
+        if cmd == CMD_FIRMWARE_NAME:
+            try:
+                name = payload.decode(errors="replace")
+                self.firmware_name = name
+            except Exception:
+                self.log_debug_message(f"invalid firmware name payload: {payload}")
+            return
+        
+        # Firmware version
+        if cmd == CMD_FIRMWARE_VERSION:
+            if len(payload) == 3:
+                major = int(payload[0])
+                minor = int(payload[1])
+                patch = int(payload[2])
+                self.firmware_version = (major, minor, patch)
+            else:
+                self.log_debug_message(f"invalid firmware version payload: {payload}")
             return
 
     def _name_to_pin(self, name: str) -> int:
