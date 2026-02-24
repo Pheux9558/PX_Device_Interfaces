@@ -89,6 +89,12 @@ def get_firmware_info(port: str) -> tuple[tuple[int, int, int], str, list[str]]:
         gpio.requestFirmwareInfo()
     finally:
         gpio.stop()
+        if not gpio.firmware_version:
+            raise Exception("Failed to get firmware version (no response)")
+        if not gpio.firmware_name:
+            raise Exception("Failed to get firmware name (no response)")
+        if not gpio.firmware_build_flags:
+            raise Exception("Failed to get firmware build flags (no response)")
     return gpio.firmware_version, gpio.firmware_name, gpio.firmware_build_flags
 
 
@@ -263,8 +269,8 @@ def update_platformio_ini(device: dict) -> bool:
                 filtered_device_flags.append(flag)
         formatted_flags = filtered_device_flags + formatted_flags
     
-    all_flags = [f'-DBOARD={board_id}'] + formatted_flags
-    build_flags_str = ' '.join(all_flags)
+    all_flags = [f'\n\t-DBOARD={board_id}'] + formatted_flags
+    build_flags_str = '\n\t'.join(all_flags)
     
     try:
         # Check if PIO_INTERACTIVE was already set in existing INI (preserve its state)

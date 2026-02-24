@@ -22,14 +22,16 @@ INI_PATH = os.path.join(PRJ_ROOT, 'platformio.ini')
 # Lock file to ensure single execution per build session
 # Use a temporary lock that PlatformIO clears between builds
 LOCK_FILE = os.path.join(tempfile.gettempdir(), '.pio_configurator_lock')
-
+max_age = 20
+age = 0
 def acquire_lock():
     """Try to acquire exclusive lock. Returns True if successful."""
+    global age
     try:
         # If lock exists and is recent (less than 5 seconds old), skip execution
         if os.path.exists(LOCK_FILE):
             age = time.time() - os.path.getmtime(LOCK_FILE)
-            if age < 20:
+            if age < max_age:
                 return False
         
         # Create/update lock file
@@ -79,7 +81,7 @@ if not os.path.isfile(SCANNER):
 
 # Check if we should skip execution (already ran in this session)
 if not acquire_lock():
-    print("### Configurator already executed in this session. Skipping ###")
+    print(f"### Configurator already executed in this session. Skipping. Try again in {int(max_age - age)} seconds ###")
     sys.exit(0)
 
 try:
@@ -148,9 +150,9 @@ def reset_device_for_upload():
         if upload_port:
             print(f'Resetting device on {upload_port}...')
             s = serial.Serial(upload_port, 115200)
-            s.setDTR(False)
+            s.dtr = False
             time.sleep(0.05)
-            s.setDTR(True)
+            s.dtr = True
             s.close()
             time.sleep(0.3)
         else:
@@ -165,12 +167,30 @@ def apply_build_flags_to_env():
     """Read build_flags from INI and apply to SCons environment."""
     bf = None
     if os.path.isfile(INI_PATH):
+        # Read file and support multi-line values where following lines are
+        # indented (typical PlatformIO INI multiline lists).
         with open(INI_PATH, 'r') as f:
-            for line in f:
-                if line.strip().startswith('build_flags'):
+            lines = f.readlines()
+        for i, line in enumerate(lines):
+            if line.strip().startswith('build_flags'):
+                # Capture RHS of the first line
+                try:
                     _, rhs = line.split('=', 1)
-                    bf = rhs.strip().strip('"').strip("'")
-                    break
+                except ValueError:
+                    rhs = ''
+                parts = [rhs.strip().strip('"').strip("'")]
+                # Collect subsequent indented lines as continuation
+                j = i + 1
+                while j < len(lines) and (lines[j].startswith(' ') or lines[j].startswith('\t')):
+                    cont = lines[j].strip()
+                    # skip empty or commented continuation lines
+                    if not cont or cont.startswith('#'):
+                        j += 1
+                        continue
+                    parts.append(cont)
+                    j += 1
+                bf = ' '.join([p for p in parts if p])
+                break
     
     if not bf:
         print('No build_flags found in platformio.ini')
@@ -214,11 +234,11 @@ def apply_build_flags_to_env():
 
     try:
         if defs:
-            env.AppendUnique(CPPDEFINES=defs)
+            env.AppendUnique(CPPDEFINES=defs) # type: ignore
         if includes:
-            env.AppendUnique(CPPPATH=includes)
+            env.AppendUnique(CPPPATH=includes) # type: ignore
         if other:
-            env.AppendUnique(CCFLAGS=other)
+            env.AppendUnique(CCFLAGS=other) # type: ignore
         print('Build flags applied to environment.')
     except Exception as e:
         print(f'Warning: Failed to apply flags to env: {e}')

@@ -20,9 +20,6 @@
         #define DEBUG_FASTLED_CLOCK_PIN_VAL 0xFFFF
     #endif
     #define DEBUG_FASTLED_TYPE_VAL DEBUG_FASTLED_TYPE
-#else
-    // Default: use GPIO pin
-    #define DEBUG_USE_GPIO 1
 #endif
 
 #if defined(DEBUG_USE_FASTLED)
