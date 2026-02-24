@@ -96,7 +96,6 @@ class USBTransport(BaseTransport):
             self._serial.dtr = False
             time.sleep(0.1)
             self._serial.dtr = True
-            time.sleep(0.5)  # wait for device to reboot
 
     def connect(self) -> bool:
         """Open the serial port connection. Return True on success."""

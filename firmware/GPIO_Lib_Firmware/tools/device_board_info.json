@@ -75,6 +75,11 @@
     "upload_speed": 921600,
     "monitor_speed": 921600,
     "framework": "arduino",
-    "device_based_flags": ["-DDEBUG_LED_PIN=10", "-DDEBUG_BRIGHTNESS=64", "-DDEBUG_LED_ACTIVE_LOW"]
+    "device_based_flags": [
+      "-DDEBUG_USE_GPIO",
+      "-DDEBUG_LED_PIN=10", 
+      "-DDEBUG_BRIGHTNESS=64", 
+      "-DDEBUG_LED_ACTIVE_LOW"
+    ]
   }
 }

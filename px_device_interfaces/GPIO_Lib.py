@@ -309,6 +309,7 @@ class GPIO_Lib:
         self._transport: Optional[BaseTransport] = None
         self._running = False
         self._recv_thread: Optional[threading.Thread] = None
+        self.stopReceiveWorkerRequested = False
         self._buf = bytearray()
 
         # send worker / buffering
@@ -799,6 +800,8 @@ class GPIO_Lib:
         self.log_debug_message("recv_worker started")
 
         while self._running:
+            if self.stopReceiveWorkerRequested:
+                break
             # small pause to yield to other threads
             time.sleep(self.loop_delay)
 
@@ -857,7 +860,56 @@ class GPIO_Lib:
         self.log_debug_message("recv_worker exiting")
 
 
-
+    # region Reset Device
+    def resetDevice(self) -> None:
+        """Send a reset command to the device if supported by the transport."""
+        if not self._transport:
+            raise RuntimeError("resetDevice: transport not initialized")
+        if hasattr(self._transport, "resetDevice") and callable(getattr(self._transport, "resetDevice")):
+            try:
+                self._transport.resetDevice()
+                self.log_debug_message("Device reset command sent successfully")
+            except Exception as e:
+                self.log_debug_message(f"Error sending reset command: {e}")
+        else:
+            self.log_debug_message("Transport does not support resetDevice()")
+            return
+        
+        # Stop receive thread to avoid processing incoming data during reset
+        if self._recv_thread and self._recv_thread.is_alive():
+            self.log_debug_message("Waiting for receive thread to stop before proceeding with reset...")
+            self.stopReceiveWorkerRequested = True
+            self._recv_thread.join(0.5)
+            if self._recv_thread.is_alive():
+                self.log_debug_message("Receive thread did not stop in time; proceeding with reset anyway")
+            else:
+                self.log_debug_message("Receive thread stopped successfully")
+        
+        # If handshake is enabled, wait for the device to become ready again after reset
+        if self.handshake_enabled:
+            self.log_debug_message("Waiting for device to become ready after reset...")
+            ok = self._await_device_ready(timeout=self.handshake_timeout)
+            self.log_debug_message("Post-reset handshake: ready=" + str(ok))
+            # set readiness flag from handshake probe
+            with self._ready_cv:
+                self._ready = bool(ok)
+                if self._ready:
+                    self._ready_cv.notify_all()
+            if not ok:
+                self.log_debug_message("Device did not become ready after reset within timeout")
+        else:
+            self.log_debug_message("Handshake disabled; assuming device is ready after reset")
+            # set readiness flag
+            with self._ready_cv:
+                self._ready = True
+                self._ready_cv.notify_all()
+        
+        # start receive thread again if it was stopped
+        if self.stopReceiveWorkerRequested:
+            self.stopReceiveWorkerRequested = False
+            self._recv_thread = threading.Thread(target=self._recv_worker, daemon=True)
+            self._recv_thread.start()
+            self.log_debug_message("Receive thread restarted after reset")
 
 
 
@@ -1413,7 +1465,7 @@ class GPIO_Lib:
                 row_view = bitmap_view[start:end]
                 row_payload = id_bytes + bytes([2]) + int(row_idx).to_bytes(2, "little") + row_view.tobytes()
                 packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, row_payload)
-                print(f"Packet size for row {row_idx}: {len(packet)} bytes")
+                self.gpio_lib.log_debug_message(f"Packet size for row {row_idx}: {len(packet)} bytes")
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False, validate=False)
 
             end_payload = self.identifier.to_bytes(2, "little") + bytes([3])
