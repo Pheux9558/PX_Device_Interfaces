@@ -87,15 +87,6 @@ class USBTransport(BaseTransport):
           - `debug_function`: a callable that takes `msg: str` and `timestamp: Optional[str]`
         """
         self.log_debug_message = debug_function
-    
-    def resetDevice(self):
-        """Reset the connected device by toggling DTR."""
-        if not self._serial or not self.is_connected:
-            raise RuntimeError("USBTransport not connected")
-        with self._lock:
-            self._serial.dtr = False
-            time.sleep(0.1)
-            self._serial.dtr = True
 
     def connect(self) -> bool:
         """Open the serial port connection. Return True on success."""

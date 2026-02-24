@@ -87,13 +87,3 @@
     ]
   }
 }
-"""
-Rework the reset behavior to fully rely on software reset. 
-The dtr method is just too unreliable in the long run.
-Remove the reset system from the transport layer 
-and move it to the firmware command handler. 
-This way, the host can send a reset command to the device, 
-and the device will respond with an acknowledgment before performing the reset. 
-This should be more reliable and avoid issues with USB CDC re-enumeration on the host side.
-The reset function need to use _await_device_ready() 
-"""

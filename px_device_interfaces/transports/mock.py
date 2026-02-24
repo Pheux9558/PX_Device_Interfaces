@@ -68,13 +68,6 @@ class MockTransport(BaseTransport):
         """
         self.log_debug_message = debug_function
     
-    def resetDevice(self) -> None:
-        """Reset the transport state. Clear sent and incoming buffers."""
-        with self._lock:
-            self._sent.clear()
-            while not self._incoming.empty():
-                self._incoming.get_nowait()
-    
     def connect(self) -> bool:
         with self._lock:
             self._connected = True

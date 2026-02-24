@@ -19,6 +19,9 @@ def get_firmware_info(port: str, debug: bool = True) -> tuple[tuple[int, int, in
     start_time = time.time()
     try:
         gpio.start()
+
+        gpio.resetDevice()
+
         if not gpio.requestFirmwareInfo():
             print(f"Port {port}: failed to read firmware info")
         if debug:
@@ -28,6 +31,13 @@ def get_firmware_info(port: str, debug: bool = True) -> tuple[tuple[int, int, in
     finally:
         gpio.stop()
     print(f"Port {port}: info query completed in {time.time() - start_time:.2f} seconds")
+    if gpio.firmware_version is None:
+        raise ValueError(f"Port {port}: firmware version not available")
+    if gpio.firmware_name is None:
+        raise ValueError(f"Port {port}: firmware name not available")
+    if gpio.firmware_build_flags is None:
+        raise ValueError(f"Port {port}: firmware build flags not available")
+    
     return gpio.firmware_version, gpio.firmware_name, gpio.firmware_build_flags
 
 

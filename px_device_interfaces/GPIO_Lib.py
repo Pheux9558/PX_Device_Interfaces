@@ -237,6 +237,7 @@ CMD_DEVICE_OK                       = 0x1000 # General OK response (e.g. Respons
 CMD_DEVICE_ERROR                    = 0x1001 # General ERROR response (e.g. Response to invalid commands or parameters)
 
 # Controll codes
+CMD_FIRMWARE_RESET                  = 0xFFFC # Reset the device, no payload. Response with CMD_BANNER_GPIO_READY after reboot and initialization. Note: this command will cause the device to disconnect and reconnect if using USB CDC, so the transport may need to be re-established on the host side after sending this command.
 CMD_FIRMWARE_BUILD_FLAGS            = 0xFFFD # Response with build flags, returns: (build flags string in UTF-8)
 CMD_FIRMWARE_NAME                   = 0xFFFE # Response with firmware name, returns (name string in UTF-8) # Name of the device configuration
 CMD_FIRMWARE_VERSION                = 0xFFFF # Response with firmware version, returns: (major, minor, patch)
@@ -508,45 +509,26 @@ class GPIO_Lib:
         # start send thread
         self._send_thread = threading.Thread(target=self._send_worker, name="GPIO_send", daemon=True)
         self._send_thread.start()
-
-        # Reset on startup
-        if hasattr(self._transport, "resetDevice") and callable(getattr(self._transport, "resetDevice")):
-            if getattr(self.transport_config, "reset_on_start", False):
-                self.log_debug_message("Resetting device on startup...")
-                try:
-                    self._transport.resetDevice()
-                    self.log_debug_message("Device reset command sent successfully")
-                except Exception as e:
-                    self.log_debug_message(f"Error sending reset command: {e}")
-            else:
-                self.log_debug_message("Device reset on startup is disabled; skipping reset")
-
-
-
-        # wait for device ready banner (handshake) before starting receiver
-        if self.handshake_enabled:
-            self.log_debug_message("Starting handshake to wait for device ready banner...")
-            ok = self._await_device_ready(timeout=self.handshake_timeout)
-            self.log_debug_message("handshake: ready=" + str(ok))
-            # set readiness flag from handshake probe
-            with self._ready_cv:
-                self._ready = bool(ok)
-                if self._ready:
-                    self._ready_cv.notify_all()
-            if not ok:
-                self.stop()
-                raise RuntimeError("handshake failed: device not ready within timeout")
-        else:
-            time.sleep(0.25)  # brief pause to allow transport to settle
-            self.log_debug_message("Handshake disabled; assuming device is ready")
-            # set readiness flag
-            with self._ready_cv:
-                self._ready = True
-                self._ready_cv.notify_all()
-
-        # start receive thread
-        self._recv_thread = threading.Thread(target=self._recv_worker, daemon=True)
+        # start recv thread
+        self._recv_thread = threading.Thread(target=self._recv_worker, name="GPIO_recv", daemon=True)
         self._recv_thread.start()
+
+        # Reset on startup and invoke handshake to wait for ready banner
+        # or skip directly to ready state if handshake disabled
+        if self.reset_on_start:
+            self.resetDevice()
+
+
+        # Check thread status and log
+        if not self._send_thread.is_alive():
+            self.log_debug_message("send thread failed to start")
+            self._running = False
+            return False
+        if not self._recv_thread or not self._recv_thread.is_alive():
+            self.log_debug_message("recv thread failed to start")
+            self._running = False
+            return False
+        
         self.log_debug_message("#### GPIO_Lib started successfully ####")
         return True     # started successfully
     
@@ -862,19 +844,35 @@ class GPIO_Lib:
 
     # region Reset Device
     def resetDevice(self) -> None:
-        """Send a reset command to the device if supported by the transport."""
+        """Send a reset command to the device via the firmware protocol. 
+        This will cause the device to reboot, so the transport may disconnect and reconnect (e.g. USB CDC). 
+        After sending the reset command, this method will wait for the device to become ready again (via handshake) before returning. 
+        If the handshake is disabled, it will simply wait a fixed delay after sending the reset command.
+        """
         if not self._transport:
             raise RuntimeError("resetDevice: transport not initialized")
-        if hasattr(self._transport, "resetDevice") and callable(getattr(self._transport, "resetDevice")):
-            try:
-                self._transport.resetDevice()
-                self.log_debug_message("Device reset command sent successfully")
-            except Exception as e:
-                self.log_debug_message(f"Error sending reset command: {e}")
-        else:
-            self.log_debug_message("Transport does not support resetDevice()")
-            return
         
+        try:
+            self._add_packet_to_send_queue(self._build_packet(CMD_FIRMWARE_RESET, b""), wait_ack=False)
+            # wait for device ok response to ensure the reset command was processed before proceeding with thread shutdown and handshake
+            with self._ok_cv:
+                start_ok_count = self.debug_ok_received
+                waited = self._ok_cv.wait_for(lambda: self.debug_ok_received > start_ok_count, timeout=self.handshake_timeout)
+            if not waited and self.debug_enabled:
+                self.log_debug_message("resetDevice: timed out waiting for device OK after sending firmware reset command")
+            self.log_debug_message("Device reset command sent via firmware protocol")
+
+            self._handshake_after_boot_reset()
+        except Exception as e:
+            self.log_debug_message(f"Error sending firmware reset command: {e}")
+        
+
+
+    def _handshake_after_boot_reset(self) -> None:
+        if not self.handshake_enabled:
+            self.log_debug_message("Handshake disabled; skipping post-reset handshake")
+            return
+
         # Stop receive thread to avoid processing incoming data during reset
         if self._recv_thread and self._recv_thread.is_alive():
             self.log_debug_message("Waiting for receive thread to stop before proceeding with reset...")
@@ -909,7 +907,7 @@ class GPIO_Lib:
             self.stopReceiveWorkerRequested = False
             self._recv_thread = threading.Thread(target=self._recv_worker, daemon=True)
             self._recv_thread.start()
-            self.log_debug_message("Receive thread restarted after reset")
+            self.log_debug_message("Receive thread started after reset")
 
 
 

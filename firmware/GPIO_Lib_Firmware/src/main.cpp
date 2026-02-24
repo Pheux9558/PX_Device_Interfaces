@@ -122,7 +122,7 @@ void setup() {
 #if defined(LCD_SUPPORT)
   cmd_register_handler(0x0020, 0x002F, lcd_cmd_handler);        // LCD control
 #endif
-  cmd_register_handler(0xFFFD, 0xFFFF, firmware_cmd_handler);   // firmware-level cmds like reset, etc.
+  cmd_register_handler(0xFFFC, 0xFFFF, firmware_cmd_handler);   // firmware-level cmds like reset, etc.
 
   // send a ready banner so host can handshake and avoid race with bootloader
   const char *ready = "GPIO_READY\r\n";

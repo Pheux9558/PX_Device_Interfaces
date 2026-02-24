@@ -5,6 +5,16 @@
 #include <string.h>
 #include <stdio.h>
 
+#if defined(ARDUINO)
+#include <Arduino.h>
+    #if defined(ARDUINO_ARCH_ESP32)
+    #include <esp_system.h>
+    #endif
+    #if defined(ARDUINO_ARCH_AVR)
+    #include <avr/wdt.h>
+    #endif
+#endif
+
 // construct firmware name from BOARD and optional custom name
 // format: "GPIO_Lib_Firmware_<BOARD>" with an optional
 // "_<CUSTOM_NAME>" suffix.
@@ -49,6 +59,25 @@ bool firmware_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             uint8_t v[3] = { s_fw_major, s_fw_minor, s_fw_patch };
             cmd_send_response(0xFFFF, v, 3);
             cmd_send_ok();
+            return true;
+        }
+        case 0xFFFC: // CMD_FIRMWARE_RESET
+        {
+            #if defined(ARDUINO_ARCH_RENESAS) || defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_STM32)
+            cmd_send_ok();
+            delay(10);
+            NVIC_SystemReset();
+            #elif defined(ARDUINO_ARCH_ESP32)
+            cmd_send_ok();
+            delay(10);
+            ESP.restart();
+            #elif defined(ARDUINO_ARCH_AVR)
+            cmd_send_ok();
+            wdt_enable(WDTO_15MS);
+            while (1) { }
+            #else
+            cmd_send_error();
+            #endif
             return true;
         }
         case 0xFFFD: // CMD_FIRMWARE_BUILD_FLAGS

@@ -68,10 +68,6 @@ class BaseTransport(ABC):
         """
 
     @abstractmethod
-    def resetDevice(self) -> None:
-        """Reset the connected device if supported by the transport."""
-        
-    @abstractmethod
     def connect(self) -> bool:
         """Open the transport connection. Return True on success."""
 
