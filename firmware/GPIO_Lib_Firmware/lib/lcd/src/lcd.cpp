@@ -97,7 +97,7 @@ static void lcd_apply_backlight(lcd_instance_t *inst, uint8_t level) {
     }
 }
 
-static void lcd_init_st7735(lcd_instance_t *inst, spi_instance_t *spi_inst) {
+static void lcd_init_st7735(lcd_instance_t *inst, gpio_lib_spi_instance_t *spi_inst) {
     if (!inst || !spi_inst) return;
     if (inst->tft) return;
     if (!spi_inst->spi) return;
@@ -152,7 +152,7 @@ bool lcd_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 if (inst->rst_pin >= 0) pinMode(inst->rst_pin, OUTPUT);
                 if (inst->backlight_pin >= 0) pinMode(inst->backlight_pin, OUTPUT);
 
-                spi_instance_t *spi_inst = spi_get_instance(spi_id);
+                gpio_lib_spi_instance_t *spi_inst = spi_get_instance(spi_id);
                 if (!spi_inst) { cmd_send_error(); return true; }
                 lcd_init_st7735(inst, spi_inst);
                 cmd_send_ok();

@@ -22,7 +22,7 @@
   "ARDUINO_UNO_R4_MINI": {
     "manufacturer": "Arduino",
     "model": "UNO R4",
-    "platform": "megaavr",
+    "platform": "renesas-ra",
     "board": "uno_r4_minima",
     "upload_speed": 921600,
     "monitor_speed": 921600,
@@ -32,12 +32,16 @@
   "ARDUINO_UNO_R4_WIFI": {
     "manufacturer": "Arduino",
     "model": "UNO R4 WiFi",
-    "platform": "megaavr",
+    "platform": "renesas-ra",
     "board": "uno_r4_wifi",
     "upload_speed": 921600,
     "monitor_speed": 921600,
     "framework": "arduino",
-    "device_based_flags": []
+    "device_based_flags": [
+      "-DDEBUG_USE_GPIO",
+      "-DDEBUG_LED_PIN=13",
+      "-DDEBUG_BRIGHTNESS=64"
+    ]
   },
   "ESP32_DEV": {
     "manufacturer": "ESP32",
@@ -77,9 +81,19 @@
     "framework": "arduino",
     "device_based_flags": [
       "-DDEBUG_USE_GPIO",
-      "-DDEBUG_LED_PIN=10", 
-      "-DDEBUG_BRIGHTNESS=64", 
+      "-DDEBUG_LED_PIN=10",
+      "-DDEBUG_BRIGHTNESS=64",
       "-DDEBUG_LED_ACTIVE_LOW"
     ]
   }
 }
+"""
+Rework the reset behavior to fully rely on software reset. 
+The dtr method is just too unreliable in the long run.
+Remove the reset system from the transport layer 
+and move it to the firmware command handler. 
+This way, the host can send a reset command to the device, 
+and the device will respond with an acknowledgment before performing the reset. 
+This should be more reliable and avoid issues with USB CDC re-enumeration on the host side.
+The reset function need to use _await_device_ready() 
+"""

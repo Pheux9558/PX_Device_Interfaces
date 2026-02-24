@@ -11,7 +11,7 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len);
 const char *spi_module_flags();
 
 #if defined(ARDUINO)
-struct spi_instance_t {
+struct gpio_lib_spi_instance_t {
     uint16_t id;
     SPIClass *spi;
     int8_t sck;
@@ -22,5 +22,5 @@ struct spi_instance_t {
     bool used;
 };
 
-spi_instance_t *spi_get_instance(uint16_t id);
+gpio_lib_spi_instance_t *spi_get_instance(uint16_t id);
 #endif

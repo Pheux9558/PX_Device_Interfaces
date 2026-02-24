@@ -22,6 +22,7 @@ INI_PATH = os.path.join(PRJ_ROOT, 'platformio.ini')
 # Lock file to ensure single execution per build session
 # Use a temporary lock that PlatformIO clears between builds
 LOCK_FILE = os.path.join(tempfile.gettempdir(), '.pio_configurator_lock')
+MODE_FILE = os.path.join(tempfile.gettempdir(), '.pio_configurator_mode')
 max_age = 20
 age = 0
 def acquire_lock():
@@ -110,19 +111,15 @@ try:
             print('Configurator returned non-zero. Aborting.')
             sys.exit(ret)
         
-        # Force clean build to remove cached objects compiled with old flags
-        print("Cleaning build artifacts to apply new flags...")
-        try:
-            subprocess.check_call(['pio', 'run', '-t', 'clean'], cwd=PRJ_ROOT)
-            print("Clean completed.")
-        except subprocess.CalledProcessError as e:
-            print(f"Warning: Clean failed ({e}), continuing anyway...")
+        # Note: scan_or_select.py now handles the clean itself after updating platformio.ini
+        # to ensure build artifacts are removed when flags change
         
         # After interactive configuration, relock to prevent accidental re-execution in the same session if the user takes too long
         relock()
     else:
         print("Automatic mode (no user prompts)")
-        subprocess.check_call([sys.executable, SCANNER])
+        # In automatic mode, skip prompts if platformio.ini is already configured
+        subprocess.check_call([sys.executable, SCANNER, '--skip-prompts'])
 
 except subprocess.CalledProcessError as e:
     release_lock()
@@ -134,6 +131,13 @@ except Exception as e:
     sys.exit(1)
 
 print('Configurator completed successfully.')
+
+# Write mode marker for pio_post_hook to know if we're in interactive mode
+try:
+    with open(MODE_FILE, 'w') as f:
+        f.write('interactive' if interactive_requested else 'automatic')
+except Exception:
+    pass
 
 # Reset MCU by toggling DTR to clear bootloader entry for avrdude
 def reset_device_for_upload():
@@ -235,6 +239,9 @@ def apply_build_flags_to_env():
     try:
         if defs:
             env.AppendUnique(CPPDEFINES=defs) # type: ignore
+            print("#" * 20)
+            print(f"CPPDEFINES: {env['CPPDEFINES']}") # type: ignore
+            print("#" * 20)
         if includes:
             env.AppendUnique(CPPPATH=includes) # type: ignore
         if other:
@@ -243,6 +250,8 @@ def apply_build_flags_to_env():
     except Exception as e:
         print(f'Warning: Failed to apply flags to env: {e}')
 
+# NOTE: PlatformIO automatically processes build_flags from INI, so we don't reapply them here.
+# apply_build_flags_to_env() would cause duplicate definitions (warnings).
 apply_build_flags_to_env()
 print('Configuration ready. Continuing PlatformIO action...')
 time.sleep(1)

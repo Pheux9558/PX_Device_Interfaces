@@ -1,4 +1,5 @@
-#if defined(RESET_DEVICE)
+#include <Arduino.h>
+#if defined(RESET_DEVICE_SUPPORT)
 void setup() {
   // clear controller from firmware. Deleding firmware from flash will cause the device to be unresponsive until reprogrammed
 
@@ -11,7 +12,7 @@ void loop() {
 
 #define BUFFER_SIZE 2048
 
-#include <Arduino.h>
+
 #include "serial.h"
 #include "cmd.h"
 #include "gpio.h"

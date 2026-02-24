@@ -11,6 +11,9 @@ directory is usually the firmware folder which is one level too deep.
 import sys
 import os
 
+# unbuffer output by setting PYTHONUNBUFFERED and flushing after each write
+os.environ['PYTHONUNBUFFERED'] = '1'
+
 # ensure host package is importable (debug)
 _workspace_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 # insert workspace root into path so host package can be found
@@ -25,6 +28,7 @@ import time
 import os
 import json
 import argparse
+import subprocess
 
 # host library imports (workspace root added above)
 from px_device_interfaces.transports.usb import USBTransportConfig
@@ -41,16 +45,6 @@ BAUD_RATES = [921600, 115200, 9600]
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 INI_PATH = os.path.join(ROOT, 'platformio.ini')
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'device_board_info.json')
-
-# Known ports to scan first
-known_ports = [
-    '/dev/ttyACM0',
-    '/dev/ttyACM1',
-    '/dev/ttyUSB0',
-    '/dev/ttyUSB1',
-    'COM3',
-    'COM4',
-]
 
 # Build flags to add for device configuration
 build_flag_list = [
@@ -76,7 +70,7 @@ def load_board_config() -> dict:
         with open(CONFIG_PATH, 'r') as f:
             return json.load(f)
     except Exception as e:
-        print(f"Error loading board config: {e}")
+        print(f"Error loading board config: {e}", flush=True)
         return {}
 
 def get_firmware_info(port: str) -> tuple[tuple[int, int, int], str, list[str]]:
@@ -142,27 +136,35 @@ def format_flags_for_ini(flags: list[str]) -> list[str]:
     return result
 
 
-def scan_known_ports(ports_list) -> list[dict]:
-    """Scan ports for devices."""
+def scan_known_ports() -> list[dict]:
+    """Scan available ports with descriptions for devices."""
     detected = []
     board_config = load_board_config()
     
-    for port in ports_list:
+    # Get all available ports with descriptions
+    available_ports = serial.tools.list_ports.comports()
+    
+    for port_info in available_ports:
+        # Only scan ports that have a description (likely USB devices)
+        if not port_info.description or port_info.description == 'n/a':
+            continue
+        
+        port = port_info.device
         for baud in BAUD_RATES:
             try:
-                print(f"Scanning {port} @ {baud}... ", flush=True)
+                print(f"Scanning {port} ({port_info.description}) @ {baud}... ", flush=True)
                 version, name, flags = get_firmware_info(port)
                 board_id = extract_board_flag(flags)
                 
                 if not board_id:
-                    print(f"[unknown board] Version: {version} | Name: {name} | Flags: {flags}")
+                    print(f"[unknown board] Version: {version} | Name: {name} | Flags: {flags}", flush=True)
                     continue
                 if board_id not in board_config:
-                    print(f"[unrecognized board: {board_id}] Version: {version} | Name: {name} | Flags: {flags}")
+                    print(f"[unrecognized board: {board_id}] Version: {version} | Name: {name} | Flags: {flags}", flush=True)
                     continue
                 
                 config = board_config[board_id]
-                print(f"[OK] {config['manufacturer']} / {config['model']}")
+                print(f"[OK] {config['manufacturer']} / {config['model']}", flush=True)
                 
                 detected.append({
                     'port': port,
@@ -176,7 +178,7 @@ def scan_known_ports(ports_list) -> list[dict]:
                 break
                     
             except Exception as e:
-                print(f"Error scanning port {port} @ {baud}: {e}")
+                print(f"Error scanning port {port} @ {baud}: {e}", flush=True)
                 continue
     
     return detected
@@ -192,7 +194,7 @@ def ask(prompt: str, timeout: float | None = 5) -> str:
     an empty string is returned.  Passing ``None`` behaves the same as
     ``sys.stdin.readline()`` and will block indefinitely.
     """
-    sys.stdout.write(prompt)
+    sys.stdout.write(prompt + "\n")
     sys.stdout.flush()
     if timeout is None:
         line = sys.stdin.readline()
@@ -214,10 +216,10 @@ def edit_build_flags(current_flags) -> list[str]:
     selected = set(normalize_flags_for_display(current_flags))
     
     while True:
-        print("\nBuild flags ([X] = selected):")
+        print("\nBuild flags ([X] = selected):", flush=True)
         for i, flag in enumerate(build_flag_list):
             mark = "X" if flag in selected else " "
-            print(f"  [{i}] [{mark}] {flag}")
+            print(f"  [{i}] [{mark}] {flag}", flush=True)
         
         s = ask("Toggle (numbers), 'a'=all, 'c'=clear, Enter=done: \n").strip()
         
@@ -286,15 +288,28 @@ def update_platformio_ini(device: dict) -> bool:
             except Exception:
                 pass
         
+        # Conditionally add display libraries only if LCD or IPS support is enabled
+        lib_deps_lines = []
+        if 'LCD' in device_flags or 'IPS' in device_flags:
+            lib_deps_lines = [
+                'lib_deps =',
+                '\tadafruit/Adafruit GFX Library@^1.11.9',
+                '\tadafruit/Adafruit ST7735 and ST7789 Library@^1.9.3',
+            ]
+        
         lines = [
             '[platformio]',
             'default_envs = device',
             '',
             '[env]',
             'extra_scripts = pre:tools/pio_pre_hook.py, post:tools/pio_post_hook.py',
-            'lib_deps =',
-            '\tadafruit/Adafruit GFX Library@^1.11.9',
-            '\tadafruit/Adafruit ST7735 and ST7789 Library@^1.9.3',
+        ]
+        
+        # Add lib_deps only if display libraries are needed
+        if lib_deps_lines:
+            lines.extend(lib_deps_lines)
+        
+        lines.extend([
             'lib_extra_dirs = lib',
             '',
             '[env:device]',
@@ -307,7 +322,7 @@ def update_platformio_ini(device: dict) -> bool:
             f'build_flags = {build_flags_str}',
             '',
             '# Uncomment the line below to run in interactive mode (allows editing build flags during build)',
-        ]
+        ])
         
         # Preserve existing PIO_INTERACTIVE setting (commented or uncommented)
         if existing_pio_interactive:
@@ -318,38 +333,350 @@ def update_platformio_ini(device: dict) -> bool:
         with open(INI_PATH, 'w') as f:
             f.write('\n'.join(lines) + '\n')
         
-        print(f"\nConfigured {config['manufacturer']} / {config['model']} on {port}")
+        print(f"\nConfigured {config['manufacturer']} / {config['model']} on {port}", flush=True)
+        
+        # Force clean build to remove old object files compiled with previous flags
+        # This is critical when disabling features - old objects would still have those flags
+        print("Cleaning build artifacts to apply new flags...", flush=True)
+        try:
+            # Run pio clean to remove .pio/build directory
+            subprocess.check_call(['pio', 'run', '-t', 'clean'], cwd=ROOT, 
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            print("Clean completed.", flush=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Warning: Clean failed ({e}), continuing anyway...", flush=True)
+        except FileNotFoundError:
+            print("Warning: 'pio' command not found, skipping clean...", flush=True)
+        
         return True
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error: {e}", flush=True)
         return False
 
+def get_manufacturers_and_models(board_config: dict) -> dict:
+    """Organize board config by manufacturer.
+    
+    Returns dict like:
+    {
+        "ESP32": [("T-Dongle-S3", "ESP32_T_DONGLE_S3"), ("Pico D4", "ESP32_Pico_D4"), ...],
+        "Arduino": [...],
+    }
+    """
+    by_mfg = {}
+    for board_id, config in board_config.items():
+        mfg = config.get('manufacturer', 'Unknown')
+        model = config.get('model', 'Unknown')
+        if mfg not in by_mfg:
+            by_mfg[mfg] = []
+        by_mfg[mfg].append((model, board_id))
+    return by_mfg
+
+
+def suggest_platform_for_manufacturer(mfg: str) -> dict | None:
+    """Suggest common platforms for a manufacturer. Returns dict with platform suggestions."""
+    suggestions = {
+        'ESP32': {'platform': 'espressif32', 'framework': 'arduino', 'board': 'esp32dev'},
+        'Arduino': {'platform': 'atmelavr', 'framework': 'arduino', 'board': 'uno'},
+        'STM32': {'platform': 'ststm32', 'framework': 'arduino', 'board': 'nucleo_f401re'},
+        'RP2040': {'platform': 'raspberrypi', 'framework': 'arduino', 'board': 'pico'},
+    }
+    return suggestions.get(mfg)
+
+
+def parse_device_based_flags(flag_input: str) -> list[str]:
+    """Parse comma or space-separated flag input into a list of valid flag strings."""
+    if not flag_input.strip():
+        return []
+    # Split by comma or space
+    parts = [s.strip() for s in flag_input.replace(',', ' ').split()]
+    # Filter out empty strings
+    return [p for p in parts if p]
+
+
+def generate_board_id(manufacturer: str, model: str) -> str:
+    """Generate a board ID from manufacturer and model.
+    
+    Example: "ESP32" + "My Board" → "ESP32_My_Board"
+    """
+    # Replace spaces with underscores, remove special chars, uppercase
+    mfg_part = manufacturer.upper().replace(' ', '_').replace('-', '_')
+    model_part = model.upper().replace(' ', '_').replace('-', '_')
+    board_id = f"{mfg_part}_{model_part}"
+    # Clean up multiple underscores
+    while '__' in board_id:
+        board_id = board_id.replace('__', '_')
+    return board_id
+
+
+def create_new_device_config() -> int:
+    """Create a new device configuration entry in device_board_info.json.
+    1) Prompt user for manufacturer and model name (list existing ones that can be selected or allow new entry)
+    2) Prompt user for platform, board, framework, upload_speed, monitor_speed, and any device_based_flags (list existing ones that can be selected or allow new entry)
+    3) Add new entry to device_board_info.json
+    4) Update platformio.ini
+    5) Return True if successful else False
+    """
+    board_config = load_board_config()
+    by_mfg = get_manufacturers_and_models(board_config)
+    
+    # Step 1: Select or create manufacturer
+    print("\n=== Create New Device Configuration ===", flush=True)
+    print("\nExisting manufacturers:", flush=True)
+    mfg_list = sorted(by_mfg.keys())
+    for i, mfg in enumerate(mfg_list):
+        print(f"  [{i}] {mfg}", flush=True)
+    print(f"  [{len(mfg_list)}] Enter new manufacturer", flush=True)
+    
+    s = ask("Select manufacturer by index: ").strip()
+    try:
+        mfg_idx = int(s)
+        if 0 <= mfg_idx < len(mfg_list):
+            manufacturer = mfg_list[mfg_idx]
+        elif mfg_idx == len(mfg_list):
+            manufacturer = ask("Enter manufacturer name: ").strip()
+            if not manufacturer:
+                print("Manufacturer name cannot be empty.", flush=True)
+                return 1
+        else:
+            print("Invalid index.", flush=True)
+            return 1
+    except ValueError:
+        print("Invalid input.", flush=True)
+        return 1
+    
+    # Step 2: Enter model name
+    model = ask("Enter model name: ").strip()
+    if not model:
+        print("Model name cannot be empty.", flush=True)
+        return 1
+    
+    # Auto-generate board ID
+    board_id = generate_board_id(manufacturer, model)
+    print(f"Generated board ID: {board_id}", flush=True)
+    confirm = ask("Accept this board ID (y/N): ").strip().lower()
+    if confirm != 'y':
+        custom_id = ask("Enter custom board ID (or press Enter to keep auto-generated): ").strip()
+        if custom_id:
+            board_id = custom_id
+        # if empty, keep auto-generated board_id
+    
+    # Step 3: Select or enter platform and board
+    print("\nCommon platforms for this manufacturer:", flush=True)
+    suggestion = suggest_platform_for_manufacturer(manufacturer)
+    if suggestion:
+        print(f"  Suggested: platform={suggestion['platform']}, board={suggestion['board']}", flush=True)
+        use_suggestion = ask("Use suggested platform/board (Y/n): ").strip().lower()
+        if use_suggestion != 'n':
+            platform = suggestion['platform']
+            board = suggestion['board']
+            framework = suggestion['framework']
+        else:
+            platform = ask("Enter platform (e.g., espressif32, atmelavr): ").strip()
+            board = ask("Enter board (e.g., esp32dev, uno): ").strip()
+            framework = ask("Enter framework (default: arduino): ").strip() or 'arduino'
+    else:
+        platform = ask("Enter platform (e.g., espressif32, atmelavr): ").strip()
+        board = ask("Enter board (e.g., esp32dev, uno): ").strip()
+        framework = ask("Enter framework (default: arduino): ").strip() or 'arduino'
+    
+    if not platform or not board:
+        print("Platform and board cannot be empty.", flush=True)
+        return 1
+    
+    # Step 4: Upload and monitor speeds
+    upload_speed = ask("Enter upload speed (default: 921600): ").strip() or '921600'
+    monitor_speed = ask("Enter monitor speed (default: 921600): ").strip() or '921600'
+    
+    try:
+        upload_speed = int(upload_speed)
+        monitor_speed = int(monitor_speed)
+    except ValueError:
+        print("Upload and monitor speeds must be integers.", flush=True)
+        return 1
+    
+    # Step 5: Device-based flags
+    print("\nDevice-based flags examples:", flush=True)
+    print("  -DDEBUG_LED_PIN=10", flush=True)
+    print("  -DDEBUG_BRIGHTNESS=64", flush=True)
+    print("  -DDEBUG_FASTLED_DATA_PIN=40", flush=True)
+    print("  Leave blank for no device-based flags", flush=True)
+    flags_input = ask("Enter device-based flags (comma or space-separated): ").strip()
+    device_based_flags = parse_device_based_flags(flags_input)
+    
+    # Build new config entry
+    new_config = {
+        'manufacturer': manufacturer,
+        'model': model,
+        'platform': platform,
+        'board': board,
+        'upload_speed': upload_speed,
+        'monitor_speed': monitor_speed,
+        'framework': framework,
+        'device_based_flags': device_based_flags,
+    }
+    
+    # Add to board config and save
+    board_config[board_id] = new_config
+    try:
+        with open(CONFIG_PATH, 'w') as f:
+            json.dump(board_config, f, indent=2)
+        print(f"\nAdded new device configuration: {board_id}", flush=True)
+    except Exception as e:
+        print(f"Error saving config: {e}", flush=True)
+        return 1
+    
+    # Create a device dict for platformio.ini update (use /dev/ttyACM0 as default)
+    device = {
+        'port': '/dev/ttyACM0',  # will be updated if available
+        'board_id': board_id,
+        'config': new_config,
+        'build_flags': device_based_flags,  # start with device-based flags only
+    }
+    
+    if not update_platformio_ini(device):
+        return 1
+    
+    print(f"\nConfigured {manufacturer} / {model} on {device['port']}", flush=True)
+    return 0
+
+
+def select_existing_device_from_config() -> int:
+    """Select an existing device from device_board_info.json and update platformio.ini.
+    1) List all manufacturers from device_board_info.json with an index number ([0], [1], etc.)
+    2) Prompt the user to select a manufacturer by index
+    3) List all models for the selected manufacturer with an index number
+    4) Prompt the user to select a model by index
+    5) Update platformio.ini with the selected device configuration
+    6) Return True if successful else False
+    """
+    board_config = load_board_config()
+    by_mfg = get_manufacturers_and_models(board_config)
+    
+    print("\n=== Select Device from Configuration ===", flush=True)
+    
+    # Step 1: List manufacturers
+    print("\nManufacturers:", flush=True)
+    mfg_list = sorted(by_mfg.keys())
+    for i, mfg in enumerate(mfg_list):
+        print(f"  [{i}] {mfg}", flush=True)
+    
+    # Step 2: Select manufacturer
+    s = ask("Select manufacturer by index: ").strip()
+    try:
+        mfg_idx = int(s)
+        if 0 <= mfg_idx < len(mfg_list):
+            manufacturer = mfg_list[mfg_idx]
+        else:
+            print("Invalid index.", flush=True)
+            return 1
+    except ValueError:
+        print("Invalid input.", flush=True)
+        return 1
+    
+    # Step 3: List models for selected manufacturer
+    print(f"\nModels for {manufacturer}:", flush=True)
+    models = by_mfg[manufacturer]
+    for i, (model_name, board_id) in enumerate(models):
+        print(f"  [{i}] {model_name} ({board_id})", flush=True)
+    
+    # Step 4: Select model
+    s = ask("Select model by index: ").strip()
+    try:
+        model_idx = int(s)
+        if 0 <= model_idx < len(models):
+            model_name, board_id = models[model_idx]
+        else:
+            print("Invalid index.", flush=True)
+            return 1
+    except ValueError:
+        print("Invalid input.", flush=True)
+        return 1
+    
+    # Get the full config for this board
+    config = board_config[board_id]
+    
+    # Offer interactive flag editing
+    print(f"\nSelected: {manufacturer} / {model_name}", flush=True)
+    edit_flags = ask("Edit build flags interactively? (y/N): ").strip().lower()
+    
+    if edit_flags == 'y':
+        # Start with device_based_flags for display
+        initial_flags = normalize_flags_for_display(config.get('device_based_flags', []))
+        flags = edit_build_flags(initial_flags)
+    else:
+        # Use device_based_flags as-is
+        flags = config.get('device_based_flags', [])
+    
+    # Create device dict for platformio.ini update
+    device = {
+        'port': '/dev/ttyACM0',  # default port, user can edit platformio.ini manually if needed
+        'board_id': board_id,
+        'config': config,
+        'build_flags': flags,
+    }
+    
+    if not update_platformio_ini(device):
+        return 1
+    
+    print(f"\nConfigured {config['manufacturer']} / {config['model']} on {device['port']}", flush=True)
+    return 0
 
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description='Detect and configure GPIO_Lib devices.')
     parser.add_argument('-i', '--interactive', action='store_true', help='Force interactive mode')
+    parser.add_argument('--skip-prompts', action='store_true', help='Skip prompts if INI is already configured')
     args = parser.parse_args()
 
-    print("Scanning for devices...")
-    detected = scan_known_ports(known_ports)
+    # If skip-prompts is set and platformio.ini already has build_flags, exit successfully
+    if args.skip_prompts and os.path.isfile(INI_PATH):
+        try:
+            with open(INI_PATH, 'r') as f:
+                content = f.read()
+                if 'build_flags' in content and '-DBOARD=' in content:
+                    print("Platformio.ini already configured, skipping device scan.", flush=True)
+                    return 0
+        except Exception:
+            pass
+
+    print("Scanning for devices...", flush=True)
+    detected = scan_known_ports()
 
     if not detected:
-        print("\nError: No devices found.")
-        return 1
+        print("\nError: No devices found.", flush=True)
+        
+        # If skip-prompts is set, exit with error instead of prompting
+        if args.skip_prompts:
+            print("No devices detected and --skip-prompts is set. Continuing with existing config.", flush=True)
+            return 0
+        
+        # Ask user if they want to select a device from device_board_info.json even if it can't be detected or create a new entry (e.g. due to empty firmware or unsupported board)
+        s = ask("Do you want to select a device from the config file or create a new entry? (y/N): ").strip().lower()
+        if s == 'y':
+            # ask if they want to select an existing device or create a new one
+            s2 = ask("Select existing device (E) or create new entry (C)? (E/C): ").strip().lower()
+            if s2 == 'e':
+                return select_existing_device_from_config()
+            elif s2 == 'c':
+                return create_new_device_config()
+            else:
+                print("Invalid selection.", flush=True)
+                return 1
+        else:
+            return 1
 
     if len(detected) > 1 or args.interactive:
-        print(f"\nFound {len(detected)} device(s):")
+        print(f"\nFound {len(detected)} device(s):", flush=True)
         for i, dev in enumerate(detected):
             cfg = dev['config']
-            print(f"  [{i}] {cfg['manufacturer']} / {cfg['model']} on {dev['port']}")
+            print(f"  [{i}] {cfg['manufacturer']} / {cfg['model']} on {dev['port']}", flush=True)
         
         if len(detected) > 1:
             s = ask("\nSelect device: ").strip()
             try:
                 device = detected[int(s)]
             except (ValueError, IndexError):
-                print("Invalid selection.")
+                print("Invalid selection.", flush=True)
                 return 1
         else:
             device = detected[0]
@@ -362,7 +689,7 @@ def main():
         device = detected[0]
 
     cfg = device['config']
-    print(f"\nConfiguring {cfg['manufacturer']} / {cfg['model']} on {device['port']}")
+    print(f"\nConfiguring {cfg['manufacturer']} / {cfg['model']} on {device['port']}", flush=True)
     
     return 0 if update_platformio_ini(device) else 1
 
@@ -371,8 +698,8 @@ if __name__ == '__main__':
     try:
         sys.exit(main())
     except KeyboardInterrupt:
-        print("\nCancelled.")
+        print("\nCancelled.", flush=True)
         sys.exit(1)
     except Exception as e:
-        print(f"\nError: {e}")
+        print(f"\nError: {e}", flush=True)
         sys.exit(1)
