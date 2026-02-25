@@ -115,31 +115,31 @@ def main() -> None:
     bitmap = bytearray()
     for _ in range(w * h):
         bitmap.extend(red.to_bytes(2, "little"))
-    lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=w, y_len=h, random_rows=True)
+    lcd.write_bitmap(bitmap, x=0, y=0, width=w, height=h, random_rows=True)
     lcd.write_text("Red", x=5, y=5)
     time.sleep(1)
     bitmap.clear()
     for _ in range(w * h):
         bitmap.extend(green.to_bytes(2, "little"))
-    lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=w, y_len=h, random_rows=True)
+    lcd.write_bitmap(bitmap, x=0, y=0, width=w, height=h, random_rows=True)
     lcd.write_text("Green", x=5, y=5)
     time.sleep(1)
     bitmap.clear()
     for _ in range(w * h):
         bitmap.extend(blue.to_bytes(2, "little"))
-    lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=w, y_len=h, random_rows=True)
+    lcd.write_bitmap(bitmap, x=0, y=0, width=w, height=h, random_rows=True)
     lcd.write_text("Blue", x=5, y=5)
     time.sleep(1)
     bitmap.clear()
     for _ in range(w * h):
         bitmap.extend(white.to_bytes(2, "little"))
-    lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=w, y_len=h, random_rows=True)
+    lcd.write_bitmap(bitmap, x=0, y=0, width=w, height=h, random_rows=True)
     lcd.write_text("White", x=5, y=5)
     time.sleep(1)
     bitmap.clear()
     for _ in range(w * h):
         bitmap.extend(black.to_bytes(2, "little"))
-    lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=w, y_len=h, random_rows=True)
+    lcd.write_bitmap(bitmap, x=0, y=0, width=w, height=h, random_rows=True)
     lcd.write_text("Black", x=5, y=5)
     time.sleep(1) 
     
@@ -175,7 +175,7 @@ def main() -> None:
         color = random.randint(0, 0xFFFF)
         for _ in range(size * size):
             bitmap.extend(color.to_bytes(2, "little"))
-        lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=size, y_len=size)
+        lcd.write_bitmap(bitmap, x=0, y=0, width=size, height=size)
         lcd.write_text(f"{size}x{size}", x=5, y=5)
         # time.sleep(.25)
     """
@@ -193,7 +193,7 @@ def main() -> None:
             for _ in range(width * 80):
                 bitmap.extend(color.to_bytes(2, "little"))
             
-            lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=width, y_len=80)
+            lcd.write_bitmap(bitmap, x=0, y=0, width=width, height=80)
             lcd.write_text(f"{width}x80", x=5, y=5)
             time.sleep(0.01)
 
@@ -218,7 +218,7 @@ def main() -> None:
             for _ in range(shape[0] * shape[1]):
                 color = random.randint(0, 0xFFFF)
                 bitmap.extend(color.to_bytes(2, "little"))
-            lcd.write_bitmap(bitmap, x_pos=0, y_pos=0, x_len=shape[0], y_len=shape[1], random_rows=True)
+            lcd.write_bitmap(bitmap, x=0, y=0, width=shape[0], height=shape[1], random_rows=True)
             lcd.write_text(f"Rot {rot}", x=5, y=5)
             time.sleep(1)
 

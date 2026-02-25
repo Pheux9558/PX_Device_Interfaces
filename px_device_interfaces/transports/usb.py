@@ -40,6 +40,23 @@ class USBTransportConfig(BaseTransportConfig):
             "  - auto_io: whether to automatically handle I/O\n"
             "  - reset_on_start: whether to reset the device on start\n"
         )
+    
+    @classmethod
+    def scan(cls) -> list[dict]:
+        """Discover serial ports using pyserial's list_ports.
+        Returns a list of dicts: {"type": "USB", "settings": {"port": <device>}, "description": <desc>}
+        """
+        try:
+            from serial.tools import list_ports
+
+            out = []
+            for p in list_ports.comports():
+                if not p.description or p.description == 'n/a':
+                    continue
+                out.append({"type": "USB", "settings": {"port": p.device, "baud": 921600}, "description": p.description})
+            return out
+        except Exception:
+            return []
 
 
 class USBTransport(BaseTransport):
@@ -63,7 +80,7 @@ class USBTransport(BaseTransport):
     - `scan()`: discover available serial ports using pyserial's list_ports.
     """
 
-    def __init__(self, port: Optional[str] = None, baud: Optional[int] = 11520, config: Optional[USBTransportConfig] = None) -> None:
+    def __init__(self, port: Optional[str] = None, baud: Optional[int] = 921600, config: Optional[USBTransportConfig] = None) -> None:
         """Initialize USBTransport with explicit parameters."""
         self.config = config
         self.port = config.port if config and config.port is not None else port
@@ -199,19 +216,3 @@ class USBTransport(BaseTransport):
     def is_connected(self) -> bool:
         with self._lock:
             return bool(self._connected)
-
-    @classmethod
-    def scan(cls) -> list[dict]:
-        """Discover serial ports using pyserial's list_ports.
-
-        Returns a list of dicts: {"type": "USB", "settings": {"port": <device>}, "description": <desc>}
-        """
-        try:
-            from serial.tools import list_ports
-
-            out = []
-            for p in list_ports.comports():
-                out.append({"type": "USB", "settings": {"port": p.device, "baud": 115200}, "description": p.description})
-            return out
-        except Exception:
-            return []

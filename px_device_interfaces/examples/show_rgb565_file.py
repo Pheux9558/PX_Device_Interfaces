@@ -90,7 +90,7 @@ def main():
 
         print(f"Writing {args.width}x{args.height} bitmap from {file_path} to display at ({args.x},{args.y})")
         start_time = time.time()
-        lcd.write_bitmap(data, x_pos=args.x, y_pos=args.y, x_len=args.width, y_len=args.height, random_rows=args.random_rows)
+        lcd.write_bitmap(data, x=args.x, y=args.y, width=args.width, height=args.height, random_rows=args.random_rows)
 
         gpio.await_send_empty()
         total_time = time.time() - start_time

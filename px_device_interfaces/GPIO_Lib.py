@@ -328,6 +328,8 @@ class GPIO_Lib:
         self._ready = False
         self._ready_cv = threading.Condition()
         # record per-OK timestamps for plotting/diagnostics (list of datetime objects)
+        # Use maxlen to prevent unbounded memory growth in long-running processes
+        self._max_ok_timestamps = 1000  # Max 1000 timestamps (~50KB)
         self._ok_timestamps: List[datetime] = []
         # response capture for request/response commands (UART/I2C/SPI reads)
         self._resp_cv = threading.Condition()
@@ -529,6 +531,9 @@ class GPIO_Lib:
             self._running = False
             return False
         
+        # Wait till config is transmitted to device
+        self.await_send_empty()
+
         self.log_debug_message("#### GPIO_Lib started successfully ####")
         return True     # started successfully
     
@@ -1403,17 +1408,37 @@ class GPIO_Lib:
             packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_TEXT_CENTER, payload)
             self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-        def write_bitmap(self, bitmap_data: bytes | bytearray | List[int], x_pos: int, y_pos: int, x_len: int, y_len: int, random_rows: bool = False) -> None:
+        def write_bitmap(self, bitmap_data: bytes | bytearray | List[int], x: int, y: int, width: int, height: int, random_rows: bool = False) -> None:
             if not self._setup_complete:
                 self.setup()
-            if x_len <= 0 or y_len <= 0:
+            if width <= 0 or height <= 0:
                 raise ValueError("Display: bitmap size must be positive")
-            if isinstance(bitmap_data, list):
-                bitmap_bytes = bytes(bitmap_data)
-            else:
+            
+            # Try to convert bitmap_data to bytes
+            # First attempt: treat as raw bytes or direct bytearray
+            bitmap_bytes = None
+            if isinstance(bitmap_data, (bytes, bytearray)):
                 bitmap_bytes = bitmap_data
+            elif isinstance(bitmap_data, list):
+                # Try direct conversion (assumes list contains 8-bit values)
+                try:
+                    bitmap_bytes = bytes(bitmap_data)
+                except ValueError:
+                    # If that fails, assume it's RGB565 16-bit integers and convert
+                    try:
+                        expected_pixels = len(bitmap_data)
+                        bitmap_bytes = b''
+                        for pixel in bitmap_data:
+                            # Convert 16-bit RGB565 to 2 bytes (little-endian)
+                            bitmap_bytes += bytes([pixel & 0xFF, (pixel >> 8) & 0xFF])
+                    except Exception as e:
+                        raise ValueError(f"Display: unable to convert bitmap data. Expected raw bytes or RGB565 16-bit list: {e}") from e
+            
+            if bitmap_bytes is None:
+                raise ValueError("Display: bitmap_data must be bytes, bytearray, or list")
+            
             bitmap_view = memoryview(bitmap_bytes)
-            expected = int(x_len) * int(y_len) * 2
+            expected = int(width) * int(height) * 2
             if len(bitmap_view) != expected:
                 raise ValueError(f"Display: bitmap_data length must be {expected} bytes for RGB565")
             """
@@ -1430,10 +1455,10 @@ class GPIO_Lib:
                 conv[i + 1] = (pix >> 8) & 0xFF
             bitmap_view = memoryview(conv)
             """
-            x = int(x_pos)
-            y = int(y_pos)
-            w = int(x_len)
-            h = int(y_len)
+            x = int(x)
+            y = int(y)
+            w = int(width)
+            h = int(height)
             begin_payload = (
                 self.identifier.to_bytes(2, "little")
                 + bytes([1])
@@ -1811,32 +1836,40 @@ class GPIO_Lib:
 
     # region packet handling
     def _handle_packet(self, cmd: int, payload: bytes) -> None:
-        # handle incoming command frames (device -> host updates)
-        # Device-level status
+        """Handle incoming command frames (device -> host updates)."""
+        
+        # Helper to update pin state in dictionaries with caching
+        def _update_pin(pin: int, val: int, pin_dict: dict, pin_type: str) -> str:
+            """Update pin state in dictionary, return pin name."""
+            name = self.pin_to_name.get(pin)
+            if not name:
+                name = str(pin)
+            
+            if name not in pin_dict:
+                pin_dict[name] = {"pin": pin, "value": int(val), "type": pin_type}
+            else:
+                pin_dict[name]["value"] = int(val)
+            return name
+        
+        # Device-level status: OK frame
         if cmd == CMD_DEVICE_OK:
-            # timestamped debug + notify waiters; also record a precise timestamp for plotting
-            ts = datetime.now().isoformat(timespec='milliseconds')
-            try:
-                if self.debug_enabled:
-                    self.log_debug_message(f"device: OK")
-            except Exception:
-                if self.debug_enabled:
-                    print(f"device: OK")
             # increment counter, record timestamp, and wake waiters
             with self._ok_cv:
                 self.debug_ok_received += 1
-                try:
-                    self._ok_timestamps.append(datetime.fromisoformat(ts))
-                except Exception:
-                    # fallback: append naive datetime.now()
-                    self._ok_timestamps.append(datetime.now())
+                now = datetime.now()
+                # Keep bounded list to prevent memory leak in long-running processes
+                if len(self._ok_timestamps) >= self._max_ok_timestamps:
+                    self._ok_timestamps.pop(0)
+                self._ok_timestamps.append(now)
                 self._ok_cv.notify_all()
+            
+            # Log debug message if enabled
+            self.log_debug_message(f"device: OK")
             return
         if cmd == CMD_DEVICE_ERROR:
-            if self.debug_enabled:
-                print("device: ERROR", payload)
-            print("device: ERROR", payload)
-            # raise RuntimeError("Device send ERROR")
+            self.log_debug_message(f"device: ERROR {payload}")
+            # [ ] TODO maybe set an error state or raise an exception
+            return
 
         # UART/I2C/SPI read responses: payload = id(2) + data
         if cmd in (CMD_UART_READ, CMD_I2C_READ, CMD_I2C_WRITE_READ, CMD_I2C_FULL_ADDRESS_SCAN, CMD_SPI_READ) and len(payload) >= 2:
@@ -1847,16 +1880,7 @@ class GPIO_Lib:
         # Digital read responses
         if cmd == CMD_DIGITAL_READ and len(payload) >= 2:
             pin, val = payload[0], payload[1]
-            # update input mirror by pin -> name mapping
-            name = self.pin_to_name.get(pin)
-            if name:
-                if name not in self.inputs:
-                    self.inputs[name] = {"pin": pin, "value": int(val), "type": "digital"}
-                else:
-                    self.inputs[name]["value"] = int(val)
-            else:
-                # unknown pin, create a numeric-keyed entry
-                self.inputs[str(pin)] = {"pin": pin, "value": int(val), "type": "digital"}
+            _update_pin(pin, val, self.inputs, "digital")
             if self.debug_enabled:
                 print(f"input update pin={pin} val={val}")
             return
@@ -1864,27 +1888,13 @@ class GPIO_Lib:
         # Output updates (device echo)
         if cmd == CMD_DIGITAL_WRITE and len(payload) >= 2:
             pin, val = payload[0], payload[1]
-            name = self.pin_to_name.get(pin)
-            if name:
-                if name not in self.outputs:
-                    self.outputs[name] = {"pin": pin, "value": int(val), "type": "digital"}
-                else:
-                    self.outputs[name]["value"] = int(val)
-            else:
-                self.outputs[str(pin)] = {"pin": pin, "value": int(val), "type": "digital"}
+            _update_pin(pin, val, self.outputs, "digital")
             return
 
         # Analog read responses
         if cmd == CMD_ANALOG_READ and len(payload) >= 2:
             pin, val = payload[0], payload[1]
-            name = self.pin_to_name.get(pin)
-            if name:
-                if name not in self.inputs:
-                    self.inputs[name] = {"pin": pin, "value": int(val), "type": "analog"}
-                else:
-                    self.inputs[name]["value"] = int(val)
-            else:
-                self.inputs[str(pin)] = {"pin": pin, "value": int(val), "type": "analog"}
+            _update_pin(pin, val, self.inputs, "analog")
             if self.debug_enabled:
                 print(f"analog input update pin={pin} val={val}")
             return
@@ -1892,14 +1902,7 @@ class GPIO_Lib:
         # Analog write echo/update
         if cmd == CMD_ANALOG_WRITE and len(payload) >= 2:
             pin, val = payload[0], payload[1]
-            name = self.pin_to_name.get(pin)
-            if name:
-                if name not in self.outputs:
-                    self.outputs[name] = {"pin": pin, "value": int(val), "type": "analog"}
-                else:
-                    self.outputs[name]["value"] = int(val)
-            else:
-                self.outputs[str(pin)] = {"pin": pin, "value": int(val), "type": "analog"}
+            _update_pin(pin, val, self.outputs, "analog")
             return
 
         # Servo updates
