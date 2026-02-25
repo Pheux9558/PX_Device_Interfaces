@@ -68,45 +68,45 @@ CMD_ANALOG_READ                     = 0x0012 # Analog read, payload: (pin number
 CMD_ANALOG_WRITE                    = 0x0013 # Analog write, payload: (pin number, value[0-analog max])
 
 # region Display CMDs
-# Command definitions for Display operations
-# LCD commands (0x002X)
-CMD_LCD_CREATE                      = 0x0020 # Create LCD instance, payload: (identifier[2 bytes])
-CMD_LCD_SETUP_I2C                   = 0x0021 # Setup LCD I2C, payload: (identifier[2 bytes], width[2 byte], height[2 byte], i2c identifier[2 bytes], i2c address[1 byte])
-CMD_LCD_SETUP_SPI                   = 0x0022 # Setup LCD SPI, payload: (identifier[2 bytes], width[2 byte], height[2 byte], spi identifier[2 bytes], cs pin[1 byte], rs pin[1 byte], enable pin[1 byte], optional: backlight pin[1 byte], optional: backlight inverted[1 byte])
-CMD_LCD_CLEAR                       = 0x0025 # Clear LCD display, payload: (identifier[2 bytes])
-CMD_LCD_SET_CURSOR                  = 0x0026 # Set cursor position on LCD, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes])
-CMD_LCD_WRITE_TEXT                  = 0x0027 # Write text to LCD, payload: (identifier[2 bytes], text bytes in UTF-8)
-CMD_LCD_WRITE_TEXT_CENTER           = 0x0028 # Write centered text to LCD, payload: (identifier[2 bytes], text bytes in UTF-8)
-CMD_LCD_WRITE_BITMAP                = 0x0029 # Write bitmap to LCD, payload: (identifier[2 bytes], func[1 byte], func-specific data)
-CMD_LCD_SET_BRIHGHTNESS             = 0x002A # Set LCD brightness, payload: (identifier[2 bytes], brightness level[0-255]) only for LCDs that support it (PWM backlight control)
-CMD_LCD_SET_CONTRAST                = 0x002B # Set LCD contrast, payload: (identifier[2 bytes], contrast level) 0-255 only for LCDs that support it
-CMD_LCD_SET_ROTATION                = 0x002C # Set LCD rotation, payload: (identifier[2 bytes], rotation[0-3])
-# [ ] TODO Save LCD settings command to save LCD configuration to non-volatile memory for automatic setup on startup
-# CMD_LCD_SAVE_SETTINGS               = 0x002F # Save LCD settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
+# Display commands by type
+# ST7735 LCD commands (0x002X)
+CMD_ST7735_CREATE                   = 0x0020 # Create ST7735 instance, payload: (identifier[2 bytes])
+CMD_ST7735_SETUP_SPI                = 0x0022 # Setup ST7735 SPI, payload: (identifier[2 bytes], width[2 byte], height[2 byte], spi identifier[2 bytes], cs pin[1 byte], rs pin[1 byte], enable pin[1 byte], optional: backlight pin[1 byte], optional: backlight inverted[1 byte])
+CMD_ST7735_CLEAR                    = 0x0025 # Clear display, payload: (identifier[2 bytes])
+CMD_ST7735_SET_CURSOR               = 0x0026 # Set cursor position, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes])
+CMD_ST7735_WRITE_TEXT               = 0x0027 # Write text, payload: (identifier[2 bytes], text bytes in UTF-8)
+CMD_ST7735_WRITE_TEXT_CENTER        = 0x0028 # Write centered text, payload: (identifier[2 bytes], text bytes in UTF-8)
+CMD_ST7735_WRITE_BITMAP             = 0x0029 # Write bitmap (streamed), payload: (identifier[2 bytes], func[1 byte], func-specific data)
+CMD_ST7735_SET_BACKLIGHT            = 0x002A # Set backlight brightness (0-255), payload: (identifier[2 bytes], brightness level)
+CMD_ST7735_SET_CONTRAST             = 0x002B # Set contrast (if supported), payload: (identifier[2 bytes], contrast level)
+CMD_ST7735_SET_ROTATION             = 0x002C # Set rotation (0-3), payload: (identifier[2 bytes], rotation)
 
-class LCDTypes(IntEnum):
-    """LCD type definitions."""
-    LCD_16X2 = 0x00                 # 16x2 character LCD, commonly with HD44780 controller, supports parallel communication and monochrome backlight
-    LCD_20X4 = 0x01                 # 20x4 character LCD, commonly with HD44780 controller, supports parallel communication and monochrome backlight
-    LCD_IPS_ST7735 = 0x02           # 16-bit color LCD with ST7735 controller, commonly 1.8" TFT displays, supports SPI communication and RGB backlight
-    # Leave room for future LCD types (0x03-0xFF) 
+# HD44780 character LCD commands (0x003X)
+CMD_HD44780_CREATE                  = 0x0030 # Create HD44780 instance, payload: (identifier[2 bytes])
+CMD_HD44780_SETUP_I2C               = 0x0031 # Setup HD44780 I2C, payload: (identifier[2 bytes], cols[2], rows[2], i2c identifier[2], i2c address[1])
+CMD_HD44780_CLEAR                   = 0x0035 # Clear display, payload: (identifier[2 bytes])
+CMD_HD44780_SET_CURSOR              = 0x0036 # Set cursor position, payload: (identifier[2 bytes], col[2], row[2])
+CMD_HD44780_WRITE_TEXT              = 0x0037 # Write text, payload: (identifier[2 bytes], text bytes in UTF-8)
+CMD_HD44780_SET_BACKLIGHT           = 0x003A # Set backlight (0/1 or 0-255), payload: (identifier[2 bytes], level)
 
+# AiP31068L character LCD commands (0x004X)
+CMD_AIP31068L_CREATE                = 0x0040 # Create AiP31068L instance, payload: (identifier[2 bytes])
+CMD_AIP31068L_SETUP_I2C             = 0x0041 # Setup AiP31068L I2C, payload: (identifier[2 bytes], cols[2], rows[2], i2c identifier[2], i2c address[1])
+CMD_AIP31068L_CLEAR                 = 0x0045 # Clear display, payload: (identifier[2 bytes])
+CMD_AIP31068L_SET_CURSOR            = 0x0046 # Set cursor position, payload: (identifier[2 bytes], col[2], row[2])
+CMD_AIP31068L_WRITE_TEXT            = 0x0047 # Write text, payload: (identifier[2 bytes], text bytes in UTF-8)
+CMD_AIP31068L_SET_BACKLIGHT         = 0x004A # Set backlight (0/1 or 0-255), payload: (identifier[2 bytes], level)
 
-# OLED commands (0x003X)
-CMD_OLED_CREATE                     = 0x0030 # Create OLED instance, payload: (identifier[2 bytes])
-CMD_OLED_SETUP_I2C                  = 0x0031 # Setup OLED I2C, payload: (identifier[2 bytes], width[2 byte], height[2 byte], i2c identifier[2 bytes], i2c address[1 byte])
-CMD_OLED_SETUP_SPI                  = 0x0032 # Setup OLED SPI, payload: (identifier[2 bytes], width[2 byte], height[2 byte], spi identifier[2 bytes], cs pin[1 byte], dc pin[1 byte], reset pin[1 byte])
-CMD_OLED_CLEAR                      = 0x0035 # Clear OLED display, payload: (identifier[2 bytes])
-CMD_OLED_SET_FONT                   = 0x0036 # Set OLED font, payload: (identifier[2 bytes], font identifier[1 byte])
-CMD_OLED_WRITE_TEXT                 = 0x0037 # Write text to OLED, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes], text bytes in UTF-8)
-CMD_OLED_WRITE_TEXT_CENTER          = 0x0038 # Write centered text to OLED, payload: (identifier[2 bytes], text bytes in UTF-8)
-CMD_OLED_CREATE_BUTTON              = 0x0039 # Create OLED button, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes], width[2 bytes], height[2 bytes], corner radius[1 byte], color button[3 bytes], color label[3 bytes], label bytes in UTF-8)
-CMD_OLED_WRITE_BITMAP               = 0x003A # Write bitmap to OLED, payload: (identifier[2 bytes], x_pos[2 bytes], y_pos[2 bytes], x_len[2 bytes], y_len[2 bytes], pixel data bytes)
-CMD_OLED_SET_BRIGHTNESS             = 0x003B # Set OLED brightness, payload: (identifier[2 bytes], brightness level[0-255]) only for OLEDs that support it
-CMD_OLED_SET_CONTRAST               = 0x003C # Set OLED contrast, payload: (identifier[2 bytes], contrast level)
-# [ ] TODO Save OLED settings command to save OLED configuration to non-volatile memory for automatic setup on startup
-# CMD_OLED_SAVE_SETTINGS              = 0x003F # Save OLED settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
-# Leave room for future display types (0x004X - 0x00EX)
+# SSD1306 OLED commands (0x005X)
+CMD_SSD1306_CREATE                  = 0x0050 # Create SSD1306 instance, payload: (identifier[2 bytes])
+CMD_SSD1306_SETUP_I2C               = 0x0051 # Setup SSD1306 I2C, payload: (identifier[2 bytes], width[2], height[2], i2c identifier[2], i2c address[1])
+CMD_SSD1306_SETUP_SPI               = 0x0052 # Setup SSD1306 SPI, payload: (identifier[2 bytes], width[2], height[2], spi identifier[2], cs pin[1], dc pin[1], reset pin[1])
+CMD_SSD1306_CLEAR                   = 0x0055 # Clear display, payload: (identifier[2 bytes])
+CMD_SSD1306_SET_CURSOR              = 0x0056 # Set cursor position, payload: (identifier[2 bytes], x_pos[2], y_pos[2])
+CMD_SSD1306_WRITE_TEXT              = 0x0057 # Write text, payload: (identifier[2 bytes], text bytes in UTF-8)
+CMD_SSD1306_WRITE_BITMAP            = 0x0059 # Write monochrome bitmap (streamed), payload: (identifier[2], func[1], func-specific data)
+CMD_SSD1306_SET_BRIGHTNESS          = 0x005A # Set brightness/contrast, payload: (identifier[2 bytes], level)
+CMD_SSD1306_SET_ROTATION            = 0x005B # Set rotation (0-3), payload: (identifier[2 bytes], rotation)
 
 # region Touchscreen CMDs
 # Command definitions for Touchscreen operations (0x00FX)
@@ -537,12 +537,13 @@ class GPIO_Lib:
         self.log_debug_message("#### GPIO_Lib started successfully ####")
         return True     # started successfully
     
-    def stop(self) -> None:
+    def stop(self, timeout: float = 5.0) -> None:
         """Stop GPIO_Lib operation and worker threads."""
         if not self._running:
             self.log_debug_message("stop() called but GPIO_Lib not running")
             return
 
+        self.await_send_empty(timeout=timeout)
         # clear running flag
         self._running = False
 
@@ -706,15 +707,24 @@ class GPIO_Lib:
 
         Returns True if the buffer emptied, False if timed out.
         """
+        if self._send_q.empty() and not self._send_in_progress:
+            self.log_debug_message("Send queue already empty and no send in progress")
+            return True
+        
+        self.log_debug_message("Awaiting send queue to empty...")
         end = time.time() + float(timeout) if timeout is not None else None
         while True:
             if not self._transport or not self._transport.is_connected:
+                self.log_debug_message("Transport not connected")
                 return False
             if not self._running:
+                self.log_debug_message("GPIO_Lib not running")
                 return False            
             if self._send_q.empty() and not self._send_in_progress:
+                self.log_debug_message("Send queue empty and no send in progress")
                 return True
             if end is not None and time.time() > end:
+                self.log_debug_message("Awaiting send queue timed out")
                 return False
             time.sleep(0.001)
 
@@ -1284,219 +1294,626 @@ class GPIO_Lib:
 
 
     class Display:
-        """ST7735 LCD display handler (SPI)."""
-        total_instances = 0
+        """Display type namespace (ST7735, HD44780, AiP31068L, SSD1306)."""
 
-        def __init__(
-            self,
-            gpio_lib: GPIO_Lib,
-            spi: GPIO_Lib.SPI,
-            cs_pin: int,
-            rs_pin: int,
-            enable_pin: int,
-            backlight_pin: Optional[int] = None,
-            backlight_inverted: bool = False,
-            width: int = 80,
-            height: int = 160,
-            lcd_type: LCDTypes = LCDTypes.LCD_IPS_ST7735,
-        ) -> None:
-            self.gpio_lib = gpio_lib
-            self.identifier = gpio_lib.Display.total_instances
-            gpio_lib.Display.total_instances += 1
+        class DisplayST7735:
+            """ST7735 LCD display handler (SPI)."""
+            total_instances = 0
 
-            self.spi = spi
-            self.cs_pin = int(cs_pin)
-            self.rs_pin = int(rs_pin)
-            self.enable_pin = int(enable_pin)
-            self.backlight_pin = int(backlight_pin) if backlight_pin is not None else None
-            self.backlight_inverted = bool(backlight_inverted)
-            self.width = int(width)
-            self.height = int(height)
-            self.lcd_type = LCDTypes(lcd_type)
+            def __init__(
+                self,
+                gpio_lib: GPIO_Lib,
+                spi: GPIO_Lib.SPI,
+                cs_pin: int,
+                rs_pin: int,
+                enable_pin: int,
+                backlight_pin: Optional[int] = None,
+                backlight_inverted: bool = False,
+                width: int = 80,
+                height: int = 160,
+            ) -> None:
+                self.gpio_lib = gpio_lib
+                self.identifier = gpio_lib.Display.DisplayST7735.total_instances
+                gpio_lib.Display.DisplayST7735.total_instances += 1
 
-            self._setup_complete = False
+                self.spi = spi
+                self.cs_pin = int(cs_pin)
+                self.rs_pin = int(rs_pin)
+                self.enable_pin = int(enable_pin)
+                self.backlight_pin = int(backlight_pin) if backlight_pin is not None else None
+                self.backlight_inverted = bool(backlight_inverted)
+                self.width = int(width)
+                self.height = int(height)
 
-        def setup(self) -> None:
-            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
-                raise RuntimeError("Display: GPIO_Lib transport not connected")
-            if self.width <= 0 or self.width > 0xFFFF or self.height <= 0 or self.height > 0xFFFF:
-                raise ValueError("Display: width/height out of range")
-            for pin_name, pin in ("cs_pin", self.cs_pin), ("rs_pin", self.rs_pin), ("enable_pin", self.enable_pin):
-                if pin < 0 or pin > 0xFF:
-                    raise ValueError(f"Display: {pin_name} out of range (0-255)")
-            if self.backlight_pin is not None and (self.backlight_pin < 0 or self.backlight_pin > 0xFF):
-                raise ValueError("Display: backlight_pin out of range (0-255)")
+                self._setup_complete = False
 
-            if not self.spi._setup_complete:
-                self.spi.setup()
+            def setup(self) -> None:
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("DisplayST7735: GPIO_Lib transport not connected")
+                if self.width <= 0 or self.width > 0xFFFF or self.height <= 0 or self.height > 0xFFFF:
+                    raise ValueError("DisplayST7735: width/height out of range")
+                for pin_name, pin in ("cs_pin", self.cs_pin), ("rs_pin", self.rs_pin), ("enable_pin", self.enable_pin):
+                    if pin < 0 or pin > 0xFF:
+                        raise ValueError(f"DisplayST7735: {pin_name} out of range (0-255)")
+                if self.backlight_pin is not None and (self.backlight_pin < 0 or self.backlight_pin > 0xFF):
+                    raise ValueError("DisplayST7735: backlight_pin out of range (0-255)")
 
-            payload = self.identifier.to_bytes(2, "little")
-            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_LCD_CREATE, payload), wait_ack=False)
+                if not self.spi._setup_complete:
+                    self.spi.setup()
 
-            payload = (
-                self.identifier.to_bytes(2, "little")
-                + int(self.width).to_bytes(2, "little")
-                + int(self.height).to_bytes(2, "little")
-                + int(self.spi.identifier).to_bytes(2, "little")
-                + bytes([self.cs_pin & 0xFF, self.rs_pin & 0xFF, self.enable_pin & 0xFF])
-            )
-            if self.backlight_pin is not None:
-                payload += bytes([self.backlight_pin & 0xFF, 1 if self.backlight_inverted else 0])
-            packet = self.gpio_lib._build_packet(CMD_LCD_SETUP_SPI, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                payload = self.identifier.to_bytes(2, "little")
+                self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_ST7735_CREATE, payload), wait_ack=False)
 
-            self._setup_complete = True
+                payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + int(self.width).to_bytes(2, "little")
+                    + int(self.height).to_bytes(2, "little")
+                    + int(self.spi.identifier).to_bytes(2, "little")
+                    + bytes([self.cs_pin & 0xFF, self.rs_pin & 0xFF, self.enable_pin & 0xFF])
+                )
+                if self.backlight_pin is not None:
+                    payload += bytes([self.backlight_pin & 0xFF, 1 if self.backlight_inverted else 0])
+                packet = self.gpio_lib._build_packet(CMD_ST7735_SETUP_SPI, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-        def set_backlight(self, brightness: bool | int) -> None:
-            """Set backlight brightness.
-            
-            Args:
-                brightness: Either a boolean (True=255, False=0) or an integer (0-255)
-            """
-            if not self._setup_complete:
-                self.setup()
-            if self.backlight_pin is None:
-                raise RuntimeError("Display: backlight_pin not configured")
-            
-            if isinstance(brightness, bool):
-                level = 255 if brightness else 0
-            else:
-                level = int(brightness)
-                if level < 0 or level > 255:
-                    raise ValueError("Display: brightness must be 0-255")
-            
-            payload = self.identifier.to_bytes(2, "little") + bytes([level & 0xFF])
-            packet = self.gpio_lib._build_packet(CMD_LCD_SET_BRIHGHTNESS, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                self._setup_complete = True
 
-        def set_rotation(self, rotation: int) -> None:
-            if not self._setup_complete:
-                self.setup()
-            rot = int(rotation)
-            if rot < 0 or rot > 3:
-                raise ValueError("Display: rotation must be 0-3")
-            payload = self.identifier.to_bytes(2, "little") + bytes([rot & 0xFF])
-            packet = self.gpio_lib._build_packet(CMD_LCD_SET_ROTATION, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            def set_backlight(self, brightness: bool | int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                if self.backlight_pin is None:
+                    raise RuntimeError("DisplayST7735: backlight_pin not configured")
 
-        def clear(self) -> None:
-            if not self._setup_complete:
-                self.setup()
-            payload = self.identifier.to_bytes(2, "little")
-            packet = self.gpio_lib._build_packet(CMD_LCD_CLEAR, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                if isinstance(brightness, bool):
+                    level = 255 if brightness else 0
+                else:
+                    level = int(brightness)
+                    if level < 0 or level > 255:
+                        raise ValueError("DisplayST7735: brightness must be 0-255")
 
-        def set_cursor(self, x: int, y: int) -> None:
-            if not self._setup_complete:
-                self.setup()
-            payload = self.identifier.to_bytes(2, "little") + int(x).to_bytes(2, "little") + int(y).to_bytes(2, "little")
-            packet = self.gpio_lib._build_packet(CMD_LCD_SET_CURSOR, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                payload = self.identifier.to_bytes(2, "little") + bytes([level & 0xFF])
+                packet = self.gpio_lib._build_packet(CMD_ST7735_SET_BACKLIGHT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-        def write_text(self, text: str, x: int = 0, y: int = 0) -> None:
-            if not self._setup_complete:
-                self.setup()
-            self.set_cursor(x, y)
-            payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
-            packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_TEXT, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            def set_rotation(self, rotation: int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                rot = int(rotation)
+                if rot < 0 or rot > 3:
+                    raise ValueError("DisplayST7735: rotation must be 0-3")
+                payload = self.identifier.to_bytes(2, "little") + bytes([rot & 0xFF])
+                packet = self.gpio_lib._build_packet(CMD_ST7735_SET_ROTATION, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-        def write_text_center(self, text: str) -> None:
-            if not self._setup_complete:
-                self.setup()
-            payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
-            packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_TEXT_CENTER, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            def clear(self) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_ST7735_CLEAR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-        def write_bitmap(self, bitmap_data: bytes | bytearray | List[int], x: int, y: int, width: int, height: int, random_rows: bool = False) -> None:
-            if not self._setup_complete:
-                self.setup()
-            if width <= 0 or height <= 0:
-                raise ValueError("Display: bitmap size must be positive")
-            
-            # Try to convert bitmap_data to bytes
-            # First attempt: treat as raw bytes or direct bytearray
-            bitmap_bytes = None
-            if isinstance(bitmap_data, (bytes, bytearray)):
-                bitmap_bytes = bitmap_data
-            elif isinstance(bitmap_data, list):
-                # Try direct conversion (assumes list contains 8-bit values)
-                try:
-                    bitmap_bytes = bytes(bitmap_data)
-                except ValueError:
-                    # If that fails, assume it's RGB565 16-bit integers and convert
+            def set_cursor(self, x: int, y: int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little") + int(x).to_bytes(2, "little") + int(y).to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_ST7735_SET_CURSOR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_text(self, text: str, x: int = 0, y: int = 0) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                self.set_cursor(x, y)
+                payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
+                packet = self.gpio_lib._build_packet(CMD_ST7735_WRITE_TEXT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_text_center(self, text: str) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
+                packet = self.gpio_lib._build_packet(CMD_ST7735_WRITE_TEXT_CENTER, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_bitmap(self, bitmap_data: bytes | bytearray | List[int], x: int, y: int, width: int, height: int, random_rows: bool = False) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                if width <= 0 or height <= 0:
+                    raise ValueError("DisplayST7735: bitmap size must be positive")
+
+                bitmap_bytes = None
+                if isinstance(bitmap_data, (bytes, bytearray)):
+                    bitmap_bytes = bitmap_data
+                elif isinstance(bitmap_data, list):
                     try:
-                        expected_pixels = len(bitmap_data)
-                        bitmap_bytes = b''
-                        for pixel in bitmap_data:
-                            # Convert 16-bit RGB565 to 2 bytes (little-endian)
-                            bitmap_bytes += bytes([pixel & 0xFF, (pixel >> 8) & 0xFF])
-                    except Exception as e:
-                        raise ValueError(f"Display: unable to convert bitmap data. Expected raw bytes or RGB565 16-bit list: {e}") from e
-            
-            if bitmap_bytes is None:
-                raise ValueError("Display: bitmap_data must be bytes, bytearray, or list")
-            
-            bitmap_view = memoryview(bitmap_bytes)
-            expected = int(width) * int(height) * 2
-            if len(bitmap_view) != expected:
-                raise ValueError(f"Display: bitmap_data length must be {expected} bytes for RGB565")
-            """
-            # Convert on host: RGB565 (LE bytes) -> BGR565 then invert bits (MCU no longer performs this).
-            conv = bytearray(expected)
-            for i in range(0, expected, 2):
-                rgb565 = bitmap_view[i] | (bitmap_view[i + 1] << 8)
-                r = (rgb565 >> 11) & 0x1F
-                g = (rgb565 >> 5) & 0x3F
-                b = rgb565 & 0x1F
-                bgr565 = (b << 11) | (g << 5) | r
-                pix = bgr565 ^ 0xFFFF
-                conv[i] = pix & 0xFF
-                conv[i + 1] = (pix >> 8) & 0xFF
-            bitmap_view = memoryview(conv)
-            """
-            x = int(x)
-            y = int(y)
-            w = int(width)
-            h = int(height)
-            begin_payload = (
-                self.identifier.to_bytes(2, "little")
-                + bytes([1])
-                + x.to_bytes(2, "little")
-                + y.to_bytes(2, "little")
-                + w.to_bytes(2, "little")
-                + h.to_bytes(2, "little")
-            )
-            self.gpio_lib._add_packet_to_send_queue(
-                self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, begin_payload),
-                wait_ack=True,
-                validate=False,
-            )
+                        bitmap_bytes = bytes(bitmap_data)
+                    except ValueError:
+                        try:
+                            bitmap_bytes = b""
+                            for pixel in bitmap_data:
+                                bitmap_bytes += bytes([pixel & 0xFF, (pixel >> 8) & 0xFF])
+                        except Exception as e:
+                            raise ValueError(
+                                "DisplayST7735: unable to convert bitmap data. Expected raw bytes or RGB565 16-bit list"
+                            ) from e
 
-            row_len = w * 2
-            if random_rows:
-                import random
-                row_indices = list(range(h))
-                random.shuffle(row_indices)
-            else:
-                row_indices = range(h)
-            id_bytes = self.identifier.to_bytes(2, "little")
-            for row_idx in row_indices:
-                # time.sleep(0.005)  # small delay to avoid overwhelming the device
-                start = row_idx * row_len
-                end = start + row_len
-                row_view = bitmap_view[start:end]
-                row_payload = id_bytes + bytes([2]) + int(row_idx).to_bytes(2, "little") + row_view.tobytes()
-                packet = self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, row_payload)
-                self.gpio_lib.log_debug_message(f"Packet size for row {row_idx}: {len(packet)} bytes")
-                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False, validate=False)
+                if bitmap_bytes is None:
+                    raise ValueError("DisplayST7735: bitmap_data must be bytes, bytearray, or list")
 
-            end_payload = self.identifier.to_bytes(2, "little") + bytes([3])
-            self.gpio_lib._add_packet_to_send_queue(
-                self.gpio_lib._build_packet(CMD_LCD_WRITE_BITMAP, end_payload),
-                wait_ack=True,
-                validate=False,
-            )
+                bitmap_view = memoryview(bitmap_bytes)
+                expected = int(width) * int(height) * 2
+                if len(bitmap_view) != expected:
+                    raise ValueError(f"DisplayST7735: bitmap_data length must be {expected} bytes for RGB565")
+                # Convert on host: RGB565 (LE bytes) -> BGR565 then invert bits (MCU no longer performs this).
+                conv = bytearray(expected)
+                for i in range(0, expected, 2):
+                    rgb565 = bitmap_view[i] | (bitmap_view[i + 1] << 8)
+                    r = (rgb565 >> 11) & 0x1F
+                    g = (rgb565 >> 5) & 0x3F
+                    b = rgb565 & 0x1F
+                    bgr565 = (b << 11) | (g << 5) | r
+                    pix = bgr565 ^ 0xFFFF
+                    conv[i] = pix & 0xFF
+                    conv[i + 1] = (pix >> 8) & 0xFF
+                bitmap_view = memoryview(conv)
+                x = int(x)
+                y = int(y)
+                w = int(width)
+                h = int(height)
+                begin_payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + bytes([1])
+                    + x.to_bytes(2, "little")
+                    + y.to_bytes(2, "little")
+                    + w.to_bytes(2, "little")
+                    + h.to_bytes(2, "little")
+                )
+                self.gpio_lib._add_packet_to_send_queue(
+                    self.gpio_lib._build_packet(CMD_ST7735_WRITE_BITMAP, begin_payload),
+                    wait_ack=True,
+                    validate=False,
+                )
+
+                row_len = w * 2
+                if random_rows:
+                    import random
+                    row_indices = list(range(h))
+                    random.shuffle(row_indices)
+                else:
+                    row_indices = range(h)
+                id_bytes = self.identifier.to_bytes(2, "little")
+                for row_idx in row_indices:
+                    start = row_idx * row_len
+                    end = start + row_len
+                    row_view = bitmap_view[start:end]
+                    row_payload = id_bytes + bytes([2]) + int(row_idx).to_bytes(2, "little") + row_view.tobytes()
+                    packet = self.gpio_lib._build_packet(CMD_ST7735_WRITE_BITMAP, row_payload)
+                    self.gpio_lib.log_debug_message(f"Packet size for row {row_idx}: {len(packet)} bytes")
+                    self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False, validate=False)
+
+                end_payload = self.identifier.to_bytes(2, "little") + bytes([3])
+                self.gpio_lib._add_packet_to_send_queue(
+                    self.gpio_lib._build_packet(CMD_ST7735_WRITE_BITMAP, end_payload),
+                    wait_ack=True,
+                    validate=False,
+                )
+
+        class DisplayHD44780:
+            """HD44780 character LCD handler (I2C via backpack)."""
+            total_instances = 0
+
+            def __init__(
+                self,
+                gpio_lib: GPIO_Lib,
+                i2c: GPIO_Lib.I2C,
+                address: int,
+                cols: int = 16,
+                rows: int = 2,
+                backlight: bool = True,
+            ) -> None:
+                self.gpio_lib = gpio_lib
+                self.identifier = gpio_lib.Display.DisplayHD44780.total_instances
+                gpio_lib.Display.DisplayHD44780.total_instances += 1
+
+                self.i2c = i2c
+                self.address = int(address)
+                self.cols = int(cols)
+                self.rows = int(rows)
+                self.backlight = bool(backlight)
+
+                self._setup_complete = False
+
+            def setup(self) -> None:
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("DisplayHD44780: GPIO_Lib transport not connected")
+                if self.address < 0 or self.address > 0x7F:
+                    raise ValueError("DisplayHD44780: I2C address out of range")
+                if self.cols <= 0 or self.cols > 0xFFFF or self.rows <= 0 or self.rows > 0xFFFF:
+                    raise ValueError("DisplayHD44780: cols/rows out of range")
+
+                if not self.i2c._setup_complete:
+                    self.i2c.setup()
+
+                payload = self.identifier.to_bytes(2, "little")
+                self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_HD44780_CREATE, payload), wait_ack=False)
+
+                payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + int(self.cols).to_bytes(2, "little")
+                    + int(self.rows).to_bytes(2, "little")
+                    + int(self.i2c.identifier).to_bytes(2, "little")
+                    + bytes([self.address & 0x7F])
+                )
+                packet = self.gpio_lib._build_packet(CMD_HD44780_SETUP_I2C, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+                self._setup_complete = True
+                if self.backlight:
+                    self.set_backlight(True)
+
+            def clear(self) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_HD44780_CLEAR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_cursor(self, col: int, row: int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little") + int(col).to_bytes(2, "little") + int(row).to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_HD44780_SET_CURSOR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_text(self, text: str, col: int = 0, row: int = 0) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                self.set_cursor(col, row)
+                payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
+                packet = self.gpio_lib._build_packet(CMD_HD44780_WRITE_TEXT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_backlight(self, brightness: bool | int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                if isinstance(brightness, bool):
+                    level = 255 if brightness else 0
+                else:
+                    level = int(brightness)
+                    if level < 0 or level > 255:
+                        raise ValueError("DisplayHD44780: brightness must be 0-255")
+                payload = self.identifier.to_bytes(2, "little") + bytes([level & 0xFF])
+                packet = self.gpio_lib._build_packet(CMD_HD44780_SET_BACKLIGHT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        class DisplayAiP31068L:
+            """AiP31068L character LCD handler (I2C)."""
+            total_instances = 0
+
+            def __init__(
+                self,
+                gpio_lib: GPIO_Lib,
+                i2c: GPIO_Lib.I2C,
+                address: int,
+                cols: int = 16,
+                rows: int = 2,
+                backlight: bool = True,
+            ) -> None:
+                self.gpio_lib = gpio_lib
+                self.identifier = gpio_lib.Display.DisplayAiP31068L.total_instances
+                gpio_lib.Display.DisplayAiP31068L.total_instances += 1
+
+                self.i2c = i2c
+                self.address = int(address)
+                self.cols = int(cols)
+                self.rows = int(rows)
+                self.backlight = bool(backlight)
+
+                self._setup_complete = False
+
+            def setup(self) -> None:
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("DisplayAiP31068L: GPIO_Lib transport not connected")
+                if self.address < 0 or self.address > 0x7F:
+                    raise ValueError("DisplayAiP31068L: I2C address out of range")
+                if self.cols <= 0 or self.cols > 0xFFFF or self.rows <= 0 or self.rows > 0xFFFF:
+                    raise ValueError("DisplayAiP31068L: cols/rows out of range")
+
+                if not self.i2c._setup_complete:
+                    self.i2c.setup()
+
+                payload = self.identifier.to_bytes(2, "little")
+                self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_AIP31068L_CREATE, payload), wait_ack=False)
+
+                payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + int(self.cols).to_bytes(2, "little")
+                    + int(self.rows).to_bytes(2, "little")
+                    + int(self.i2c.identifier).to_bytes(2, "little")
+                    + bytes([self.address & 0x7F])
+                )
+                packet = self.gpio_lib._build_packet(CMD_AIP31068L_SETUP_I2C, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+                self._setup_complete = True
+                if self.backlight:
+                    self.set_backlight(True)
+
+            def clear(self) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_AIP31068L_CLEAR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_cursor(self, col: int, row: int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little") + int(col).to_bytes(2, "little") + int(row).to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_AIP31068L_SET_CURSOR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_text(self, text: str, col: int = 0, row: int = 0) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                self.set_cursor(col, row)
+                payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
+                packet = self.gpio_lib._build_packet(CMD_AIP31068L_WRITE_TEXT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_backlight(self, brightness: bool | int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                if isinstance(brightness, bool):
+                    level = 255 if brightness else 0
+                else:
+                    level = int(brightness)
+                    if level < 0 or level > 255:
+                        raise ValueError("DisplayAiP31068L: brightness must be 0-255")
+                payload = self.identifier.to_bytes(2, "little") + bytes([level & 0xFF])
+                packet = self.gpio_lib._build_packet(CMD_AIP31068L_SET_BACKLIGHT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+        class DisplaySSD1306:
+            """SSD1306 OLED display handler (I2C or SPI)."""
+            total_instances = 0
+
+            def __init__(
+                self,
+                gpio_lib: GPIO_Lib,
+                width: int = 128,
+                height: int = 64,
+                i2c: Optional[GPIO_Lib.I2C] = None,
+                spi: Optional[GPIO_Lib.SPI] = None,
+                address: int = 0x3C,
+                cs_pin: Optional[int] = None,
+                dc_pin: Optional[int] = None,
+                reset_pin: Optional[int] = None,
+            ) -> None:
+                self.gpio_lib = gpio_lib
+                self.identifier = gpio_lib.Display.DisplaySSD1306.total_instances
+                gpio_lib.Display.DisplaySSD1306.total_instances += 1
+
+                self.width = int(width)
+                self.height = int(height)
+                self.i2c = i2c
+                self.spi = spi
+                self.address = int(address)
+                self.cs_pin = int(cs_pin) if cs_pin is not None else None
+                self.dc_pin = int(dc_pin) if dc_pin is not None else None
+                self.reset_pin = int(reset_pin) if reset_pin is not None else None
+
+                self._setup_complete = False
+
+            def setup(self) -> None:
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("DisplaySSD1306: GPIO_Lib transport not connected")
+                if self.width <= 0 or self.width > 0xFFFF or self.height <= 0 or self.height > 0xFFFF:
+                    raise ValueError("DisplaySSD1306: width/height out of range")
+
+                payload = self.identifier.to_bytes(2, "little")
+                self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_SSD1306_CREATE, payload), wait_ack=False)
+
+                if self.i2c is not None:
+                    if not self.i2c._setup_complete:
+                        self.i2c.setup()
+                    if self.address < 0 or self.address > 0x7F:
+                        raise ValueError("DisplaySSD1306: I2C address out of range")
+
+                    payload = (
+                        self.identifier.to_bytes(2, "little")
+                        + int(self.width).to_bytes(2, "little")
+                        + int(self.height).to_bytes(2, "little")
+                        + int(self.i2c.identifier).to_bytes(2, "little")
+                        + bytes([self.address & 0x7F])
+                    )
+                    packet = self.gpio_lib._build_packet(CMD_SSD1306_SETUP_I2C, payload)
+                    self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                elif self.spi is not None:
+                    if not self.spi._setup_complete:
+                        self.spi.setup()
+                    if self.cs_pin is None or self.dc_pin is None:
+                        raise ValueError("DisplaySSD1306: cs_pin and dc_pin required for SPI")
+                    rst_pin = self.reset_pin if self.reset_pin is not None else 0xFF
+                    payload = (
+                        self.identifier.to_bytes(2, "little")
+                        + int(self.width).to_bytes(2, "little")
+                        + int(self.height).to_bytes(2, "little")
+                        + int(self.spi.identifier).to_bytes(2, "little")
+                        + bytes([self.cs_pin & 0xFF, self.dc_pin & 0xFF, rst_pin & 0xFF])
+                    )
+                    packet = self.gpio_lib._build_packet(CMD_SSD1306_SETUP_SPI, payload)
+                    self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                else:
+                    raise ValueError("DisplaySSD1306: either i2c or spi must be provided")
+
+                self._setup_complete = True
+
+            def clear(self) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_SSD1306_CLEAR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_cursor(self, x: int, y: int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                payload = self.identifier.to_bytes(2, "little") + int(x).to_bytes(2, "little") + int(y).to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_SSD1306_SET_CURSOR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_text(self, text: str, x: int = 0, y: int = 0) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                self.set_cursor(x, y)
+                payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
+                packet = self.gpio_lib._build_packet(CMD_SSD1306_WRITE_TEXT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_rotation(self, rotation: int) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                rot = int(rotation)
+                if rot < 0 or rot > 3:
+                    raise ValueError("DisplaySSD1306: rotation must be 0-3")
+                payload = self.identifier.to_bytes(2, "little") + bytes([rot])
+                packet = self.gpio_lib._build_packet(CMD_SSD1306_SET_ROTATION, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_brightness(self, level: int) -> None:
+                """Set the display brightness (0=off, 255=full)."""
+                if not self._setup_complete:
+                    self.setup()
+                brightness = int(level)
+                if brightness < 0 or brightness > 255:
+                    raise ValueError("DisplaySSD1306: brightness must be 0-255")
+                payload = self.identifier.to_bytes(2, "little") + bytes([brightness])
+                packet = self.gpio_lib._build_packet(CMD_SSD1306_SET_BRIGHTNESS, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_bitmap_mono(
+                self,
+                bitmap_data: bytes | bytearray | List[int],
+                width: int,
+                height: int,
+                x: int = 0,
+                y: int = 0,
+                random_rows: bool = False,
+            ) -> None:
+                """Draw a monochrome bitmap at (x, y) with optional random row order."""
+                if not self._setup_complete:
+                    self.setup()
+                if width <= 0 or height <= 0:
+                    raise ValueError("DisplaySSD1306: bitmap size must be positive")
+
+                expected_bytes = (int(width) * int(height) + 7) // 8
+                bitmap_bytes = None
+                if isinstance(bitmap_data, (bytes, bytearray)):
+                    bitmap_bytes = bitmap_data
+                elif isinstance(bitmap_data, list):
+                    try:
+                        bitmap_bytes = bytes(bitmap_data)
+                    except ValueError:
+                        bitmap_bytes = None
+
+                    if bitmap_bytes is not None and len(bitmap_bytes) == int(width) * int(height):
+                        packed = bytearray(expected_bytes)
+                        for idx, val in enumerate(bitmap_bytes):
+                            if val:
+                                packed[idx // 8] |= (1 << (idx % 8))
+                        bitmap_bytes = bytes(packed)
+
+                if bitmap_bytes is None:
+                    raise ValueError("DisplaySSD1306: bitmap_data must be bytes, bytearray, or list")
+                if len(bitmap_bytes) != expected_bytes:
+                    raise ValueError(f"DisplaySSD1306: bitmap_data length must be {expected_bytes} bytes for monochrome")
+
+                w = int(width)
+                h = int(height)
+                row_bytes = (w + 7) // 8
+
+                begin_payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + bytes([1])
+                    + int(x).to_bytes(2, "little")
+                    + int(y).to_bytes(2, "little")
+                    + w.to_bytes(2, "little")
+                    + h.to_bytes(2, "little")
+                )
+                self.gpio_lib._add_packet_to_send_queue(
+                    self.gpio_lib._build_packet(CMD_SSD1306_WRITE_BITMAP, begin_payload),
+                    wait_ack=True,
+                    validate=False,
+                )
+
+                if random_rows:
+                    import random
+                    row_indices = list(range(h))
+                    random.shuffle(row_indices)
+                else:
+                    row_indices = range(h)
+
+                id_bytes = self.identifier.to_bytes(2, "little")
+                for row_idx in row_indices:
+                    start = row_idx * row_bytes
+                    end = start + row_bytes
+                    row_view = bitmap_bytes[start:end]
+                    row_payload = id_bytes + bytes([2]) + int(row_idx).to_bytes(2, "little") + bytes(row_view)
+                    packet = self.gpio_lib._build_packet(CMD_SSD1306_WRITE_BITMAP, row_payload)
+                    self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False, validate=False)
+
+                end_payload = self.identifier.to_bytes(2, "little") + bytes([3])
+                self.gpio_lib._add_packet_to_send_queue(
+                    self.gpio_lib._build_packet(CMD_SSD1306_WRITE_BITMAP, end_payload),
+                    wait_ack=True,
+                    validate=False,
+                )
+
+            def write_bitmap_rgb565(
+                self,
+                bitmap_data: bytes | bytearray | List[int],
+                width: int,
+                height: int,
+                threshold: int = 128,
+                x: int = 0,
+                y: int = 0,
+                random_rows: bool = False,
+            ) -> None:
+                if not self._setup_complete:
+                    self.setup()
+                if width <= 0 or height <= 0:
+                    raise ValueError("DisplaySSD1306: bitmap size must be positive")
+                expected = int(width) * int(height) * 2
+
+                if isinstance(bitmap_data, list):
+                    try:
+                        raw = bytes(bitmap_data)
+                        if len(raw) == expected:
+                            bitmap_bytes = raw
+                        else:
+                            bitmap_bytes = b"".join(bytes([p & 0xFF, (p >> 8) & 0xFF]) for p in bitmap_data)
+                    except ValueError:
+                        bitmap_bytes = b"".join(bytes([p & 0xFF, (p >> 8) & 0xFF]) for p in bitmap_data)
+                elif isinstance(bitmap_data, (bytes, bytearray)):
+                    bitmap_bytes = bitmap_data
+                else:
+                    raise ValueError("DisplaySSD1306: bitmap_data must be bytes, bytearray, or list")
+
+                if len(bitmap_bytes) != expected:
+                    raise ValueError(f"DisplaySSD1306: bitmap_data length must be {expected} bytes for RGB565")
+
+                mono_bytes = bytearray((int(width) * int(height) + 7) // 8)
+                for i in range(0, len(bitmap_bytes), 2):
+                    rgb565 = bitmap_bytes[i] | (bitmap_bytes[i + 1] << 8)
+                    r = (rgb565 >> 11) & 0x1F
+                    g = (rgb565 >> 5) & 0x3F
+                    b = rgb565 & 0x1F
+                    lum = (r * 255 // 31) * 0.299 + (g * 255 // 63) * 0.587 + (b * 255 // 31) * 0.114
+                    idx = i // 2
+                    if lum >= threshold:
+                        mono_bytes[idx // 8] |= (1 << (idx % 8))
+
+                self.write_bitmap_mono(bytes(mono_bytes), width=width, height=height, x=x, y=y, random_rows=random_rows)
 
 
 
@@ -1773,7 +2190,7 @@ class GPIO_Lib:
         # simple append model; device is expected to handle display payloads
         self.lcd_lines.append(text)
         if self.auto_io and self._transport and self._transport.is_connected:
-            cmd = CMD_LCD_WRITE_TEXT
+            cmd = CMD_ST7735_WRITE_TEXT
             b = int(identifier).to_bytes(2, "little") + text.encode(errors="replace")
             packet = self._build_packet(cmd, b)
             self._add_packet_to_send_queue(packet, wait_ack=False)
@@ -1911,8 +2328,8 @@ class GPIO_Lib:
             self.servo_array[idx_servo] = int(val)
             return
 
-        # LCD text
-        if cmd == CMD_LCD_WRITE_TEXT and len(payload) >= 3:
+        # ST7735 text
+        if cmd == CMD_ST7735_WRITE_TEXT and len(payload) >= 3:
             try:
                 text = payload[2:].decode(errors="replace")
             except Exception:

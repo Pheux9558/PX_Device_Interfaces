@@ -68,7 +68,7 @@ def main():
 
         # SPI / Display wiring (same as st7735_spi_demo)
         spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=80_000_000)
-        lcd = GPIO_Lib.Display(
+        lcd = GPIO_Lib.Display.DisplayST7735(
             gpio_lib=gpio,
             spi=spi,
             cs_pin=4,

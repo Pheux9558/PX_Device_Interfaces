@@ -24,7 +24,7 @@ def main(port: str | None = None):
     
     gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
     spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=40_000_000)
-    lcd = GPIO_Lib.Display(
+    lcd = GPIO_Lib.Display.DisplayST7735(
         gpio_lib=gpio,
         spi=spi,
         cs_pin=4,

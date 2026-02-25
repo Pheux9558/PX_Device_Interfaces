@@ -30,8 +30,11 @@ void loop() {
 #if defined(SPI_SUPPORT)
 #include "spi.h"
 #endif
-#if defined(LCD_SUPPORT)
+#if defined(LCD_SUPPORT) || defined(HD44780_SUPPORT) || defined(AIP31068L_SUPPORT)
 #include "lcd.h"
+#endif
+#if defined(OLED_SUPPORT)
+#include "oled.h"
 #endif
 #if defined(DEBUG)
 #include "debug.h"
@@ -93,9 +96,14 @@ void setup() {
   spi_init();
 #endif
 
-#if defined(LCD_SUPPORT)
+#if defined(LCD_SUPPORT) || defined(HD44780_SUPPORT) || defined(AIP31068L_SUPPORT)
   serial_write((const uint8_t *)"lcd: initializing lcd module\n", 32);
   lcd_init();
+#endif
+
+#if defined(OLED_SUPPORT)
+  serial_write((const uint8_t *)"oled: initializing oled module\n", 33);
+  oled_init();
 #endif
 
 #if defined(DEBUG)
@@ -120,9 +128,18 @@ void setup() {
   cmd_register_handler(0x0220, 0x022F, spi_cmd_handler);        // SPI control
 #endif
 #if defined(LCD_SUPPORT)
-  cmd_register_handler(0x0020, 0x002F, lcd_cmd_handler);        // LCD control
+  cmd_register_handler(0x0020, 0x002F, st7735_cmd_handler);     // ST7735 control
 #endif
-  cmd_register_handler(0xFFFC, 0xFFFF, firmware_cmd_handler);   // firmware-level cmds like reset, etc.
+#if defined(HD44780_SUPPORT)
+  cmd_register_handler(0x0030, 0x003F, hd44780_cmd_handler);    // HD44780 control
+#endif
+#if defined(AIP31068L_SUPPORT)
+  cmd_register_handler(0x0040, 0x004F, aip31068l_cmd_handler);  // AiP31068L control
+#endif
+#if defined(OLED_SUPPORT)
+  cmd_register_handler(0x0050, 0x005F, ssd1306_cmd_handler);    // SSD1306 control
+#endif
+  cmd_register_handler(0xFFFC, 0xFFFF, firmware_cmd_handler);   // firmware-level cmds like reset, firmware feedback, etc.
 
   // send a ready banner so host can handshake and avoid race with bootloader
   const char *ready = "GPIO_READY\r\n";
@@ -144,7 +161,8 @@ int calc_delay() {
   if (millis() - millis_last_cmd < 1000) return 50;
   if (millis() - millis_last_cmd < 2500) return 100;
   if (millis() - millis_last_cmd < 5000) return 250;
-  return 500;
+  if (millis() - millis_last_cmd < 10000) return 500;
+  return 1000;
 }
 
 void loop() {

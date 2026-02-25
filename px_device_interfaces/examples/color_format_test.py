@@ -85,7 +85,7 @@ def main():
     
     # Setup display (same as st7735_spi_demo)
     spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=40_000_000)
-    lcd = GPIO_Lib.Display(
+    lcd = GPIO_Lib.Display.DisplayST7735(
         gpio_lib=gpio,
         spi=spi,
         cs_pin=4,
@@ -120,7 +120,7 @@ def main():
     for i in range(8):
         print(f"  {transform_names[i]}")
         bitmap = create_test_bitmap(i)
-        lcd.write_bitmap(bitmap, x_pos=0, y_pos=y_pos, x_len=90, y_len=20)
+        lcd.write_bitmap(bitmap, x=0, y=y_pos, width=90, height=20)
         y_pos += 20
         time.sleep(0.3)
     

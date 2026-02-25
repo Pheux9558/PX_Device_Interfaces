@@ -54,6 +54,8 @@ build_flag_list = [
     'SPI',
     'UART',
     'LCD',
+    'HD44780',
+    'AIP31068L',
     'IPS',
     'TOUCHSCREEN',
     'WIFI',
@@ -288,14 +290,29 @@ def update_platformio_ini(device: dict) -> bool:
             except Exception:
                 pass
         
-        # Conditionally add display libraries only if LCD or IPS support is enabled
-        lib_deps_lines = []
+        # Conditionally add display libraries based on enabled flags
+        lib_deps = []
+        
+        # TFT displays (ST7735/ST7789) require GFX and ST7735 libraries
         if 'LCD' in device_flags or 'IPS' in device_flags:
-            lib_deps_lines = [
-                'lib_deps =',
-                '\tadafruit/Adafruit GFX Library@^1.11.9',
-                '\tadafruit/Adafruit ST7735 and ST7789 Library@^1.9.3',
-            ]
+            if 'adafruit/Adafruit GFX Library@^1.11.9' not in lib_deps:
+                lib_deps.append('adafruit/Adafruit GFX Library@^1.11.9')
+            lib_deps.append('adafruit/Adafruit ST7735 and ST7789 Library@^1.9.3')
+        
+        # OLED displays (SSD1306) require GFX and SSD1306 libraries
+        if 'OLED' in device_flags:
+            if 'adafruit/Adafruit GFX Library@^1.11.9' not in lib_deps:
+                lib_deps.append('adafruit/Adafruit GFX Library@^1.11.9')
+            lib_deps.append('adafruit/Adafruit SSD1306@^2.5.7')
+        
+        # Character LCDs (HD44780, AiP31068L) require LiquidCrystal_I2C
+        if 'HD44780' in device_flags or 'AIP31068L' in device_flags:
+            lib_deps.append('marcoschwartz/LiquidCrystal_I2C@^1.1.4')
+        
+        # Build lib_deps lines for INI file
+        lib_deps_lines = []
+        if lib_deps:
+            lib_deps_lines = ['lib_deps ='] + [f'\t{lib}' for lib in lib_deps]
         
         lines = [
             '[platformio]',

@@ -61,7 +61,7 @@ def main() -> None:
 
 
     spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=40_000_000)
-    lcd = GPIO_Lib.Display(
+    lcd = GPIO_Lib.Display.DisplayST7735(
         gpio_lib=gpio,
         spi=spi,
         cs_pin=4,
@@ -77,7 +77,6 @@ def main() -> None:
 
     time.sleep(1)  # wait for device to reset
 
-    """
     lcd.set_rotation(3)
     lcd.clear()
     lcd.write_text("Hello, World!", x=5, y=5)
@@ -178,7 +177,7 @@ def main() -> None:
         lcd.write_bitmap(bitmap, x=0, y=0, width=size, height=size)
         lcd.write_text(f"{size}x{size}", x=5, y=5)
         # time.sleep(.25)
-    """
+
 
     # rotate to 3, start with widht of 80 and increment it up to 160
     def incremental_width_test():
@@ -197,7 +196,6 @@ def main() -> None:
             lcd.write_text(f"{width}x80", x=5, y=5)
             time.sleep(0.01)
 
-    incremental_width_test()
 
 
     # fill line for line with random colors until we fill the whole screen, to test the streaming bitmap interface and random row order
