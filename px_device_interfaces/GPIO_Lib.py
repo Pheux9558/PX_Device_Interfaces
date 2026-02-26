@@ -58,8 +58,8 @@ class PinMode(IntEnum):
     ANALOG_OUTPUT = 0x08
     ANALOG_INPUT = 0x09
 # ANALOG MAX command to set the max value for analog writes/reads in GPIO_Lib and on the device
-CMD_ANALOG_MAX                      = 0x000A # Set analog max value, payload: (max value[e.g. 255 or 1023. depending on board ADC resolution]) 
-CMD_ANALOG_TOLERANCE                = 0x000B # Set analog read tolerance, payload: (tolerance value[e.g. 4]) update only if change exceeds this value
+CMD_ANALOG_READ_RESOLUTION          = 0x000A # Set analog resolution (ADC BITS), payload: (resolution in bits, e.g. 10 for 10-bit ADC)
+CMD_ANALOG_READ_TOLERANCE           = 0x000B # Set analog read tolerance, payload: (tolerance value[e.g. 4]) update only if change exceeds this value
 
 # Command definitions for GPIO operations (0x001X)
 CMD_DIGITAL_READ                    = 0x0010 # Digital read, payload: (pin number) , returns: (value)
@@ -2205,9 +2205,14 @@ class GPIO_Lib:
             return bool(entry["value"])
         else:
             pin_num = int(pin)
+            # Try name lookup first, then fall back to numeric string lookup
             name = self.pin_to_name.get(pin_num)
             if name and name in self.inputs:
                 return bool(self.inputs[name]["value"])
+            # Fall back to direct numeric key lookup
+            str_key = str(pin_num)
+            if str_key in self.inputs:
+                return bool(self.inputs[str_key]["value"])
             # fallback: unknown pin
             return False
 
@@ -2226,11 +2231,12 @@ class GPIO_Lib:
         self.outputs[name]["value"] = int(val)
         if self.auto_io and self._transport and self._transport.is_connected:
             cmd = CMD_ANALOG_WRITE
-            # encode pin and value
+            # encode pin and 16-bit value (little-endian)
+            val_int = int(val)
             if pin_num <= 0xFF:
-                payload = bytes([pin_num & 0xFF, int(val) & 0xFF])
+                payload = bytes([pin_num & 0xFF, val_int & 0xFF, (val_int >> 8) & 0xFF])
             else:
-                payload = bytes([pin_num & 0xFF, (pin_num >> 8) & 0xFF, int(val) & 0xFF])
+                payload = bytes([pin_num & 0xFF, (pin_num >> 8) & 0xFF, val_int & 0xFF, (val_int >> 8) & 0xFF])
             packet = self._build_packet(cmd, payload)
             self._add_packet_to_send_queue(packet, wait_ack=False)
 
@@ -2245,9 +2251,14 @@ class GPIO_Lib:
             return int(entry["value"])
         else:
             pin_num = int(pin)
+            # Try name lookup first, then fall back to numeric string lookup
             name = self.pin_to_name.get(pin_num)
             if name and name in self.inputs:
                 return int(self.inputs[name]["value"])
+            # Fall back to direct numeric key lookup
+            str_key = str(pin_num)
+            if str_key in self.inputs:
+                return int(self.inputs[str_key]["value"])
             return 0
 
     def set_analog_threshold(self, pin: int | str, threshold: int) -> None:
@@ -2264,7 +2275,13 @@ class GPIO_Lib:
             payload = bytes([pin_num & 0xFF, thresh])
         else:
             payload = bytes([pin_num & 0xFF, (pin_num >> 8) & 0xFF, thresh])
-        packet = self._build_packet(CMD_ANALOG_TOLERANCE, payload)
+        packet = self._build_packet(CMD_ANALOG_READ_TOLERANCE, payload)
+        self._add_packet_to_send_queue(packet, wait_ack=False)
+
+    def set_analog_read_resolution(self, bits: int) -> None:
+        resolution_bits = int(bits) & 0xFF
+        payload = bytes([resolution_bits])
+        packet = self._build_packet(CMD_ANALOG_READ_RESOLUTION, payload)
         self._add_packet_to_send_queue(packet, wait_ack=False)
 
     def servo_write(self, index: int, val: int) -> None:
@@ -2295,13 +2312,18 @@ class GPIO_Lib:
             val = int(entry["value"])
             if entry.get("type") == "analog":
                 cmd = CMD_ANALOG_WRITE
+                # analog uses 2 bytes for value
+                if pin_idx <= 0xFF:
+                    payload = bytes([pin_idx & 0xFF, val & 0xFF, (val >> 8) & 0xFF])
+                else:
+                    payload = bytes([pin_idx & 0xFF, (pin_idx >> 8) & 0xFF, val & 0xFF, (val >> 8) & 0xFF])
             else:
                 cmd = CMD_DIGITAL_WRITE
-            # encode pin index as 1 or 2 bytes then append value
-            if pin_idx <= 0xFF:
-                payload = bytes([pin_idx & 0xFF, val & 0xFF])
-            else:
-                payload = bytes([pin_idx & 0xFF, (pin_idx >> 8) & 0xFF, val & 0xFF])
+                # digital uses 1 byte for value
+                if pin_idx <= 0xFF:
+                    payload = bytes([pin_idx & 0xFF, val & 0xFF])
+                else:
+                    payload = bytes([pin_idx & 0xFF, (pin_idx >> 8) & 0xFF, val & 0xFF])
             self._add_packet_to_send_queue(self._build_packet(cmd, payload), wait_ack=False)
             time.sleep(0.0005)
         # request reads for inputs: send P1 read requests (empty payload meaning 'give value')
@@ -2397,17 +2419,17 @@ class GPIO_Lib:
             _update_pin(pin, val, self.outputs, "digital")
             return
 
-        # Analog read responses
-        if cmd == CMD_ANALOG_READ and len(payload) >= 2:
-            pin, val = payload[0], payload[1]
+        # Analog read responses (16-bit value)
+        if cmd == CMD_ANALOG_READ and len(payload) >= 3:
+            pin, val = payload[0], payload[1] | (payload[2] << 8)
             _update_pin(pin, val, self.inputs, "analog")
             if self.debug_enabled:
                 print(f"analog input update pin={pin} val={val}")
             return
 
-        # Analog write echo/update
-        if cmd == CMD_ANALOG_WRITE and len(payload) >= 2:
-            pin, val = payload[0], payload[1]
+        # Analog write echo/update (16-bit value)
+        if cmd == CMD_ANALOG_WRITE and len(payload) >= 3:
+            pin, val = payload[0], payload[1] | (payload[2] << 8)
             _update_pin(pin, val, self.outputs, "analog")
             return
 

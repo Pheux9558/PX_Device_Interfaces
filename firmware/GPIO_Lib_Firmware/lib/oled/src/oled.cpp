@@ -105,7 +105,7 @@ static bool ssd1306_init_i2c(ssd1306_instance_t *inst) {
 
     inst->display->clearDisplay();
     inst->display->setTextSize(1);
-    inst->display->setTextColor(SSD1306_WHITE);
+    inst->display->setTextColor(SSD1306_WHITE, SSD1306_BLACK);
     inst->display->display();
     return true;
 }
@@ -122,7 +122,7 @@ static bool ssd1306_init_spi(ssd1306_instance_t *inst) {
 
     inst->display->clearDisplay();
     inst->display->setTextSize(1);
-    inst->display->setTextColor(SSD1306_WHITE);
+    inst->display->setTextColor(SSD1306_WHITE, SSD1306_BLACK);
     inst->display->display();
     return true;
 }

@@ -105,10 +105,11 @@ static void gpio_send_digital_update(uint16_t pin, uint8_t value) {
 }
 
 static void gpio_send_analog_update(uint16_t pin, uint16_t value) {
-	uint8_t resp[2];
+	uint8_t resp[3];
 	resp[0] = (uint8_t)(pin & 0xFF);
 	resp[1] = (uint8_t)(value & 0xFF);
-	cmd_send_response(0x0012, resp, 2);
+	resp[2] = (uint8_t)((value >> 8) & 0xFF);
+	cmd_send_response(0x0012, resp, 3);
 }
 
 static digital_input_t *gpio_register_digital_input(uint16_t pin) {
@@ -295,6 +296,14 @@ bool gpio_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
 			}
 			cmd_send_ok();
 			return true;
+		case 0x000A: // analog read resolution (ADC bits)
+			if (len < 1) { cmd_send_error(); return true; }
+			{
+				uint8_t bits = payload[0];
+				analogReadResolution(bits);
+				cmd_send_ok();
+			}
+			return true;
 		case 0x000B: // analog tolerance / threshold
 			if (len < 1) { cmd_send_error(); return true; }
 			if (len == 1) {
@@ -339,11 +348,19 @@ bool gpio_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
 				gpio_send_analog_update(pin, (uint16_t)v);
 			}
 			return true;
-		case 0x0013: // analog write
-			if (len < 2) { cmd_send_error(); return true; }
+		case 0x0013: // analog write (16-bit value)
+			if (len < 3) { cmd_send_error(); return true; }
 			{
-				uint16_t pin = (len >= 3) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				uint16_t val = payload[len-1];
+				uint16_t pin, val;
+				if (len >= 4) {
+					// 2-byte pin, 2-byte value
+					pin = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
+					val = (uint16_t)payload[2] | ((uint16_t)payload[3] << 8);
+				} else {
+					// 1-byte pin, 2-byte value
+					pin = payload[0];
+					val = (uint16_t)payload[1] | ((uint16_t)payload[2] << 8);
+				}
 				gpio_analog_write(pin, val);
 				cmd_send_ok();
 			}
