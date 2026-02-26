@@ -5,6 +5,7 @@
 #if defined(FASTLED_SUPPORT)
 #if defined(ARDUINO)
 #include <Arduino.h>
+#include <Adafruit_NeoPixel.h>
 #else
 #include <string.h>
 #include <stdio.h>
@@ -15,7 +16,7 @@
 #endif
 
 #if defined(FASTLED_SUPPORT)
-// Simple FastLED support implementation with APA102 (bit-banged SPI).
+// FastLED support implementation with APA102 (bit-banged) and WS2812 (Adafruit_NeoPixel).
 // Supports multiple instances identified by a 16-bit identifier.
 
 #define MAX_FASTLED_INSTANCES 4
@@ -23,11 +24,12 @@
 struct fastled_instance_t {
     uint16_t id;
     uint16_t data_pin;
-    uint16_t clock_pin;
+    uint16_t clock_pin; // only for APA102
     uint8_t  type; // FASTLED_TYPE_*
     uint16_t num_leds;
     uint8_t *buf; // RGB bytes (num_leds * 3)
-    uint8_t brightness; // 0-255 brightness (host scale)
+    uint8_t brightness; // 0-255 brightness
+    Adafruit_NeoPixel *neopixel; // for WS2812
     bool used;
 };
 
@@ -49,6 +51,7 @@ static struct fastled_instance_t *alloc_instance(uint16_t id) {
             g_instances[i].num_leds = 0;
             g_instances[i].buf = NULL;
             g_instances[i].brightness = 0xFF;
+            g_instances[i].neopixel = NULL;
             return &g_instances[i];
         }
     }
@@ -60,6 +63,10 @@ static void free_instance(struct fastled_instance_t *inst) {
     if (inst->buf) {
         free(inst->buf);
         inst->buf = NULL;
+    }
+    if (inst->neopixel) {
+        delete inst->neopixel;
+        inst->neopixel = NULL;
     }
     inst->used = false;
 }
@@ -123,79 +130,74 @@ static void apa102_send(uint16_t data_pin, uint16_t clock_pin, const uint8_t *bu
 }
 #endif
 
+#if defined(ARDUINO)
+// WS2812 send using Adafruit_NeoPixel library
+static void ws2812_send(struct fastled_instance_t *inst) {
+    if (!inst || !inst->neopixel || !inst->buf) return;
+    
+    // Apply brightness scaling and copy to NeoPixel buffer
+    for (uint16_t i = 0; i < inst->num_leds; ++i) {
+        uint8_t r = (uint8_t)((uint16_t)inst->buf[i*3 + 0] * inst->brightness / 255);
+        uint8_t g = (uint8_t)((uint16_t)inst->buf[i*3 + 1] * inst->brightness / 255);
+        uint8_t b = (uint8_t)((uint16_t)inst->buf[i*3 + 2] * inst->brightness / 255);
+        inst->neopixel->setPixelColor(i, inst->neopixel->Color(r, g, b));
+    }
+    inst->neopixel->show();
+}
+#endif
+
 bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
     if (!payload && len) { cmd_send_error(); return true; }
     switch (cmd) {
-        case 0x0110: // CMD_FASTLED_CREATE
+        // APA102 commands (0x011X)
+        case 0x0110: // CMD_APA102_CREATE
             if (len < 2) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 if (find_instance(id)) { cmd_send_ok(); return true; }
-                if (!alloc_instance(id)) { cmd_send_error(); return true; }
+                struct fastled_instance_t *inst = alloc_instance(id);
+                if (!inst) { cmd_send_error(); return true; }
+                inst->type = FASTLED_TYPE_APA102;
                 cmd_send_ok();
             }
             return true;
-        case 0x0111: // CMD_FASTLED_SET_DATA_PIN
-            if (len < 3) { cmd_send_error(); return true; }
+        case 0x0111: // CMD_APA102_SETUP
+            // payload: id(2) + data_pin + clock_pin + num_leds(2)
+            if (len < 6) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint16_t pin = (uint16_t)payload[2];
+                uint16_t data_pin = (uint16_t)payload[2];
+                uint16_t clock_pin = (uint16_t)payload[3];
+                uint16_t num_leds = (uint16_t)payload[4] | ((uint16_t)payload[5] << 8);
+                
                 struct fastled_instance_t *inst = find_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
-                inst->data_pin = pin;
-                cmd_send_ok();
-            }
-            return true;
-        case 0x0112: // CMD_FASTLED_SET_CLOCK_PIN
-            if (len < 3) { cmd_send_error(); return true; }
-            {
-                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint16_t pin = (uint16_t)payload[2];
-                struct fastled_instance_t *inst = find_instance(id);
-                if (!inst) { cmd_send_error(); return true; }
-                inst->clock_pin = pin;
-                cmd_send_ok();
-            }
-            return true;
-        case 0x0113: // CMD_FASTLED_SET_LED_TYPE
-            if (len < 3) { cmd_send_error(); return true; }
-            {
-                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint8_t type = payload[2];
-                struct fastled_instance_t *inst = find_instance(id);
-                if (!inst) { cmd_send_error(); return true; }
-                inst->type = type;
-                cmd_send_ok();
-            }
-            return true;
-        case 0x0114: // CMD_FASTLED_SET_NUM_LEDS
-            if (len < 4) { cmd_send_error(); return true; }
-            {
-                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint16_t num = (uint16_t)payload[2] | ((uint16_t)payload[3] << 8);
-                struct fastled_instance_t *inst = find_instance(id);
-                if (!inst) { cmd_send_error(); return true; }
+                
+                inst->data_pin = data_pin;
+                inst->clock_pin = clock_pin;
+                inst->num_leds = num_leds;
+                
+                // Allocate buffer
                 if (inst->buf) { free(inst->buf); inst->buf = NULL; }
-                if (num > 0) {
-                    inst->buf = (uint8_t*)malloc((size_t)num * 3);
+                if (num_leds > 0) {
+                    inst->buf = (uint8_t*)malloc((size_t)num_leds * 3);
                     if (!inst->buf) { inst->num_leds = 0; cmd_send_error(); return true; }
-                    memset(inst->buf, 0, (size_t)num * 3);
+                    memset(inst->buf, 0, (size_t)num_leds * 3);
                 }
-                inst->num_leds = num;
+                
                 cmd_send_ok();
             }
             return true;
-        case 0x0115: // CMD_FASTLED_SHOW
+        case 0x0115: // CMD_APA102_SHOW
             if (len < 2) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 struct fastled_instance_t *inst = find_instance(id);
-                if (!inst) { cmd_send_error(); return true; }
+                if (!inst || inst->type != FASTLED_TYPE_APA102) { cmd_send_error(); return true; }
                 const uint8_t *data = &payload[2];
                 uint16_t data_len = (uint16_t)(len - 2);
                 uint16_t expected = (uint16_t)(inst->num_leds * 3);
                 if (data_len < expected) {
-                    // partial updates allowed: copy min
                     uint16_t to_copy = data_len < expected ? data_len : expected;
                     if (inst->buf && to_copy) memcpy(inst->buf, data, to_copy);
                 } else {
@@ -203,27 +205,111 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 }
 
 #if defined(ARDUINO)
-                if (inst->type == FASTLED_TYPE_APA102) {
-                    apa102_send(inst->data_pin, inst->clock_pin, inst->buf, inst->num_leds, inst->brightness);
-                } else {
-                    // WS2812 or other types not implemented yet
-                }
+                apa102_send(inst->data_pin, inst->clock_pin, inst->buf, inst->num_leds, inst->brightness);
 #endif
                 cmd_send_ok();
             }
             return true;
-        case 0x0116: // CMD_FASTLED_SET_BRIGHTNESS
-            // payload: id(2) + brightness(1)
+        case 0x0116: // CMD_APA102_SET_BRIGHTNESS
             if (len < 3) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint8_t brightness = payload[2];
                 struct fastled_instance_t *inst = find_instance(id);
-                if (!inst) { cmd_send_error(); return true; }
+                if (!inst || inst->type != FASTLED_TYPE_APA102) { cmd_send_error(); return true; }
                 inst->brightness = brightness;
 #if defined(ARDUINO)
-                if (inst->type == FASTLED_TYPE_APA102 && inst->buf && inst->num_leds > 0) {
+                if (inst->buf && inst->num_leds > 0) {
                     apa102_send(inst->data_pin, inst->clock_pin, inst->buf, inst->num_leds, inst->brightness);
+                }
+#endif
+                cmd_send_ok();
+            }
+            return true;
+        
+        // WS2812 commands (0x012X)
+        case 0x0120: // CMD_WS2812_CREATE
+            if (len < 2) { cmd_send_error(); return true; }
+            {
+                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
+                if (find_instance(id)) { cmd_send_ok(); return true; }
+                struct fastled_instance_t *inst = alloc_instance(id);
+                if (!inst) { cmd_send_error(); return true; }
+                inst->type = FASTLED_TYPE_WS2812;
+                cmd_send_ok();
+            }
+            return true;
+        case 0x0121: // CMD_WS2812_SETUP
+            // payload: id(2) + data_pin + num_leds(2)
+            if (len < 5) { cmd_send_error(); return true; }
+            {
+                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
+                uint16_t data_pin = (uint16_t)payload[2];
+                uint16_t num_leds = (uint16_t)payload[3] | ((uint16_t)payload[4] << 8);
+                
+                struct fastled_instance_t *inst = find_instance(id);
+                if (!inst) { cmd_send_error(); return true; }
+                
+                inst->data_pin = data_pin;
+                inst->num_leds = num_leds;
+                
+                // Allocate buffer
+                if (inst->buf) { free(inst->buf); inst->buf = NULL; }
+                if (num_leds > 0) {
+                    inst->buf = (uint8_t*)malloc((size_t)num_leds * 3);
+                    if (!inst->buf) { inst->num_leds = 0; cmd_send_error(); return true; }
+                    memset(inst->buf, 0, (size_t)num_leds * 3);
+                }
+                
+#if defined(ARDUINO)
+                // Initialize NeoPixel
+                if (inst->neopixel) {
+                    delete inst->neopixel;
+                }
+                inst->neopixel = new Adafruit_NeoPixel(num_leds, data_pin, NEO_GRB + NEO_KHZ800);
+                if (inst->neopixel) {
+                    inst->neopixel->begin();
+                    inst->neopixel->clear();
+                    inst->neopixel->show();
+                }
+#endif
+                
+                cmd_send_ok();
+            }
+            return true;
+        case 0x0125: // CMD_WS2812_SHOW
+            if (len < 2) { cmd_send_error(); return true; }
+            {
+                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
+                struct fastled_instance_t *inst = find_instance(id);
+                if (!inst || inst->type != FASTLED_TYPE_WS2812) { cmd_send_error(); return true; }
+                const uint8_t *data = &payload[2];
+                uint16_t data_len = (uint16_t)(len - 2);
+                uint16_t expected = (uint16_t)(inst->num_leds * 3);
+                if (data_len < expected) {
+                    uint16_t to_copy = data_len < expected ? data_len : expected;
+                    if (inst->buf && to_copy) memcpy(inst->buf, data, to_copy);
+                } else {
+                    if (inst->buf && expected) memcpy(inst->buf, data, expected);
+                }
+
+#if defined(ARDUINO)
+                ws2812_send(inst);
+#endif
+                cmd_send_ok();
+            }
+            return true;
+        case 0x0126: // CMD_WS2812_SET_BRIGHTNESS
+            if (len < 3) { cmd_send_error(); return true; }
+            {
+                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
+                uint8_t brightness = payload[2];
+                struct fastled_instance_t *inst = find_instance(id);
+                if (!inst || inst->type != FASTLED_TYPE_WS2812) { cmd_send_error(); return true; }
+                inst->brightness = brightness;
+#if defined(ARDUINO)
+                if (inst->buf && inst->num_leds > 0) {
+                    ws2812_send(inst);
                 }
 #endif
                 cmd_send_ok();

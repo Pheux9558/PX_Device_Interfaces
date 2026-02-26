@@ -13,6 +13,7 @@ const char *i2c_module_flags();
 #if defined(ARDUINO)
 struct i2c_instance_t {
     uint16_t id;
+    uint8_t wire_id;  // 0 for Wire, 1 for Wire1
     TwoWire *wire;
     int8_t scl;
     int8_t sda;

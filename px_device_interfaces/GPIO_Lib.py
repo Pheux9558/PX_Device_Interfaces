@@ -67,7 +67,7 @@ CMD_DIGITAL_WRITE                   = 0x0011 # Digital write, payload: (pin numb
 CMD_ANALOG_READ                     = 0x0012 # Analog read, payload: (pin number), returns: (value)
 CMD_ANALOG_WRITE                    = 0x0013 # Analog write, payload: (pin number, value[0-analog max])
 
-# region Display CMDs
+# region ST7735 LCD CMDs
 # Display commands by type
 # ST7735 LCD commands (0x002X)
 CMD_ST7735_CREATE                   = 0x0020 # Create ST7735 instance, payload: (identifier[2 bytes])
@@ -81,6 +81,7 @@ CMD_ST7735_SET_BACKLIGHT            = 0x002A # Set backlight brightness (0-255),
 CMD_ST7735_SET_CONTRAST             = 0x002B # Set contrast (if supported), payload: (identifier[2 bytes], contrast level)
 CMD_ST7735_SET_ROTATION             = 0x002C # Set rotation (0-3), payload: (identifier[2 bytes], rotation)
 
+# region HD44780 LCD CMDs
 # HD44780 character LCD commands (0x003X)
 CMD_HD44780_CREATE                  = 0x0030 # Create HD44780 instance, payload: (identifier[2 bytes])
 CMD_HD44780_SETUP_I2C               = 0x0031 # Setup HD44780 I2C, payload: (identifier[2 bytes], cols[2], rows[2], i2c identifier[2], i2c address[1])
@@ -89,6 +90,7 @@ CMD_HD44780_SET_CURSOR              = 0x0036 # Set cursor position, payload: (id
 CMD_HD44780_WRITE_TEXT              = 0x0037 # Write text, payload: (identifier[2 bytes], text bytes in UTF-8)
 CMD_HD44780_SET_BACKLIGHT           = 0x003A # Set backlight (0/1 or 0-255), payload: (identifier[2 bytes], level)
 
+# region AiP31068L LCD CMDs
 # AiP31068L character LCD commands (0x004X)
 CMD_AIP31068L_CREATE                = 0x0040 # Create AiP31068L instance, payload: (identifier[2 bytes])
 CMD_AIP31068L_SETUP_I2C             = 0x0041 # Setup AiP31068L I2C, payload: (identifier[2 bytes], cols[2], rows[2], i2c identifier[2], i2c address[1])
@@ -97,6 +99,7 @@ CMD_AIP31068L_SET_CURSOR            = 0x0046 # Set cursor position, payload: (id
 CMD_AIP31068L_WRITE_TEXT            = 0x0047 # Write text, payload: (identifier[2 bytes], text bytes in UTF-8)
 CMD_AIP31068L_SET_BACKLIGHT         = 0x004A # Set backlight (0/1 or 0-255), payload: (identifier[2 bytes], level)
 
+# region SSD1306 OLED CMDs
 # SSD1306 OLED commands (0x005X)
 CMD_SSD1306_CREATE                  = 0x0050 # Create SSD1306 instance, payload: (identifier[2 bytes])
 CMD_SSD1306_SETUP_I2C               = 0x0051 # Setup SSD1306 I2C, payload: (identifier[2 bytes], width[2], height[2], i2c identifier[2], i2c address[1])
@@ -124,19 +127,17 @@ CMD_SERVO_DETACH                    = 0x0101 # Detach servo from pin
 CMD_SERVO_WRITE                     = 0x0102 # Write angle to servo
 
 # region FastLed CMDs
-CMD_FASTLED_CREATE                  = 0x0110 # Create FastLED instance, payload: (identifier[2 bytes])
-CMD_FASTLED_SET_DATA_PIN            = 0x0111 # Set FastLED data pin, payload: (identifier[2 bytes], pin number)
-CMD_FASTLED_SET_CLOCK_PIN           = 0x0112 # Set FastLED clock pin, payload: (identifier[2 bytes], pin number)
-CMD_FASTLED_SET_LED_TYPE            = 0x0113 # Set FastLED LED type, payload: (identifier[2 bytes], led type[1 byte]) # types defined below
-CMD_FASTLED_SET_NUM_LEDS            = 0x0114 # Set FastLED number of LEDs, payload: (identifier[2 bytes], number of LEDs[2 bytes])
-CMD_FASTLED_SHOW                    = 0x0115 # Stream LED data to FastLED and update display, payload: (identifier[2 bytes], LED color data bytes...)
-CMD_FASTLED_SET_BRIGHTNESS          = 0x0116 # Set FastLED brightness, payload: (identifier[2 bytes], brightness[1 byte])
+# APA102 (DotStar) LED commands (0x011X)
+CMD_APA102_CREATE                   = 0x0110 # Create APA102 instance, payload: (identifier[2 bytes])
+CMD_APA102_SETUP                    = 0x0111 # Setup APA102, payload: (identifier[2 bytes], data_pin, clock_pin, num_leds[2 bytes])
+CMD_APA102_SHOW                     = 0x0115 # Stream LED data to APA102 and update, payload: (identifier[2 bytes], LED RGB data bytes...)
+CMD_APA102_SET_BRIGHTNESS           = 0x0116 # Set APA102 brightness, payload: (identifier[2 bytes], brightness[1 byte])
 
-# FastLED LED type definitions in Enum-like class
-class FastLED_Types(IntEnum):
-    """FastLED LED type definitions."""
-    APA102 = 0x00                   # APA102 (DotStar) addressable RGB LEDs with separate clock and data lines
-    WS2812 = 0x01                   # WS2812 (NeoPixel) addressable RGB LEDs with single data line and timing-based protocol
+# WS2812 (NeoPixel) LED commands (0x012X)
+CMD_WS2812_CREATE                   = 0x0120 # Create WS2812 instance, payload: (identifier[2 bytes])
+CMD_WS2812_SETUP                    = 0x0121 # Setup WS2812, payload: (identifier[2 bytes], data_pin, num_leds[2 bytes])
+CMD_WS2812_SHOW                     = 0x0125 # Stream LED data to WS2812 and update, payload: (identifier[2 bytes], LED RGB data bytes...)
+CMD_WS2812_SET_BRIGHTNESS           = 0x0126 # Set WS2812 brightness, payload: (identifier[2 bytes], brightness[1 byte])
 
 
 class UARTParity(IntEnum):
@@ -184,6 +185,7 @@ CMD_I2C_READ                        = 0x0214 # I2C read, payload: (identifier[2 
 CMD_I2C_WRITE                       = 0x0215 # I2C write, payload: (identifier[2 bytes], device address[1 byte], data bytes...)
 CMD_I2C_WRITE_READ                  = 0x0216 # I2C write then read, payload: (identifier[2 bytes], device address[1 byte], write_len[2 bytes], write bytes..., read_len[2 bytes]), returns: (identifier[2 bytes], data bytes)
 CMD_I2C_FULL_ADDRESS_SCAN           = 0x021E # I2C full address scan, payload: (identifier[2 bytes]), returns: (identifier[2 bytes], list of device addresses found[1 byte each])
+CMD_I2C_SET_BUS                     = 0x021D # Set I2C bus (Wire=0 or Wire1=1), payload: (identifier[2 bytes], bus[1 byte])
 # [ ] TODO Save I2C settings command to save I2C configuration to non-volatile memory for automatic setup on startup
 CMD_I2C_SAVE_SETTINGS               = 0x021F # Save I2C settings to non-volatile memory to create it on startup, payload: (identifier[2 bytes])
 
@@ -927,110 +929,173 @@ class GPIO_Lib:
 
 
 
-    class FastLED:        
-        """FastLED peripheral handler."""
-        total_instances = 0
-        def __init__(self, gpio_lib: GPIO_Lib, led_type: FastLED_Types, data_pin: int, clock_pin: int, led_count: int) -> None:
-            self.gpio_lib = gpio_lib
-            self.identifier = gpio_lib.FastLED.total_instances
-            gpio_lib.FastLED.total_instances += 1
+    class FastLED:
+        """FastLED type namespace (APA102, WS2812)."""
 
-            self.led_type: FastLED_Types = led_type
-            self.data_pin: int = data_pin
-            self.clock_pin: int = clock_pin
-            self.led_count: int = led_count
-            self.led_data: bytearray = bytearray()
+        class FastLEDAPA102:
+            """APA102 (DotStar) LED strip handler - requires data and clock pins."""
+            total_instances = 0
 
-            self._setup_complete: bool = False
+            def __init__(
+                self,
+                gpio_lib: GPIO_Lib,
+                data_pin: int,
+                clock_pin: int,
+                led_count: int,
+            ) -> None:
+                self.gpio_lib = gpio_lib
+                self.identifier = gpio_lib.FastLED.FastLEDAPA102.total_instances
+                gpio_lib.FastLED.FastLEDAPA102.total_instances += 1
 
-        def setup(self) -> None:
-            """Send FastLED configuration commands to the device."""
-            print("FastLED setup called")
+                self.data_pin = int(data_pin)
+                self.clock_pin = int(clock_pin)
+                self.led_count = int(led_count)
 
-            # Sanyti check GPIO_Lib transport
-            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
-                raise RuntimeError("FastLED: GPIO_Lib transport not connected")
+                self._setup_complete = False
+
+            def setup(self) -> None:
+                """Send APA102 configuration commands to the device."""
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("FastLEDAPA102: GPIO_Lib transport not connected")
+                
+                if self.data_pin < 0 or self.data_pin > 0xFFFF:
+                    raise ValueError("FastLEDAPA102: data_pin out of range")
+                if self.clock_pin < 0 or self.clock_pin > 0xFFFF:
+                    raise ValueError("FastLEDAPA102: clock_pin out of range")
+                if self.led_count <= 0 or self.led_count > 0xFFFF:
+                    raise ValueError("FastLEDAPA102: led_count out of range")
+
+                # Create instance
+                payload = self.identifier.to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_APA102_CREATE, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+                # Setup with all parameters
+                payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + self.gpio_lib._encode_pin(self.data_pin)
+                    + self.gpio_lib._encode_pin(self.clock_pin)
+                    + int(self.led_count).to_bytes(2, "little")
+                )
+                packet = self.gpio_lib._build_packet(CMD_APA102_SETUP, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+                self._setup_complete = True
             
-            # Validate parameters
-            if not isinstance(self.led_type, FastLED_Types):
-                raise ValueError("FastLED: invalid led_type")
-            if self.data_pin < 0 or self.data_pin > 0xFFFF:
-                raise ValueError("FastLED: data_pin out of range")
-            if self.clock_pin < 0 or self.clock_pin > 0xFFFF:
-                raise ValueError("FastLED: clock_pin out of range")
-            if self.led_count <= 0 or self.led_count > 0xFFFF:
-                raise ValueError("FastLED: num_leds out of range")
+            def send_led_data(self, led_data: list[tuple[int, int, int]]) -> None:
+                """Send LED data to the device for updating the LED strip."""
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("FastLEDAPA102: GPIO_Lib transport not connected")
 
-            # Create instance
-            payload = self.identifier.to_bytes(2, "little")
-            packet = self.gpio_lib._build_packet(CMD_FASTLED_CREATE, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                if not self._setup_complete:
+                    self.setup()
 
-            # Set data pin
-            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.data_pin)
-            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_DATA_PIN, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                if len(led_data) != self.led_count:
+                    raise ValueError("FastLEDAPA102: led_data length does not match number of LEDs")
+                
+                # Prepare LED data bytes (RGB format)
+                led_bytes = bytearray()
+                for r, g, b in led_data:
+                    if r < 0 or r > 255 or g < 0 or g > 255 or b < 0 or b > 255:
+                        raise ValueError("FastLEDAPA102: LED color values must be in range 0-255")
+                    led_bytes.extend(bytes([r & 0xFF, g & 0xFF, b & 0xFF]))
 
-            # Set clock pin
-            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.clock_pin)
-            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_CLOCK_PIN, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
-
-            # Set LED type
-            payload = self.identifier.to_bytes(2, "little") + bytes([self.led_type.value])
-            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_LED_TYPE, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
-
-            # Set number of LEDs
-            payload = self.identifier.to_bytes(2, "little") + int(self.led_count).to_bytes(2, "little")
-            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_NUM_LEDS, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
-
-            self._setup_complete = True
-        
-        def send_led_data(self, led_data: list[tuple[int, int, int]]) -> None:
-            """Send LED data to the device for updating the LED strip."""
-            # Sanyti check GPIO_Lib transport
-            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
-                raise RuntimeError("FastLED: GPIO_Lib transport not connected")
-
-            # Ensure setup is complete
-            if not self._setup_complete:
-                self.setup()
-
-            # Validate led_data
-            if len(led_data) != self.led_count:
-                raise ValueError("FastLED: led_data length does not match number of LEDs")
+                # Send LED data
+                payload = self.identifier.to_bytes(2, "little") + led_bytes
+                packet = self.gpio_lib._build_packet(CMD_APA102_SHOW, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
             
-            # Prepare LED data bytes (RGB format)
-            led_bytes = bytearray()
-            for r, g, b in led_data:
-                if r < 0 or r > 255 or g < 0 or g > 255 or b < 0 or b > 255:
-                    raise ValueError("FastLED: LED color values must be in range 0-255")
-                led_bytes.extend(bytes([r & 0xFF, g & 0xFF, b & 0xFF]))
-            
-            # Final sanity check
-            if len(led_bytes) != self.led_count * 3:
-                raise ValueError("FastLED: led_data length does not match number of LEDs")
+            def set_brightness(self, brightness: int) -> None:
+                """Set the brightness for the LED strip (0-255)."""
+                if brightness < 0 or brightness > 255:
+                    raise ValueError("FastLEDAPA102: brightness must be in range 0-255")
+                
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("FastLEDAPA102: GPIO_Lib transport not connected")
 
-            # Send LED data
-            payload = self.identifier.to_bytes(2, "little") + led_bytes
-            packet = self.gpio_lib._build_packet(CMD_FASTLED_SHOW, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
-        
-        def setBrightness(self, brightness: int) -> None:
-            """Set the brightness for the LED strip (0-255)."""
-            if brightness < 0 or brightness > 255:
-                raise ValueError("FastLED: brightness must be in range 0-255")
-            
-            # Sanyti check GPIO_Lib transport
-            if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
-                raise RuntimeError("FastLED: GPIO_Lib transport not connected")
+                payload = self.identifier.to_bytes(2, "little") + bytes([brightness & 0xFF])
+                packet = self.gpio_lib._build_packet(CMD_APA102_SET_BRIGHTNESS, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-            # Send brightness command
-            payload = self.identifier.to_bytes(2, "little") + bytes([brightness & 0xFF])
-            packet = self.gpio_lib._build_packet(CMD_FASTLED_SET_BRIGHTNESS, payload)
-            self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+        class FastLEDWS2812:
+            """WS2812 (NeoPixel) LED strip handler - requires data pin only."""
+            total_instances = 0
+
+            def __init__(
+                self,
+                gpio_lib: GPIO_Lib,
+                data_pin: int,
+                led_count: int,
+            ) -> None:
+                self.gpio_lib = gpio_lib
+                self.identifier = gpio_lib.FastLED.FastLEDWS2812.total_instances
+                gpio_lib.FastLED.FastLEDWS2812.total_instances += 1
+
+                self.data_pin = int(data_pin)
+                self.led_count = int(led_count)
+
+                self._setup_complete = False
+
+            def setup(self) -> None:
+                """Send WS2812 configuration commands to the device."""
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("FastLEDWS2812: GPIO_Lib transport not connected")
+                
+                if self.data_pin < 0 or self.data_pin > 0xFFFF:
+                    raise ValueError("FastLEDWS2812: data_pin out of range")
+                if self.led_count <= 0 or self.led_count > 0xFFFF:
+                    raise ValueError("FastLEDWS2812: led_count out of range")
+
+                # Create instance
+                payload = self.identifier.to_bytes(2, "little")
+                packet = self.gpio_lib._build_packet(CMD_WS2812_CREATE, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+                # Setup with all parameters
+                payload = (
+                    self.identifier.to_bytes(2, "little")
+                    + self.gpio_lib._encode_pin(self.data_pin)
+                    + int(self.led_count).to_bytes(2, "little")
+                )
+                packet = self.gpio_lib._build_packet(CMD_WS2812_SETUP, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+                self._setup_complete = True
+            
+            def send_led_data(self, led_data: list[tuple[int, int, int]]) -> None:
+                """Send LED data to the device for updating the LED strip."""
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("FastLEDWS2812: GPIO_Lib transport not connected")
+
+                if not self._setup_complete:
+                    self.setup()
+
+                if len(led_data) != self.led_count:
+                    raise ValueError("FastLEDWS2812: led_data length does not match number of LEDs")
+                
+                # Prepare LED data bytes (RGB format)
+                led_bytes = bytearray()
+                for r, g, b in led_data:
+                    if r < 0 or r > 255 or g < 0 or g > 255 or b < 0 or b > 255:
+                        raise ValueError("FastLEDWS2812: LED color values must be in range 0-255")
+                    led_bytes.extend(bytes([r & 0xFF, g & 0xFF, b & 0xFF]))
+
+                # Send LED data
+                payload = self.identifier.to_bytes(2, "little") + led_bytes
+                packet = self.gpio_lib._build_packet(CMD_WS2812_SHOW, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+            
+            def set_brightness(self, brightness: int) -> None:
+                """Set the brightness for the LED strip (0-255)."""
+                if brightness < 0 or brightness > 255:
+                    raise ValueError("FastLEDWS2812: brightness must be in range 0-255")
+                
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("FastLEDWS2812: GPIO_Lib transport not connected")
+
+                payload = self.identifier.to_bytes(2, "little") + bytes([brightness & 0xFF])
+                packet = self.gpio_lib._build_packet(CMD_WS2812_SET_BRIGHTNESS, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
 
     class UART:
@@ -1123,9 +1188,10 @@ class GPIO_Lib:
         def __init__(
             self,
             gpio_lib: GPIO_Lib,
-            clock_pin: int,
-            data_pin: int,
+            clock_pin: int = -1,
+            data_pin: int = -1,
             frequency: int = 400_000,
+            i2c_bus: int = 0,
         ) -> None:
             self.gpio_lib = gpio_lib
             self.identifier = gpio_lib.I2C.total_instances
@@ -1134,25 +1200,32 @@ class GPIO_Lib:
             self.clock_pin = int(clock_pin)
             self.data_pin = int(data_pin)
             self.frequency = int(frequency)
+            self.i2c_bus = int(i2c_bus)
+
+            if self.i2c_bus not in (0, 1):
+                raise ValueError("I2C: i2c_bus must be 0 (Wire) or 1 (Wire1)")
 
             self._setup_complete = False
 
         def setup(self) -> None:
             if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
                 raise RuntimeError("I2C: GPIO_Lib transport not connected")
-            if self.clock_pin < 0 or self.clock_pin > 0xFFFF:
-                raise ValueError("I2C: clock_pin out of range")
-            if self.data_pin < 0 or self.data_pin > 0xFFFF:
-                raise ValueError("I2C: data_pin out of range")
 
             payload = self.identifier.to_bytes(2, "little")
             self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_CREATE, payload), wait_ack=False)
 
-            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.clock_pin)
-            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_PIN_CLOCK, payload), wait_ack=False)
+            # Send I2C bus selection (Wire=0, Wire1=1)
+            payload = self.identifier.to_bytes(2, "little") + bytes([self.i2c_bus & 0xFF])
+            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_BUS, payload), wait_ack=False)
 
-            payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.data_pin)
-            self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_PIN_DATA, payload), wait_ack=False)
+            # Only send pin configuration if pins are explicitly provided
+            if self.clock_pin >= 0:
+                payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.clock_pin)
+                self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_PIN_CLOCK, payload), wait_ack=False)
+
+            if self.data_pin >= 0:
+                payload = self.identifier.to_bytes(2, "little") + self.gpio_lib._encode_pin(self.data_pin)
+                self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_PIN_DATA, payload), wait_ack=False)
 
             payload = self.identifier.to_bytes(2, "little") + int(self.frequency).to_bytes(4, "little")
             self.gpio_lib._add_packet_to_send_queue(self.gpio_lib._build_packet(CMD_I2C_SET_FREQUENCY, payload), wait_ack=False)
@@ -1399,10 +1472,14 @@ class GPIO_Lib:
                 packet = self.gpio_lib._build_packet(CMD_ST7735_SET_CURSOR, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-            def write_text(self, text: str, x: int = 0, y: int = 0) -> None:
+            def write_text(self, text: str, x: Optional[int] = None, y: Optional[int] = None) -> None:
                 if not self._setup_complete:
                     self.setup()
-                self.set_cursor(x, y)
+                # Only set cursor if coordinates are explicitly provided
+                if x is not None or y is not None:
+                    cursor_x = x if x is not None else 0
+                    cursor_y = y if y is not None else 0
+                    self.set_cursor(cursor_x, cursor_y)
                 payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
                 packet = self.gpio_lib._build_packet(CMD_ST7735_WRITE_TEXT, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
@@ -1564,10 +1641,14 @@ class GPIO_Lib:
                 packet = self.gpio_lib._build_packet(CMD_HD44780_SET_CURSOR, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-            def write_text(self, text: str, col: int = 0, row: int = 0) -> None:
+            def write_text(self, text: str, col: Optional[int] = None, row: Optional[int] = None) -> None:
                 if not self._setup_complete:
                     self.setup()
-                self.set_cursor(col, row)
+                # Only set cursor if coordinates are explicitly provided
+                if col is not None or row is not None:
+                    cursor_col = col if col is not None else 0
+                    cursor_row = row if row is not None else 0
+                    self.set_cursor(cursor_col, cursor_row)
                 payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
                 packet = self.gpio_lib._build_packet(CMD_HD44780_WRITE_TEXT, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
@@ -1652,10 +1733,14 @@ class GPIO_Lib:
                 packet = self.gpio_lib._build_packet(CMD_AIP31068L_SET_CURSOR, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-            def write_text(self, text: str, col: int = 0, row: int = 0) -> None:
+            def write_text(self, text: str, col: Optional[int] = None, row: Optional[int] = None) -> None:
                 if not self._setup_complete:
                     self.setup()
-                self.set_cursor(col, row)
+                # Only set cursor if coordinates are explicitly provided
+                if col is not None or row is not None:
+                    cursor_col = col if col is not None else 0
+                    cursor_row = row if row is not None else 0
+                    self.set_cursor(cursor_col, cursor_row)
                 payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
                 packet = self.gpio_lib._build_packet(CMD_AIP31068L_WRITE_TEXT, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
@@ -1762,10 +1847,14 @@ class GPIO_Lib:
                 packet = self.gpio_lib._build_packet(CMD_SSD1306_SET_CURSOR, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
-            def write_text(self, text: str, x: int = 0, y: int = 0) -> None:
+            def write_text(self, text: str, x: Optional[int] = None, y: Optional[int] = None) -> None:
                 if not self._setup_complete:
                     self.setup()
-                self.set_cursor(x, y)
+                # Only set cursor if coordinates are explicitly provided
+                if x is not None or y is not None:
+                    cursor_x = x if x is not None else 0
+                    cursor_y = y if y is not None else 0
+                    self.set_cursor(cursor_x, cursor_y)
                 payload = self.identifier.to_bytes(2, "little") + text.encode(errors="replace")
                 packet = self.gpio_lib._build_packet(CMD_SSD1306_WRITE_TEXT, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)

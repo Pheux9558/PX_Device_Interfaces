@@ -101,47 +101,68 @@ def main() -> None:
     try:
         gpio.start()
         gpio.sync()
+        
 
-        i2c_0 = GPIO_Lib.I2C(gpio_lib=gpio, clock_pin=43, data_pin=44, frequency=400_000)
-        # Display 128x64 OLED (SSD1306)
-        display = GPIO_Lib.Display.DisplaySSD1306(
-            gpio_lib=gpio,
-            i2c=i2c_0,
-            address=0x3C,
-            width=128,
-            height=64,
-        )
+        # T-Dongle S3 I2C
+        i2c_0 = GPIO_Lib.I2C(gpio_lib=gpio, clock_pin=44, data_pin=43, frequency=400_000)
 
-        # # Display 128x32 OLED (SSD1306)
-        # display = GPIO_Lib.Display.DisplaySSD1306(
-        #     gpio_lib=gpio,
-        #     i2c=i2c_0,
-        #     address=0x3C,
-        #     width=128,
-        #     height=32,
-        # )
+        # Arduino Uno R4 WiFi I2C Qwiic port (Wire1 on SDA=8, SCL=9)
+        # i2c_0 = GPIO_Lib.I2C(gpio_lib=gpio, i2c_bus=0)
+        # i2c_1 = GPIO_Lib.I2C(gpio_lib=gpio, i2c_bus=1)
+
+        if True:
+            # Display 128x64 OLED (SSD1306)
+            display = GPIO_Lib.Display.DisplaySSD1306(
+                gpio_lib=gpio,
+                i2c=i2c_0,
+                address=0x3C,
+                width=128,
+                height=32,
+            )
+
+        if False:
+            # # Display 128x32 OLED (SSD1306)
+            display1 = GPIO_Lib.Display.DisplaySSD1306(
+                gpio_lib=gpio,
+                i2c=i2c_1,
+                address=0x3C,
+                width=128,
+                height=32,
+            )
+            display1.clear()
+            display1.set_cursor(0, 0)
+            display1.write_text("SSD1306 OK")
+            display1.set_cursor(0, 10)
+            display1.write_text("Wire bus 1")
 
 
 
         display.clear()
         display.set_cursor(0, 0)
         display.write_text("SSD1306 OK")
+
+
+        
         time.sleep(.5)
         
         # Test rotation
         display.set_rotation(1)
+        display.set_cursor(0, 0)
         display.clear()
         display.write_text("SSD1306 OK")
         time.sleep(.5)
         display.set_rotation(2)
+        display.set_cursor(0, 0)
         display.clear()
         display.write_text("SSD1306 OK")
         time.sleep(.5)
         display.set_rotation(3)
+        display.set_cursor(0, 0)
         display.clear()
         display.write_text("SSD1306 OK")
         time.sleep(.5)
         display.set_rotation(0)
+        display.set_cursor(0, 0)
         display.clear()
         display.write_text("SSD1306 OK")
         time.sleep(.5)
@@ -169,6 +190,8 @@ def main() -> None:
         display.write_bitmap_mono(bitmap_bytes, width=8, height=8, x=10, y=20)
         time.sleep(2)
         display.write_bitmap_mono(bytes(smiley_bitmap), width=8, height=8, x=10, y=20)
+        time.sleep(2)
+        display.clear()
 
 
     finally:

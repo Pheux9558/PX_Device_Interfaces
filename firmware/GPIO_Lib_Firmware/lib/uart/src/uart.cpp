@@ -11,7 +11,7 @@
 
 #define MAX_UART_INSTANCES 2
 
-struct uart_instance_t {
+struct gpio_lib_uart_instance_t {
     uint16_t id;
 #if defined(ESP32)
     HardwareSerial *serial;
@@ -28,7 +28,7 @@ struct uart_instance_t {
     bool used;
 };
 
-static uart_instance_t g_instances[MAX_UART_INSTANCES];
+static gpio_lib_uart_instance_t g_instances[MAX_UART_INSTANCES];
 
 #if defined(ESP32)
 static HardwareSerial *serial_for_id(uint16_t id) {
@@ -43,14 +43,14 @@ static Stream *serial_for_id(uint16_t id) {
 }
 #endif
 
-static uart_instance_t *uart_get_instance(uint16_t id) {
+static gpio_lib_uart_instance_t *uart_get_instance(uint16_t id) {
     for (int i = 0; i < MAX_UART_INSTANCES; ++i) {
         if (g_instances[i].used && g_instances[i].id == id) return &g_instances[i];
     }
     return NULL;
 }
 
-static uart_instance_t *uart_alloc_instance(uint16_t id) {
+static gpio_lib_uart_instance_t *uart_alloc_instance(uint16_t id) {
     for (int i = 0; i < MAX_UART_INSTANCES; ++i) {
         if (!g_instances[i].used) {
             g_instances[i].used = true;
@@ -91,7 +91,7 @@ static uint32_t uart_config_from_params(uint8_t data_bits, uint8_t parity, uint8
 }
 #endif
 
-static void uart_begin_if_ready(uart_instance_t *inst) {
+static void uart_begin_if_ready(gpio_lib_uart_instance_t *inst) {
     if (!inst) return;
 #if defined(ESP32)
     if (!inst->serial) return;
@@ -131,7 +131,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint8_t parity = payload[2];
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->parity = parity;
                 uart_begin_if_ready(inst);
@@ -143,7 +143,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint8_t stopbits = payload[2];
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->stop_bits = stopbits;
                 uart_begin_if_ready(inst);
@@ -155,7 +155,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint8_t databits = payload[2];
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->data_bits = databits;
                 uart_begin_if_ready(inst);
@@ -167,7 +167,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint8_t flow = payload[2];
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->flow = flow;
                 cmd_send_ok();
@@ -178,7 +178,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint32_t baud = (uint32_t)payload[2] | ((uint32_t)payload[3] << 8) | ((uint32_t)payload[4] << 16) | ((uint32_t)payload[5] << 24);
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->baud = baud;
                 uart_begin_if_ready(inst);
@@ -190,7 +190,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint16_t pin = (len >= 4) ? (uint16_t)payload[2] | ((uint16_t)payload[3] << 8) : payload[2];
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->tx_pin = (int8_t)pin;
                 uart_begin_if_ready(inst);
@@ -202,7 +202,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint16_t pin = (len >= 4) ? (uint16_t)payload[2] | ((uint16_t)payload[3] << 8) : payload[2];
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->rx_pin = (int8_t)pin;
                 uart_begin_if_ready(inst);
@@ -214,7 +214,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
                 uint16_t rlen = (uint16_t)payload[2] | ((uint16_t)payload[3] << 8);
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst || !inst->serial) { cmd_send_error(); return true; }
                 uint8_t *resp = (uint8_t *)malloc((size_t)rlen + 2);
                 if (!resp) { cmd_send_error(); return true; }
@@ -244,7 +244,7 @@ bool uart_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
             if (len < 3) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uart_instance_t *inst = uart_get_instance(id);
+                gpio_lib_uart_instance_t *inst = uart_get_instance(id);
                 if (!inst || !inst->serial) { cmd_send_error(); return true; }
                 const uint8_t *data = &payload[2];
                 uint16_t wlen = (uint16_t)(len - 2);

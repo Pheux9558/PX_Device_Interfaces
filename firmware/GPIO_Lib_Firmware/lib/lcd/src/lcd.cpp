@@ -18,6 +18,10 @@
 #include <LiquidCrystal_I2C.h>
 #endif
 
+#if !defined(SPI_SUPPORT)
+inline gpio_lib_spi_instance_t *spi_get_instance(uint16_t) { return NULL; }
+#endif
+
 #define MAX_LCD_INSTANCES 2
 // NOTE: Multiple display instances are not tested yet. Limit is 2 for now.
 

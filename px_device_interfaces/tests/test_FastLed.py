@@ -3,20 +3,20 @@
 
 import time
 from px_device_interfaces.transports.usb import USBTransportConfig
-from px_device_interfaces.GPIO_Lib import GPIO_Lib, FastLED_Types, PinMode
+from px_device_interfaces.GPIO_Lib import GPIO_Lib, PinMode
 
 
 delay = .2  # seconds
 
 
-delay_transition = 0.01  # seconds
+delay_transition = 0.05  # seconds
 steps_between_colors = -25
 
 
 
 port = '/dev/ttyACM0'  # Adjust as necessary for your system
 baud = 921600
-config = USBTransportConfig(port=port, baud=baud, debug=True)
+config = USBTransportConfig(port=port, baud=baud, debug=False)
 gpio_lib = GPIO_Lib(transport_config=config, require_ack_on_send=True, send_ack_timeout=.5)
 gpio_lib.start()
 
@@ -32,12 +32,11 @@ time.sleep(delay)
 gpio_lib.digital_write("Backlight LCD", True)  # Turn off backlight (active low)
 
 
-fast_led = gpio_lib.FastLED(
+fast_led = gpio_lib.FastLED.FastLEDAPA102(
     gpio_lib=gpio_lib,
     data_pin=40,
     clock_pin=39,
     led_count=1,
-    led_type=FastLED_Types.APA102,
 )
 
 
@@ -74,7 +73,7 @@ if True:
 
 
 
-if True:
+if False:
     for i in range(20):
         # Smoothly transition from red to green to blue every cycle
         for r in range(255, -1, steps_between_colors):
@@ -102,11 +101,11 @@ if True:
     fast_led.send_led_data([(255,255,255)])
 
     for brightness in range(255, -1, steps_between_colors):
-        fast_led.setBrightness(brightness)
+        fast_led.set_brightness(brightness)
         time.sleep(delay_transition)
 
     for brightness in range(0, 256, steps_between_colors * -1):
-        fast_led.setBrightness(brightness)
+        fast_led.set_brightness(brightness)
         time.sleep(delay_transition)
 
     fast_led.send_led_data(

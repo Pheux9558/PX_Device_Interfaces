@@ -116,7 +116,7 @@ void setup() {
   cmd_register_handler(0x0000, 0x001F, gpio_cmd_handler); // gpio setup & similar
   
 #if defined(FASTLED_SUPPORT)
-  cmd_register_handler(0x0110, 0x011F, fastled_cmd_handler);    // FastLED control
+  cmd_register_handler(0x0110, 0x012F, fastled_cmd_handler);    // FastLED control
 #endif
 #if defined(UART_SUPPORT)
   cmd_register_handler(0x0200, 0x020F, uart_cmd_handler);       // UART control

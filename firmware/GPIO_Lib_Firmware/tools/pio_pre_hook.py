@@ -83,7 +83,7 @@ if not os.path.isfile(SCANNER):
 # Check if we should skip execution (already ran in this session)
 if not acquire_lock():
     print(f"### Configurator already executed in this session. Skipping. Try again in {int(max_age - age)} seconds ###")
-    sys.exit(0)
+    sys.exit(1)
 
 try:
     # Detect if running from PlatformIO IDE vs user terminal

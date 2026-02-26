@@ -21,7 +21,14 @@ static TwoWire *wire_for_id(uint16_t id) {
     if (id == 1) return &g_wire1;
     return NULL;
 #else
+    // Arduino boards: try to support Wire and Wire1
     if (id == 0) return &Wire;
+    if (id == 1) {
+        // Wire1 is available on boards like Arduino Uno R4
+        // If not available, this will fail at link time, which is acceptable
+        extern TwoWire Wire1;
+        return &Wire1;
+    }
     return NULL;
 #endif
 }
@@ -38,7 +45,8 @@ static i2c_instance_t *alloc_instance(uint16_t id) {
         if (!g_instances[i].used) {
             g_instances[i].used = true;
             g_instances[i].id = id;
-            g_instances[i].wire = wire_for_id(id);
+            g_instances[i].wire_id = 0;  // Default to Wire (bus 0)
+            g_instances[i].wire = wire_for_id(0);
             g_instances[i].scl = -1;
             g_instances[i].sda = -1;
             g_instances[i].freq = 100000;
@@ -50,10 +58,12 @@ static i2c_instance_t *alloc_instance(uint16_t id) {
 
 static void i2c_begin_if_ready(i2c_instance_t *inst) {
     if (!inst || !inst->wire) return;
-    if (inst->scl < 0 || inst->sda < 0) return;
 #if defined(ESP32)
+    // ESP32: pins are required
+    if (inst->scl < 0 || inst->sda < 0) return;
     inst->wire->begin(inst->sda, inst->scl, inst->freq);
 #else
+    // Non-ESP32 Arduino boards: Wire/Wire1 use fixed pins, just call begin() with no args
     inst->wire->begin();
 #endif
 }
@@ -113,6 +123,21 @@ bool i2c_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 i2c_instance_t *inst = i2c_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->sda = (int8_t)pin;
+                i2c_begin_if_ready(inst);
+                cmd_send_ok();
+            }
+            return true;
+        case 0x021D: // CMD_I2C_SET_BUS (Wire=0 or Wire1=1)
+            if (len < 3) { cmd_send_error(); return true; }
+            {
+                uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
+                uint8_t bus_id = payload[2];
+                i2c_instance_t *inst = i2c_get_instance(id);
+                if (!inst) { cmd_send_error(); return true; }
+                if (bus_id > 1) { cmd_send_error(); return true; }  // Only 0 or 1 allowed
+                inst->wire_id = bus_id;
+                inst->wire = wire_for_id(bus_id);
+                if (!inst->wire) { cmd_send_error(); return true; }  // Wire bus not available
                 i2c_begin_if_ready(inst);
                 cmd_send_ok();
             }

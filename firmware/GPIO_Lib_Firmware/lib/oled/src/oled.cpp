@@ -17,10 +17,10 @@
 #if defined(OLED_SUPPORT)
 
 #if !defined(I2C_SUPPORT)
-static inline i2c_instance_t *i2c_get_instance(uint16_t) { return NULL; }
+inline i2c_instance_t *i2c_get_instance(uint16_t) { return NULL; }
 #endif
 #if !defined(SPI_SUPPORT)
-static inline gpio_lib_spi_instance_t *spi_get_instance(uint16_t) { return NULL; }
+inline gpio_lib_spi_instance_t *spi_get_instance(uint16_t) { return NULL; }
 #endif
 
 #define MAX_OLED_INSTANCES 2
