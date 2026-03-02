@@ -10,7 +10,7 @@ import queue
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from px_device_interfaces.transports import BaseTransport
+from px_device_interfaces.transports import BaseTransport, MockTransport
 from px_device_interfaces.transports.base import BaseTransportConfig
 
 
@@ -110,6 +110,21 @@ CMD_SSD1306_WRITE_TEXT              = 0x0057 # Write text, payload: (identifier[
 CMD_SSD1306_WRITE_BITMAP            = 0x0059 # Write monochrome bitmap (streamed), payload: (identifier[2], func[1], func-specific data)
 CMD_SSD1306_SET_BRIGHTNESS          = 0x005A # Set brightness/contrast, payload: (identifier[2 bytes], level)
 CMD_SSD1306_SET_ROTATION            = 0x005B # Set rotation (0-3), payload: (identifier[2 bytes], rotation)
+
+
+# region Uno R4 Matrix CMDs
+# Arduino Uno R4 Onboard red dot led matrix
+CMD_UNO_R4_MATRIX_CREATE            = 0x0060 # Create Uno R4 Matrix instance, (Only one Instance supported)
+CMD_UNO_R4_MATRIX_CLEAR             = 0x0061 # Clear the matrix, payload: none
+CMD_UNO_R4_MATRIX_SET_PIXEL         = 0x0062 # Set pixel color, payload: (x[1 byte], y[1 byte], v[1 byte]) # led has one color with start on or off
+CMD_UNO_R4_MATRIX_WRITE_TEXT        = 0x0063 # Write text, payload: (speed[1 byte], text bytes in UTF-8) # speed is optional (0 = no scroll) and can be used for text scrolling
+CMD_UNO_R4_MATRIX_ANIMATION         = 0x0064 # Start animation, payload: (strat/stop [1 byte], speed[1 byte], (id [1 byte]) optional) ) # speed is used to control the speed of the animation, and id can be used to show animations from Arduino lib. The frame data for the animation can be sent with the CMD_UNO_R4_MATRIX_SET_ANIMATION_FRAME command.
+CMD_UNO_R4_MATRIX_SET_ANIMATION_FRAME         = 0x0065 # Set frame for animation, payload: (frame number[1 byte], led data bytes...) # led data is streamed as x,y,v tuples until the end of the payload. Frame number can be used to manage multiple frames for animations.
+CMD_UNO_R4_MATRIX_SET_CUSTOM_FRAME  = 0x0066 # Set custom frame (0-15), payload: (frame_id[1 byte], led data as x,y,v tuples...)
+CMD_UNO_R4_MATRIX_SHOW_CUSTOM_FRAME = 0x0067 # Show custom frame (0-15), payload: (frame_id[1 byte])
+CMD_UNO_R4_MATRIX_SET_CUSTOM_ANIMATION = 0x0068 # Set custom animation (0-3, max 8 frames each), payload: (animation_id[1 byte], num_frames[1 byte], loop[1 byte], frame_data[...]) # frame_data is num_frames * 12-byte bitmaps
+CMD_UNO_R4_MATRIX_SHOW_CUSTOM_ANIMATION = 0x0069 # Show custom animation (0-3), payload: (animation_id[1 byte], speed[1 byte])
+CMD_UNO_R4_MATRIX_WRITE_BITMAP_DIRECT = 0x006A # Write bitmap directly to display (no storage), payload: (led data as x,y,v tuples...)
 
 # region Touchscreen CMDs
 # Command definitions for Touchscreen operations (0x00FX)
@@ -502,6 +517,13 @@ class GPIO_Lib:
 
         # Link debug print functions
         self._transport.set_debug_function(self.log_debug_message)
+
+        # if mocking. set timeouts realy low
+        if isinstance(self._transport, MockTransport):
+            self.log_debug_message("Using MockTransport, setting timeouts to very low values for testing")
+            self.handshake_timeout = 0.5
+            self.send_ack_timeout = 0.5
+            self.send_ready_timeout = 0.5
 
         # attempt connect and ensure the transport reports connected state
         if not self._transport.connect():
@@ -2042,14 +2064,424 @@ class GPIO_Lib:
 
                 self.write_bitmap_mono(bytes(mono_bytes), width=width, height=height, x=x, y=y, random_rows=random_rows)
 
+        class DisplayUNO_R4_MATRIX:
+            """Arduino Uno R4 onboard 12x8 red LED matrix display."""
+            
+            # Predefined frame IDs (loaded in Arduino LED Matrix library)
+            class Frame(IntEnum):
+                """Preloaded frames from Arduino library."""
+                EMOJI_BASIC = 0x00
+                EMOJI_HAPPY = 0x01
+                EMOJI_SAD = 0x02
+                HEART_BIG = 0x03
+                HEART_SMALL = 0x04
+                BOOTLOADER_ON = 0x05
+                CLOUD_WIFI = 0x06
+                BLUETOOTH = 0x07
+                DANGER = 0x08
+                CHIP = 0x09
+                LIKE = 0x0A
+                MUSIC_NOTE = 0x0B
+                RESISTOR = 0x0C
+                UNO = 0x0D
+            
+            # Animation IDs (loaded in Arduino LED Matrix library)
+            class Animation(IntEnum):
+                """Preloaded animations from Arduino library."""
+                STARTUP = 0x00
+                TETRIS_INTRO = 0x01
+                ATMEGA = 0x02
+                LED_BLINK_HORIZONTAL = 0x03
+                LED_BLINK_VERTICAL = 0x04
+                ARROWS_COMPASS = 0x05
+                AUDIO_WAVEFORM = 0x06
+                BATTERY = 0x07
+                BOUNCING_BALL = 0x08
+                BUG = 0x09
+                CHECK = 0x0A
+                CLOUD = 0x0B
+                DOWNLOAD = 0x0C
+                DVD = 0x0D
+                HEARTBEAT_LINE = 0x0E
+                HEARTBEAT = 0x0F
+                INFINITY_LOOP_LOADER = 0x10
+                LOAD_CLOCK = 0x11
+                LOAD = 0x12
+                LOCK = 0x13
+                NOTIFICATION = 0x14
+                OPENSOURCE = 0x15
+                SPINNING_COIN = 0x16
+                TETRIS = 0x17
+                WIFI_SEARCH = 0x18
 
+            total_instances = 0
 
+            def __init__(self, gpio_lib: GPIO_Lib) -> None:
+                """Initialize the Uno R4 LED Matrix display."""
+                self.gpio_lib = gpio_lib
+                # Only one instance supported (Uno R4 only has one matrix)
+                if self.__class__.total_instances > 0:
+                    raise RuntimeError("DisplayUNO_R4_MATRIX: Only one instance supported (Uno R4 has one built-in matrix)")
+                
+                self.identifier = 0  # Fixed identifier for single instance
+                self.__class__.total_instances += 1
+                self._setup_complete = False
+                self._animation_active = False
 
+            def setup(self) -> None:
+                """Initialize the matrix display."""
+                if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
+                    raise RuntimeError("DisplayUNO_R4_MATRIX: GPIO_Lib transport not connected")
+                
+                # Send create command
+                payload = bytes()  # No payload needed for matrix creation (single instance)
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_CREATE, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                
+                self._setup_complete = True
 
+            def clear(self) -> None:
+                """Clear the LED matrix (turn off all LEDs)."""
+                if not self._setup_complete:
+                    self.setup()
+                
+                payload = bytes()  # No payload for clear
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_CLEAR, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
+            def set_pixel(self, x: int, y: int, value: bool) -> None:
+                """
+                Set a single pixel on/off.
+                Args:
+                    x: X coordinate (0-11)
+                    y: Y coordinate (0-7)
+                    value: True to turn LED on, False to turn off
+                """
+                if not self._setup_complete:
+                    self.setup()
+                
+                x = int(x)
+                y = int(y)
+                if x < 0 or x > 11 or y < 0 or y > 7:
+                    raise ValueError("DisplayUNO_R4_MATRIX: pixel coordinates out of range (x: 0-11, y: 0-7)")
+                
+                # value: 1 for on, 0 for off
+                val = 1 if value else 0
+                payload = bytes([x, y, val])
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_SET_PIXEL, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
+            def write_text(self, text: str, speed: int = 0) -> None:
+                """
+                Write text to the matrix display with optional scrolling.
+                Args:
+                    text: Text to display (UTF-8)
+                    speed: Scroll speed in milliseconds (0 = no scrolling, static text)
+                """
+                # [ ] TODO Teyt implementation broken
+                if not self._setup_complete:
+                    self.setup()
+                
+                speed = int(speed)
+                if speed < 0 or speed > 255:
+                    raise ValueError("DisplayUNO_R4_MATRIX: speed must be 0-255 (milliseconds)")
+                
+                text_bytes = text.encode('utf-8', errors='replace')
+                payload = bytes([speed]) + text_bytes
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_WRITE_TEXT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
+            def show_animation(self, animation: int, speed: int = 1, play: bool = True) -> None:
+                """
+                Start or stop an animation on the matrix.
+                Args:
+                    animation: Animation ID (from Animation enum or custom)
+                    speed: Animation speed/playback speed (0-255)
+                    play: True to play, False to stop
+                """
+                if not self._setup_complete:
+                    self.setup()
+                
+                animation = int(animation)
+                speed = int(speed)
+                if speed < 0 or speed > 255:
+                    raise ValueError("DisplayUNO_R4_MATRIX: speed must be 0-255")
+                
+                start_stop = 1 if play else 0
+                payload = bytes([start_stop, speed, animation])
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_ANIMATION, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                
+                self._animation_active = play
 
+            def show_frame(self, frame: int) -> None:
+                """
+                Display a preloaded frame on the matrix.
+                Args:
+                    frame: Frame ID (from Frame enum)
+                """
+                # Stop any active animation first
+                if self._animation_active:
+                    self.show_animation(0, play=False)
+                
+                # Show the frame as a single frame animation
+                self.show_animation(frame, speed=0, play=False)
+
+            def set_animation_frame(self, frame_number: int, bitmap: List[int]) -> None:
+                """
+                Set a custom animation frame using a simple bitmap.
+
+                The bitmap is a list of 8 integers (one per row y=0..7) where
+                each integer encodes 12 columns of data.  Bits are read from LSB
+                to MSB (bit0 = x=0).  The host mirrors the image horizontally
+                (same logic as ``write_bitmap``) before packaging it for the
+                device.  This replaces the previous tuple-based API.
+
+                Args:
+                    frame_number: Frame number to set (0-255)
+                    bitmap: List of 8 row values (bits).
+                """
+                if not self._setup_complete:
+                    self.setup()
+
+                frame_number = int(frame_number)
+                if frame_number < 0 or frame_number > 255:
+                    raise ValueError("DisplayUNO_R4_MATRIX: frame_number must be 0-255")
+
+                if not isinstance(bitmap, (list, tuple)):
+                    raise ValueError("DisplayUNO_R4_MATRIX: bitmap must be a list of 8 integers")
+                if len(bitmap) != 8:
+                    raise ValueError("DisplayUNO_R4_MATRIX: bitmap must contain exactly 8 rows")
+
+                # build payload by iterating rows and bits
+                payload = bytearray([frame_number])
+                for y, row_val in enumerate(bitmap):
+                    row_val = int(row_val)
+                    for x in range(12):
+                        if row_val & (1 << x):
+                            flipped_x = 11 - x  # horizontal flip matches write_bitmap
+                            payload += bytes([flipped_x, y, 1])
+
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_SET_ANIMATION_FRAME, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def write_bitmap(self, bitmap: List[int]) -> None:
+                """
+                Write a bitmap directly to the matrix display without storing it.
+                The bitmap is displayed immediately and is not stored as a frame.
+                This is useful for real-time updates without consuming frame storage.
+
+                The host always mirrors the image horizontally so that bit0/LSB ends
+                up at the right side of the display.  This keeps orientation consistent
+                with the physical board (left-to-right wiring is reversed).
+
+                Args:
+                    bitmap: List of 8 integers, one per row (y=0 to y=7).
+                            Each integer represents 12 bits (x=0 to x=11).
+                            Bits are read from LSB to MSB (bit 0 = x=0,
+                            bit 11 = x=11).  The value is flipped horizontally
+                            before being sent to the device.
+                            Example: 0b0000000011100000 sets x=4,5,6 after flip.
+                """
+                if not self._setup_complete:
+                    self.setup()
+
+                if not isinstance(bitmap, (list, tuple)):
+                    raise ValueError("DisplayUNO_R4_MATRIX: bitmap must be a list of 8 integers")
+
+                if len(bitmap) != 8:
+                    raise ValueError("DisplayUNO_R4_MATRIX: bitmap must contain exactly 8 rows")
+
+                # Build payload as LED data (x,y,v tuples) with horizontal flip
+                payload = bytearray()
+                for y, row_val in enumerate(bitmap):
+                    row_val = int(row_val)
+                    for x in range(12):
+                        if row_val & (1 << x):
+                            flipped_x = 11 - x
+                            payload += bytes([flipped_x, y, 1])
+
+                # Send direct bitmap write command (no frame storage)
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_WRITE_BITMAP_DIRECT, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            # backward compatibility wrapper for legacy tests/api
+            def load_frame_data(self, frame_data: bytes | bytearray | List[int]) -> None:
+                """
+                Backwards-compatible helper matching the old API.  Converts the
+                12-byte packed frame into a bitmap and calls :meth:`write_bitmap`.
+                """
+                # reuse earlier conversion logic from previous implementation
+                if isinstance(frame_data, (bytes, bytearray)):
+                    if len(frame_data) != 12:
+                        raise ValueError("DisplayUNO_R4_MATRIX: frame_data must be exactly 12 bytes")
+                    data = bytes(frame_data)
+                elif isinstance(frame_data, list):
+                    if len(frame_data) == 3:  # three uint32 values
+                        data = bytearray()
+                        for val in frame_data:
+                            data.extend(int(val).to_bytes(4, "little"))
+                        data = bytes(data)
+                    elif len(frame_data) == 12:
+                        data = bytes(frame_data)
+                    else:
+                        raise ValueError("DisplayUNO_R4_MATRIX: frame_data as list must be 3 uint32 integers or 12 bytes")
+                else:
+                    raise ValueError("DisplayUNO_R4_MATRIX: frame_data must be bytes or list")
+
+                # unpack to 8-row bitmap
+                bitmap = []
+                for y in range(8):
+                    row_val = 0
+                    for x in range(12):
+                        bit_pos = y * 12 + x
+                        byte_idx = bit_pos // 8
+                        bit_idx = bit_pos % 8
+                        if data[byte_idx] & (1 << bit_idx):
+                            row_val |= (1 << x)
+                    bitmap.append(row_val)
+                self.write_bitmap(bitmap)
+
+            # ===================================================================
+            # Custom frame/animation API (new commands - separate from built-in)
+            # ===================================================================
+
+            def set_custom_frame(self, frame_id: int, bitmap: List[int]) -> None:
+                """
+                Store a custom frame (0-15) that can be displayed later.
+                Custom frames use separate storage from built-in frames,
+                so they won't interfere with built-in animations.
+
+                Args:
+                    frame_id: Frame ID (0-15)
+                    bitmap: List of 8 integers, one per row (y=0 to y=7).
+                            Each integer represents 12 bits (x=0 to x=11).
+                            Bits are read from LSB to MSB (bit 0 = x=0).
+                            The bitmap will be flipped horizontally before
+                            being sent to the device.
+                """
+                if not self._setup_complete:
+                    self.setup()
+
+                frame_id = int(frame_id)
+                if frame_id < 0 or frame_id > 15:
+                    raise ValueError("DisplayUNO_R4_MATRIX: frame_id must be 0-15")
+
+                if not isinstance(bitmap, (list, tuple)):
+                    raise ValueError("DisplayUNO_R4_MATRIX: bitmap must be a list of 8 integers")
+                if len(bitmap) != 8:
+                    raise ValueError("DisplayUNO_R4_MATRIX: bitmap must contain exactly 8 rows")
+
+                # Build payload: frame_id + LED data as x,y,v tuples
+                payload = bytearray([frame_id])
+                for y, row_val in enumerate(bitmap):
+                    row_val = int(row_val)
+                    for x in range(12):
+                        if row_val & (1 << x):
+                            flipped_x = 11 - x  # horizontal flip
+                            payload += bytes([flipped_x, y, 1])
+
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_SET_CUSTOM_FRAME, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def show_custom_frame(self, frame_id: int) -> None:
+                """
+                Display a previously stored custom frame.
+
+                Args:
+                    frame_id: Frame ID (0-15) that was set with set_custom_frame()
+                """
+                if not self._setup_complete:
+                    self.setup()
+
+                frame_id = int(frame_id)
+                if frame_id < 0 or frame_id > 15:
+                    raise ValueError("DisplayUNO_R4_MATRIX: frame_id must be 0-15")
+
+                payload = bytes([frame_id])
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_SHOW_CUSTOM_FRAME, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def set_custom_animation(self, animation_id: int, bitmaps: List[List[int]], loop: bool = True) -> None:
+                """
+                Store a custom animation (0-3) consisting of multiple frames.
+                Custom animations use separate storage from built-in animations.
+
+                Args:
+                    animation_id: Animation ID (0-3)
+                    bitmaps: List of bitmaps (each bitmap is a list of 8 integers).
+                             Maximum 8 frames per animation.
+                    loop: If True, animation loops continuously; if False, plays once.
+                """
+                if not self._setup_complete:
+                    self.setup()
+
+                animation_id = int(animation_id)
+                if animation_id < 0 or animation_id > 3:
+                    raise ValueError("DisplayUNO_R4_MATRIX: animation_id must be 0-3")
+
+                if not isinstance(bitmaps, list) or len(bitmaps) == 0:
+                    raise ValueError("DisplayUNO_R4_MATRIX: bitmaps must be a non-empty list")
+                if len(bitmaps) > 8:
+                    raise ValueError("DisplayUNO_R4_MATRIX: maximum 8 frames per animation")
+
+                # Validate all bitmaps
+                for i, bitmap in enumerate(bitmaps):
+                    if not isinstance(bitmap, (list, tuple)):
+                        raise ValueError(f"DisplayUNO_R4_MATRIX: bitmap {i} must be a list of 8 integers")
+                    if len(bitmap) != 8:
+                        raise ValueError(f"DisplayUNO_R4_MATRIX: bitmap {i} must contain exactly 8 rows")
+
+                # Build payload: animation_id, num_frames, loop, frame_data
+                num_frames = len(bitmaps)
+                loop_byte = 1 if loop else 0
+                payload = bytearray([animation_id, num_frames, loop_byte])
+
+                # For each frame, convert to 12-byte packed format
+                for bitmap in bitmaps:
+                    frame_data = bytearray(12)  # 12 bytes = 96 bits
+                    for y, row_val in enumerate(bitmap):
+                        row_val = int(row_val)
+                        for x in range(12):
+                            if row_val & (1 << x):
+                                flipped_x = 11 - x  # horizontal flip
+                                # Pack as y*12 + x bit position
+                                bit_pos = y * 12 + flipped_x
+                                byte_idx = bit_pos // 8
+                                bit_idx = bit_pos % 8
+                                frame_data[byte_idx] |= (1 << bit_idx)
+                    payload.extend(frame_data)
+
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_SET_CUSTOM_ANIMATION, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+
+            def show_custom_animation(self, animation_id: int, speed: int = 10) -> None:
+                """
+                Play a previously stored custom animation.
+
+                Args:
+                    animation_id: Animation ID (0-3) that was set with set_custom_animation()
+                    speed: Animation speed in units of 10ms per frame.
+                           For example: speed=10 means 100ms per frame (10 fps),
+                                       speed=5 means 50ms per frame (20 fps).
+                           Valid range: 1-255.
+                """
+                if not self._setup_complete:
+                    self.setup()
+
+                animation_id = int(animation_id)
+                if animation_id < 0 or animation_id > 3:
+                    raise ValueError("DisplayUNO_R4_MATRIX: animation_id must be 0-3")
+
+                speed = int(speed)
+                if speed < 1 or speed > 255:
+                    raise ValueError("DisplayUNO_R4_MATRIX: speed must be 1-255")
+
+                payload = bytes([animation_id, speed])
+                packet = self.gpio_lib._build_packet(CMD_UNO_R4_MATRIX_SHOW_CUSTOM_ANIMATION, payload)
+                self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
+                
+                self._animation_active = True
 
 
 

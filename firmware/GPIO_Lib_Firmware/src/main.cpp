@@ -36,6 +36,9 @@ void loop() {
 #if defined(OLED_SUPPORT)
 #include "oled.h"
 #endif
+#if defined(ARDUINO_UNOR4_WIFI)
+#include "matrix.h"
+#endif
 #if defined(DEBUG)
 #include "debug.h"
 #endif
@@ -106,6 +109,11 @@ void setup() {
   oled_init();
 #endif
 
+#if defined(ARDUINO_UNOR4_WIFI)
+  serial_write((const uint8_t *)"matrix: initializing una r4 matrix module\n", 44);
+  matrix_init();
+#endif
+
 #if defined(DEBUG)
   serial_write((const uint8_t *)"debug: initializing debug module\n", 34);
   debug_init();
@@ -138,6 +146,9 @@ void setup() {
 #endif
 #if defined(OLED_SUPPORT)
   cmd_register_handler(0x0050, 0x005F, ssd1306_cmd_handler);    // SSD1306 control
+#endif
+#if defined(ARDUINO_UNOR4_WIFI)
+  cmd_register_handler(0x0060, 0x006F, matrix_cmd_handler);     // Uno R4 Matrix control
 #endif
   cmd_register_handler(0xFFFC, 0xFFFF, firmware_cmd_handler);   // firmware-level cmds like reset, firmware feedback, etc.
 
@@ -201,6 +212,14 @@ void loop() {
 
 
   gpio_poll_inputs();
+
+#if defined(ARDUINO_UNOR4_WIFI)
+  // Update custom matrix animations
+  if (matrix_update()) {
+    // If we updated an animation frame, we reset the millis_last_cmd to prevent the main loop from throttling due to inactivity while an animation is playing
+    millis_last_cmd = millis();
+  }
+#endif
 
   // replace with dynamic delay based on activity
   delay(calc_delay());

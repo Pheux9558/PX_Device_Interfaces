@@ -20,3 +20,15 @@ def _ensure_stub(name: str, attrs: dict | None = None) -> None:
 
 # Stub common optional dependencies used by older entry points.
 _ensure_stub("opcua", {"Client": lambda *a, **k: None})
+
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def reset_matrix_singleton():
+    """Reset DisplayUNO_R4_MATRIX singleton counter before each test."""
+    from px_device_interfaces import GPIO_Lib
+    
+    GPIO_Lib.Display.DisplayUNO_R4_MATRIX.total_instances = 0
+    yield
+    GPIO_Lib.Display.DisplayUNO_R4_MATRIX.total_instances = 0
