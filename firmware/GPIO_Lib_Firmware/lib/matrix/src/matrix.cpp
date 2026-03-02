@@ -127,57 +127,57 @@
 
 // Main command handler - dispatches to specific command handlers
 bool matrix_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
-  #ifndef ARDUINO_UNOR4_WIFI
+  #ifdef ARDUINO_UNOR4_WIFI
+    bool handled = false;
+    switch (cmd) {
+      case 0x0060:  // CMD_UNO_R4_MATRIX_CREATE
+        handled = matrix_create(payload, len);
+        break;
+      case 0x0061:  // CMD_UNO_R4_MATRIX_CLEAR
+        handled = matrix_clear(payload, len);
+        break;
+      case 0x0062:  // CMD_UNO_R4_MATRIX_SET_PIXEL
+        handled = matrix_set_pixel(payload, len);
+        break;
+      case 0x0063:  // CMD_UNO_R4_MATRIX_WRITE_TEXT
+        handled = matrix_write_text(payload, len);
+        break;
+      case 0x0064:  // CMD_UNO_R4_MATRIX_ANIMATION
+        handled = matrix_animation(payload, len);
+        break;
+      case 0x0065:  // CMD_UNO_R4_MATRIX_SET_ANIMATION_FRAME
+        handled = matrix_set_animation_frame(payload, len);
+        break;
+      case 0x0066:  // CMD_UNO_R4_MATRIX_SET_CUSTOM_FRAME
+        handled = matrix_set_custom_frame(payload, len);
+        break;
+      case 0x0067:  // CMD_UNO_R4_MATRIX_SHOW_CUSTOM_FRAME
+        handled = matrix_show_custom_frame(payload, len);
+        break;
+      case 0x0068:  // CMD_UNO_R4_MATRIX_SET_CUSTOM_ANIMATION
+        handled = matrix_set_custom_animation(payload, len);
+        break;
+      case 0x0069:  // CMD_UNO_R4_MATRIX_SHOW_CUSTOM_ANIMATION
+        handled = matrix_show_custom_animation(payload, len);
+        break;
+      case 0x006A:  // CMD_UNO_R4_MATRIX_WRITE_BITMAP_DIRECT
+        handled = matrix_write_bitmap_direct(payload, len);
+        break;
+      default:
+        cmd_send_error();
+        return false;
+    }
+
+    if (handled) {
+      cmd_send_ok();
+    } else {
+      cmd_send_error();
+    }
+    return handled;
+  #else
     cmd_send_error();
     return false;
   #endif
-  
-  bool handled = false;
-  switch (cmd) {
-    case 0x0060:  // CMD_UNO_R4_MATRIX_CREATE
-      handled = matrix_create(payload, len);
-      break;
-    case 0x0061:  // CMD_UNO_R4_MATRIX_CLEAR
-      handled = matrix_clear(payload, len);
-      break;
-    case 0x0062:  // CMD_UNO_R4_MATRIX_SET_PIXEL
-      handled = matrix_set_pixel(payload, len);
-      break;
-    case 0x0063:  // CMD_UNO_R4_MATRIX_WRITE_TEXT
-      handled = matrix_write_text(payload, len);
-      break;
-    case 0x0064:  // CMD_UNO_R4_MATRIX_ANIMATION
-      handled = matrix_animation(payload, len);
-      break;
-    case 0x0065:  // CMD_UNO_R4_MATRIX_SET_ANIMATION_FRAME
-      handled = matrix_set_animation_frame(payload, len);
-      break;
-    case 0x0066:  // CMD_UNO_R4_MATRIX_SET_CUSTOM_FRAME
-      handled = matrix_set_custom_frame(payload, len);
-      break;
-    case 0x0067:  // CMD_UNO_R4_MATRIX_SHOW_CUSTOM_FRAME
-      handled = matrix_show_custom_frame(payload, len);
-      break;
-    case 0x0068:  // CMD_UNO_R4_MATRIX_SET_CUSTOM_ANIMATION
-      handled = matrix_set_custom_animation(payload, len);
-      break;
-    case 0x0069:  // CMD_UNO_R4_MATRIX_SHOW_CUSTOM_ANIMATION
-      handled = matrix_show_custom_animation(payload, len);
-      break;
-    case 0x006A:  // CMD_UNO_R4_MATRIX_WRITE_BITMAP_DIRECT
-      handled = matrix_write_bitmap_direct(payload, len);
-      break;
-    default:
-      cmd_send_error();
-      return false;
-  }
-  
-  if (handled) {
-    cmd_send_ok();
-  } else {
-    cmd_send_error();
-  }
-  return handled;
 }
 
 void matrix_init() {
