@@ -171,6 +171,19 @@ void loop() {
   debug_heartbeat();
 #endif
 
+  // Detect USB CDC reconnection and resend ready banner
+  #if defined(ARDUINO_ARCH_RENESAS) || defined(ARDUINO_ARCH_SAMD)
+  static bool was_connected = false;
+  bool is_connected = Serial;  // Serial evaluates to true when USB CDC is connected
+  
+  if (is_connected && !was_connected) {
+    // USB CDC just reconnected - resend ready banner
+    const char *ready = "GPIO_READY\r\n";
+    serial_write((const uint8_t *)ready, (size_t)strlen(ready));
+  }
+  was_connected = is_connected;
+  #endif
+
   // read bytes from serial and pass them to the command dispatcher
   if (serial_available() > 0) {
     uint8_t inbuf[BUFFER_SIZE];

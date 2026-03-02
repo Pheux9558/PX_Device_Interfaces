@@ -282,6 +282,7 @@ class GPIO_Lib:
             raise ValueError("transport_config must be provided and be a BaseTransportConfig instance")
 
         self.handshake_enabled = True
+        self.handshake_raise_on_timeout = True
         self.handshake_timeout = 5.0
         self.transport_config = transport_config
 
@@ -294,6 +295,7 @@ class GPIO_Lib:
         self.debug_enabled = debug_enabled or self.transport_config.debug
 
         self.debug_ok_received = 0
+        self.last_send_data: Optional[bytes] = None
         self.total_sent_bytes = 0
         self.total_received_bytes = 0
 
@@ -484,7 +486,7 @@ class GPIO_Lib:
         self.log_debug_message("disconnect() called (legacy); stopping GPIO_Lib...")
         self.stop()
 
-    # region Start/Stop
+    # region Start GPIO_Lib
     # [x] TODO refactor formate (Start/Stop)
     def start(self) -> bool:
         """Start GPIO_Lib operation and worker threads."""
@@ -539,6 +541,7 @@ class GPIO_Lib:
         self.log_debug_message("#### GPIO_Lib started successfully ####")
         return True     # started successfully
     
+    # region Stop GPIO_Lib
     def stop(self, timeout: float = 5.0) -> None:
         """Stop GPIO_Lib operation and worker threads."""
         if not self._running:
@@ -613,7 +616,10 @@ class GPIO_Lib:
                 with self._ready_cv:
                     self._ready = True
                     self._ready_cv.notify_all()
-                return True            
+                return True
+        if self.handshake_raise_on_timeout:
+            raise TimeoutError("Timeout waiting for device ready banner")
+        self.log_debug_message("Timeout waiting for device ready banner")
         return False
 
     # region Packet building
@@ -674,6 +680,7 @@ class GPIO_Lib:
         del buf[:total_len]
         return cmd, payload
     
+    # region Validate packet
     @staticmethod
     def _validatePacket(pack:bytes) -> bool:
         """Validate a framed packet's checksum. Returns True if valid, False if invalid."""
@@ -689,7 +696,7 @@ class GPIO_Lib:
         chk = pack[5 + length]
         return ((cmd + length + sum(payload)) & 0xFF) == chk
 
-    # region queueing
+    # region Queueing Packets
     def _add_packet_to_send_queue(self, packet: bytes, wait_ack: bool = False, validate: bool = True) -> bool:
         """Enqueue a framed packet for delivery by the send worker.
 
@@ -704,6 +711,7 @@ class GPIO_Lib:
         self._send_q.put((packet, bool(wait_ack)))
         return True
     
+    # region Await send empty
     def await_send_empty(self, timeout: float | None = None) -> bool:
         """Block until the send queue is empty and any in-progress send completes.
 
@@ -762,6 +770,7 @@ class GPIO_Lib:
                     self.log_debug_message(f"sending(hex): {packet.hex()}")
                 try:
                     self.total_sent_bytes += len(packet)
+                    self.last_send_data = packet
                     self._transport.send(packet)
                 except Exception as e:
                     # On "[ERRNO 5] Input/Output error" => dissconect
@@ -884,7 +893,7 @@ class GPIO_Lib:
             self.log_debug_message(f"Error sending firmware reset command: {e}")
         
 
-
+    # region Handshake after boot reset
     def _handshake_after_boot_reset(self) -> None:
         if not self.handshake_enabled:
             self.log_debug_message("Handshake disabled; skipping post-reset handshake")
@@ -894,9 +903,10 @@ class GPIO_Lib:
         if self._recv_thread and self._recv_thread.is_alive():
             self.log_debug_message("Waiting for receive thread to stop before proceeding with reset...")
             self.stopReceiveWorkerRequested = True
-            self._recv_thread.join(0.5)
+            self._recv_thread.join(2.0)  # Increased timeout from 0.5 to 2.0 seconds
             if self._recv_thread.is_alive():
-                self.log_debug_message("Receive thread did not stop in time; proceeding with reset anyway")
+                self.log_debug_message("ERROR: Receive thread did not stop in time; cannot proceed safely")
+                raise RuntimeError("Receive thread did not stop - cannot safely restart")
             else:
                 self.log_debug_message("Receive thread stopped successfully")
         
@@ -928,10 +938,23 @@ class GPIO_Lib:
 
 
 
+    # region Hardware Peripherals
+    """
+    This section declares every device/peripheral you can controll via GPIO_Lib
+    The default herachy is:
+    GPIO_Lib instance:
+        - device/peripheral main class:
+                - Different types/versions of this device/peripheral
+    
+    """
 
+
+    # region FastLED namespace
     class FastLED:
         """FastLED type namespace (APA102, WS2812)."""
 
+
+        # region APA102
         class FastLEDAPA102:
             """APA102 (DotStar) LED strip handler - requires data and clock pins."""
             total_instances = 0
@@ -953,6 +976,7 @@ class GPIO_Lib:
 
                 self._setup_complete = False
 
+            # region Setup
             def setup(self) -> None:
                 """Send APA102 configuration commands to the device."""
                 if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
@@ -982,6 +1006,7 @@ class GPIO_Lib:
 
                 self._setup_complete = True
             
+            # region Send LED data
             def send_led_data(self, led_data: list[tuple[int, int, int]]) -> None:
                 """Send LED data to the device for updating the LED strip."""
                 if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
@@ -1005,6 +1030,7 @@ class GPIO_Lib:
                 packet = self.gpio_lib._build_packet(CMD_APA102_SHOW, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
             
+            # region Set Brightness 
             def set_brightness(self, brightness: int) -> None:
                 """Set the brightness for the LED strip (0-255)."""
                 if brightness < 0 or brightness > 255:
@@ -1013,10 +1039,14 @@ class GPIO_Lib:
                 if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
                     raise RuntimeError("FastLEDAPA102: GPIO_Lib transport not connected")
 
+                if not self._setup_complete:
+                    self.setup()
+
                 payload = self.identifier.to_bytes(2, "little") + bytes([brightness & 0xFF])
                 packet = self.gpio_lib._build_packet(CMD_APA102_SET_BRIGHTNESS, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
+        # region WS2812
         class FastLEDWS2812:
             """WS2812 (NeoPixel) LED strip handler - requires data pin only."""
             total_instances = 0
@@ -1036,6 +1066,7 @@ class GPIO_Lib:
 
                 self._setup_complete = False
 
+            # region Setup
             def setup(self) -> None:
                 """Send WS2812 configuration commands to the device."""
                 if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
@@ -1061,7 +1092,9 @@ class GPIO_Lib:
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
 
                 self._setup_complete = True
-            
+
+
+            # region Send LED data
             def send_led_data(self, led_data: list[tuple[int, int, int]]) -> None:
                 """Send LED data to the device for updating the LED strip."""
                 if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
@@ -1085,6 +1118,8 @@ class GPIO_Lib:
                 packet = self.gpio_lib._build_packet(CMD_WS2812_SHOW, payload)
                 self.gpio_lib._add_packet_to_send_queue(packet, wait_ack=False)
             
+
+            # region Set Brightness
             def set_brightness(self, brightness: int) -> None:
                 """Set the brightness for the LED strip (0-255)."""
                 if brightness < 0 or brightness > 255:
@@ -1092,6 +1127,9 @@ class GPIO_Lib:
                 
                 if not self.gpio_lib._transport or not self.gpio_lib._transport.is_connected:
                     raise RuntimeError("FastLEDWS2812: GPIO_Lib transport not connected")
+
+                if not self._setup_complete:
+                    self.setup()
 
                 payload = self.identifier.to_bytes(2, "little") + bytes([brightness & 0xFF])
                 packet = self.gpio_lib._build_packet(CMD_WS2812_SET_BRIGHTNESS, payload)
@@ -2395,7 +2433,7 @@ class GPIO_Lib:
             self.log_debug_message(f"device: OK")
             return
         if cmd == CMD_DEVICE_ERROR:
-            self.log_debug_message(f"device: ERROR {payload}")
+            self.log_debug_message(f"device: ERROR {payload}. Last packet sent: {self.last_send_data}")
             # [ ] TODO maybe set an error state or raise an exception
             return
 

@@ -309,6 +309,10 @@ def update_platformio_ini(device: dict) -> bool:
         if 'HD44780' in device_flags or 'AIP31068L' in device_flags:
             lib_deps.append('marcoschwartz/LiquidCrystal_I2C@^1.1.4')
         
+        # FastLED WS2812 requires Adafruit_NeoPixel
+        if 'FASTLED' in device_flags:
+            lib_deps.append('adafruit/Adafruit NeoPixel@^1.10.0')
+        
         # Build lib_deps lines for INI file
         lib_deps_lines = []
         if lib_deps:

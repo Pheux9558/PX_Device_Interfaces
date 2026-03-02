@@ -204,10 +204,11 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                     if (inst->buf && expected) memcpy(inst->buf, data, expected);
                 }
 
+                // Send OK BEFORE apa102_send() for consistency with WS2812
+                cmd_send_ok();
 #if defined(ARDUINO)
                 apa102_send(inst->data_pin, inst->clock_pin, inst->buf, inst->num_leds, inst->brightness);
 #endif
-                cmd_send_ok();
             }
             return true;
         case 0x0116: // CMD_APA102_SET_BRIGHTNESS
@@ -218,12 +219,13 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 struct fastled_instance_t *inst = find_instance(id);
                 if (!inst || inst->type != FASTLED_TYPE_APA102) { cmd_send_error(); return true; }
                 inst->brightness = brightness;
+                // Send OK BEFORE apa102_send() for consistency with WS2812
+                cmd_send_ok();
 #if defined(ARDUINO)
                 if (inst->buf && inst->num_leds > 0) {
                     apa102_send(inst->data_pin, inst->clock_pin, inst->buf, inst->num_leds, inst->brightness);
                 }
 #endif
-                cmd_send_ok();
             }
             return true;
         
@@ -293,10 +295,12 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                     if (inst->buf && expected) memcpy(inst->buf, data, expected);
                 }
 
+                // Send OK BEFORE ws2812_send() to avoid serial timing issues
+                // neopixel->show() disables interrupts, preventing serial transmission
+                cmd_send_ok();
 #if defined(ARDUINO)
                 ws2812_send(inst);
 #endif
-                cmd_send_ok();
             }
             return true;
         case 0x0126: // CMD_WS2812_SET_BRIGHTNESS
@@ -307,12 +311,13 @@ bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 struct fastled_instance_t *inst = find_instance(id);
                 if (!inst || inst->type != FASTLED_TYPE_WS2812) { cmd_send_error(); return true; }
                 inst->brightness = brightness;
+                // Send OK BEFORE ws2812_send() to avoid serial timing issues
+                cmd_send_ok();
 #if defined(ARDUINO)
                 if (inst->buf && inst->num_leds > 0) {
                     ws2812_send(inst);
                 }
 #endif
-                cmd_send_ok();
             }
             return true;
         default:
