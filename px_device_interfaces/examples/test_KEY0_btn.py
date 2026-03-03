@@ -13,14 +13,8 @@ import time
 from px_device_interfaces.transports.usb import USBTransportConfig
 from px_device_interfaces.GPIO_Lib import GPIO_Lib, PinMode
 
-def main(port: str | None = None):
-    cfg = USBTransportConfig(port=port, baud=921600, debug=False, reset_on_start=True)
-    ports = cfg.scan()  # Optional: scan for devices and print results
-    if ports[0]:
-        print(f"Found device: {ports[0]['description']} on port {ports[0]['settings']['port']}")
-        cfg.port = ports[0]['settings']['port']  # Use the first found device if available
-    else:
-        raise ValueError(f"No USB devices found. Please check the connection and try again.")
+def main():
+    cfg = USBTransportConfig(debug=False, reset_on_start=True, auto_connect=True)
     
     gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
     spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=40_000_000)
@@ -51,7 +45,7 @@ def main(port: str | None = None):
         while time.time() - start_time < 10:  # Run for 10 seconds
             button_state = gpio.digital_read("BOOT")
             if button_state == 0:  # Button pressed (active low)
-                print("BOOT button pressed!")
+                # print("BOOT button pressed!")
                 lcd.clear()
                 lcd.write_text("BOOT button", x=5, y=5)
                 lcd.write_text("pressed!", x=5, y=15)
@@ -70,11 +64,13 @@ def main(port: str | None = None):
                 # API now handles RGB565 conversion automatically
                 lcd.write_bitmap(circle_bitmap, x=60, y=50, width=8, height=8)
             else:
-                print("BOOT button released")
+                 # print("BOOT button released")
                 lcd.clear()
                 lcd.write_text("BOOT button", x=5, y=5)
                 lcd.write_text("released", x=5, y=15)
-            time.sleep(0.5)  # Check button state every 0.5 seconds
+
+            gpio.await_send_empty()
+            # time.sleep(0.5)  # Check button state every 0.5 seconds
         time.sleep(2)  # Show final message for 2 seconds before exiting
 
     finally:

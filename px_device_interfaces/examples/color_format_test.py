@@ -32,7 +32,7 @@ def byte_swap(rgb565):
     return ((rgb565 & 0xFF) << 8) | ((rgb565 >> 8) & 0xFF)
 
 
-def create_test_bitmap(transform_id):
+def create_test_bitmap(transform_id, width, height):
     """Create a 3x1 test pattern: RED | GREEN | BLUE
     Apply transformation based on transform_id:
     0: No transformation (raw RGB565)
@@ -62,9 +62,9 @@ def create_test_bitmap(transform_id):
     
     # Create 30x30 blocks for each color
     bitmap = bytearray()
-    for _ in range(20):  # 30 rows
+    for _ in range(height):  # rows
         for color in colors:
-            for _ in range(30):  # 30 pixels per color
+            for _ in range(width):  # pixels per color
                 bitmap.extend(color.to_bytes(2, "little"))
     
     return bitmap
@@ -116,13 +116,17 @@ def main():
         "7: BGR565 inverted+byte swap",
     ]
     
+    x_pos = 0
     y_pos = 0
+    width_per_test = int(lcd.width // 4)  # Full width for each test
+    height_per_test = int(lcd.height // 8)  # 8 tests vertically
+    print(f"Each test block: {width_per_test}x{height_per_test} pixels")
     for i in range(8):
         print(f"  {transform_names[i]}")
-        bitmap = create_test_bitmap(i)
-        lcd.write_bitmap(bitmap, x=0, y=y_pos, width=90, height=20)
-        y_pos += 20
-        time.sleep(0.3)
+        bitmap = create_test_bitmap(i, width_per_test, height_per_test)
+        lcd.write_bitmap(bitmap, x=x_pos, y=y_pos, width=width_per_test * 3, height=height_per_test)
+        lcd.write_text(str(i), x=x_pos + width_per_test * 3 + 8, y=y_pos + height_per_test // 2 - 4)  # Label test number
+        y_pos += height_per_test
     
     gpio.await_send_empty()
     

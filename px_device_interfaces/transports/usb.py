@@ -26,9 +26,35 @@ class USBTransportConfig(BaseTransportConfig):
     debug: bool = False
     auto_io: bool = True
     reset_on_start: bool = True
+    auto_connect: bool = True
 
     def create_transport(self) -> "USBTransport":
-        return USBTransport(port=self.port, baud=self.baud, config=self)
+        """Create a `USBTransport` instance using this configuration.
+        Scan for devices if `auto_connect` is True and `port` is not set.
+        raise ValueError if `port` is not set and no or multiple devices found during scan.
+        """
+        device = None
+
+        if self.port:
+            self.auto_connect = False
+        
+        if self.auto_connect and not self.port:
+            devices = self.scan()
+            if not devices:
+                raise ValueError("No USB devices found. Please check the connection and try again.")
+            elif len(devices) > 1:
+                device_list = "\n".join([f"{d['description']} on port {d['settings']['port']}" for d in devices])
+                raise ValueError(f"Multiple USB devices found. Please specify the port explicitly. Found devices:\n{device_list}")
+            else:
+                self.port = devices[0]['settings']['port']
+                device = devices[0]
+
+        transport = USBTransport(port=self.port, baud=self.baud, config=self)
+
+        if self.auto_connect and device:
+            transport.log_debug_message(f"Auto-connected to {device['description']} on port {self.port}")
+            
+        return transport
 
     def help(self) -> str:
         return (
@@ -39,6 +65,7 @@ class USBTransportConfig(BaseTransportConfig):
             "  - debug: enable debug prints\n"
             "  - auto_io: whether to automatically handle I/O\n"
             "  - reset_on_start: whether to reset the device on start\n"
+            "  - auto_connect: whether to automatically scan for devices and connect on start\n"
         )
     
     @classmethod
