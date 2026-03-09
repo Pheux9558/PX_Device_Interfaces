@@ -200,9 +200,13 @@ class GPIO_Lib_OPCUA:
         # Code to stop the GPIO_Lib_OPCUA functionality
         self.log_debug_message("Stopping GPIO_Lib_OPCUA")
         if self._transport:
-            self._transport.disconnect()
-            self._transport = None
-        self._running = False
+            try:
+                self._transport.disconnect()
+            except Exception as e:
+                self.log_debug_message(f"Error while disconnecting transport: {e}")
+            finally:
+                self._running = False
+                self._transport = None
 
 
     # region Labels to Nodeid

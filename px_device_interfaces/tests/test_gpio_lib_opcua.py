@@ -9,7 +9,7 @@ LABLE = "K4331"
 NODEID_IN = 'ns=3;s="K4331_IN_SW".Array'
 NODEID_OUT = 'ns=3;s="K4331_OUT_SW".Array'
 
-CONFIG = OPCUATransportConfig(opcua_endpoint=ENDPOINT, default_node=NODEID_IN, timeout=2.0, debug=True, auto_io=False)
+CONFIG = OPCUATransportConfig(opcua_endpoint=ENDPOINT, default_node=NODEID_IN, timeout=2.0, debug=False, auto_io=False)
 
 
 def _connect_or_skip(cfg: OPCUATransportConfig):
@@ -94,7 +94,7 @@ def test_gpio_lib_opcua_set_input_output():
         if t is not None:
             t.disconnect()
 
-    gpio = GPIO_Lib_OPCUA.GPIO_Lib_OPCUA(transport_config=CONFIG, debug_enabled=True)
+    gpio = GPIO_Lib_OPCUA.GPIO_Lib_OPCUA(transport_config=CONFIG, debug_enabled=False)
     try:
         gpio._transport_config.auto_io = False  # disable auto io for testing
 
@@ -111,8 +111,7 @@ def test_gpio_lib_opcua_set_input_output():
         assert LABLE in gpio.OUT_SW_mirror and LABLE in gpio.IN_SW_mirror, "Labels not configured"
         assert isinstance(gpio.OUT_SW_mirror[LABLE]["value"], list), "Output cache not initialized as list"
 
-        ## test read/write on OUT
-        # write [] 
+        start_time = time.time()
 
         gpio.write(label=LABLE, value=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
         gpio.syncAll()
@@ -161,6 +160,9 @@ def test_gpio_lib_opcua_set_input_output():
             gpio.setIN_SW(label="NEW", nodeid=NODEID_IN, value_type=list)
         with pytest.raises(RuntimeError):
             gpio.setOUT_SW(label="NEW", nodeid=NODEID_OUT, value_type=list)
+
+        total_time = time.time() - start_time
+        print(f"total_time: {total_time:.6f}s")
 
     finally:
         try:

@@ -4,6 +4,7 @@ import time
 from px_device_interfaces.transports.mock import MockTransport, MockTransportConfig
 from px_device_interfaces.GPIO_Lib import GPIO_Lib, CMD_DIGITAL_WRITE, CMD_DEVICE_OK
 
+global_debug = False
 
 def _start_worker_threads(gpio, mock):
     # Ensure transport is connected and workers are running
@@ -42,8 +43,8 @@ def _stop_worker_threads(gpio):
 
 def test_send_worker_waits_for_ready():
     mock = MockTransport(loopback=False)
-    cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
-    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
+    cfg = MockTransportConfig(loopback=False, debug=global_debug, timeout=0.1, auto_io=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=global_debug)
 
     _start_worker_threads(gpio, mock)
     try:
@@ -69,8 +70,8 @@ def test_send_worker_waits_for_ready():
 
 def test_send_waits_for_ok_blocks_then_completes():
     mock = MockTransport(loopback=False)
-    cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
-    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
+    cfg = MockTransportConfig(loopback=False, debug=global_debug, timeout=0.1, auto_io=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=global_debug)
 
     _start_worker_threads(gpio, mock)
     # start recv worker so the OK we inject will be parsed
@@ -103,8 +104,8 @@ def test_send_waits_for_ok_blocks_then_completes():
 
 def test_per_packet_wait_ack_records_sent_packet():
     mock = MockTransport(loopback=False)
-    cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
-    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
+    cfg = MockTransportConfig(loopback=False, debug=global_debug, timeout=0.1, auto_io=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=global_debug)
 
     _start_worker_threads(gpio, mock)
     # start recv worker so the OK we inject will be parsed
