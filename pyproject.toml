@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "px-device-interfaces"
-version = "1.0.1"
+version = "0.0.1"
 description = "PX Device Interfaces: connection and GPIO helper libraries"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -13,12 +13,8 @@ license = "MIT"
 dependencies = [
     "pyserial",
     "opcua",
-    "cryptography",
-    "dataclasses-json"
+    "cryptography"
 ]
 
 [tool.setuptools.packages.find]
 include = ["px_device_interfaces*"]
-
-[tool.setuptools]
-include-package-data = true

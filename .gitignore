@@ -1,11 +1,7 @@
-/.venv
+
+.idea
+.venv
 __pycache__/
-dist/
-.vscode/
-/firmware/old/
 *.pyc
+dist/
 *.code-workspace
-old_system_files/
-*.log
-*.png
-*.bin

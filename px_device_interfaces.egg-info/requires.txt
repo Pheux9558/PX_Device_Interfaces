@@ -1,4 +1,2 @@
 pyserial
 opcua
-cryptography
-dataclasses-json

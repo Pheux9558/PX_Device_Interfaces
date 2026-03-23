@@ -1,19 +1,13 @@
-__version__ = "1.0.1"
+__version__ = "0.0.1"
 
-# Core GPIO library
-from .GPIO_Lib import GPIO_Lib
-from .connection_organiser_adapter import ConnectionOrganiserAdapter
-
-
-# Transport layer
-from .transports import (
-    BaseTransport,
-    MockTransport,
-)
+from .arduino_GPIO_lib import GPIOlib as ArduinoGPIOlib
+from .connection_organiser_with_opc import ConnectionOrganiser
+from .opc_GPIO_lib import GPIOlib as OPCGPIOlib
+from .timer import Timer
 
 __all__ = [
-    "GPIO_Lib",
-    "ConnectionOrganiserAdapter",
-    "BaseTransport",
-    "MockTransport",
+    "ArduinoGPIOlib",
+    "ConnectionOrganiser",
+    "OPCGPIOlib",
+    "Timer",
 ]
