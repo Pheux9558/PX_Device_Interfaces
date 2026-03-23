@@ -1,5 +1,25 @@
+"""
+This example demonstrates how to perform an analog read from pin A0 (pin 14) 
+and optionally display the value on an SSD1306 OLED display. 
+The example will run for 10 seconds, continuously reading the analog value
+and printing it to the console. If the display is enabled, 
+it will also show the current analog value.
 
 
+Components needed:
+- Arduino Uno R4 WiFi (or compatible board with GPIO_Lib firmware)
+- Potentiometer connected to A0 (pin 14) with the following wiring:
+  - One end to 5V
+  - Other end to GND
+  - Wiper (middle pin) to A0 (pin 14)
+- Optional: SSD1306 OLED display connected via I2C (SDA to pin 20, SCL to pin 21, VCC to 3.3V, GND to GND)
+
+Optional display code is included but can be disabled by setting `use_display = False`.
+I2C port is configured for the QWIIC connector (i2c_bus=1) on the Uno R4, but can be adjusted as needed for different hardware setups.
+Display is configured for a common SSD1306 128x64 OLED. 
+Adjust I2C pins and display parameters as needed for your specific hardware.
+(More details on display wiring and configuration can be found in the DisplaySSD1306 class documentation or examples.)
+"""
 
 
 import time
@@ -8,8 +28,15 @@ from px_device_interfaces.GPIO_Lib import GPIO_Lib, PinMode
 
 use_display = True
 
+
+
+
+
+
 def main() -> None:
+    # Configure transport and GPIO_Lib
     cfg = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=False, reset_on_start=True)
+
     gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
     display = None
     if use_display:
@@ -21,6 +48,7 @@ def main() -> None:
             width=128,
             height=64,
         )
+    
     try:
         gpio.start()
 

@@ -8,6 +8,7 @@ firmware/GPIO_Lib_Firmware/next_tasks.txt
 firmware/GPIO_Lib_Firmware/platformio.ini
 firmware/GPIO_Lib_Firmware/platformio.ini.bak
 firmware/GPIO_Lib_Firmware/.pio/build/project.checksum
+firmware/GPIO_Lib_Firmware/.pio/build/device/idedata.json
 firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/integrity.dat
 firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/.clang-format
 firmware/GPIO_Lib_Firmware/.pio/libdeps/T-Dongle-S3/Adafruit BusIO/.piopm
@@ -729,14 +730,16 @@ firmware/GPIO_Lib_Firmware/lib/spi/src/spi.h
 firmware/GPIO_Lib_Firmware/lib/uart/src/uart.cpp
 firmware/GPIO_Lib_Firmware/lib/uart/src/uart.h
 firmware/GPIO_Lib_Firmware/src/main.cpp
-firmware/GPIO_Lib_Firmware/tools/device_compile_config.py
+firmware/GPIO_Lib_Firmware/tools/device_board_info.json
 firmware/GPIO_Lib_Firmware/tools/pio_post_hook.py
 firmware/GPIO_Lib_Firmware/tools/pio_pre_hook.py
 firmware/GPIO_Lib_Firmware/tools/post_upload_task.py
-firmware/GPIO_Lib_Firmware/tools/recover.py
 firmware/GPIO_Lib_Firmware/tools/scan_or_select.py
 firmware/GPIO_Lib_Firmware/tools/test_firmware_res.py
 firmware/GPIO_Lib_Firmware/tools/__pycache__/device_compile_config.cpython-314.pyc
+firmware/GPIO_Lib_Firmware/tools/__pycache__/device_configs.cpython-314.pyc
+firmware/GPIO_Lib_Firmware/tools/__pycache__/pio_pre_hook.cpython-314.pyc
+firmware/GPIO_Lib_Firmware/tools/__pycache__/scan_or_select.cpython-314.pyc
 firmware/GPIO_Lib_Firmware/tools/__pycache__/test_firmware_res.cpython-314-pytest-9.0.2.pyc
 px_device_interfaces/GPIO_Lib.py
 px_device_interfaces/GPIO_Lib_OPCUA.py
@@ -747,8 +750,6 @@ px_device_interfaces.egg-info/SOURCES.txt
 px_device_interfaces.egg-info/dependency_links.txt
 px_device_interfaces.egg-info/requires.txt
 px_device_interfaces.egg-info/top_level.txt
-px_device_interfaces/examples/blink_led13.py
-px_device_interfaces/examples/blink_led13_configured.py
 px_device_interfaces/examples/blink_pin_configured.py
 px_device_interfaces/examples/color_format_test.py
 px_device_interfaces/examples/i2c_scan_dual_pins.py
@@ -760,7 +761,6 @@ px_device_interfaces/tests/test_gpio_lib_opcua.py
 px_device_interfaces/tests/test_gpio_mock.py
 px_device_interfaces/tests/test_send_worker.py
 px_device_interfaces/tests/test_transports.py
-px_device_interfaces/tools/flash.py
 px_device_interfaces/tools/opcua_list_nodes.py
 px_device_interfaces/transports/__init__.py
 px_device_interfaces/transports/base.py

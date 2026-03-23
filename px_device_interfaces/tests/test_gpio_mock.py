@@ -11,7 +11,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from px_device_interfaces.transports.mock import MockTransport, MockTransportConfig
-from px_device_interfaces.GPIO_Lib import GPIO_Lib, CMD_LCD_WRITE_BITMAP, CMD_DIGITAL_READ
+from px_device_interfaces.GPIO_Lib import GPIO_Lib, CMD_ST7735_WRITE_BITMAP, CMD_DIGITAL_READ
 
 
 def test_mock_large_bitmap_and_response(tmp_path):
@@ -40,7 +40,7 @@ def test_mock_large_bitmap_and_response(tmp_path):
 
         # build and send a 256-byte bitmap frame to the transport
         payload = bytes([i & 0xFF for i in range(256)])
-        pkt = gpio._build_packet(CMD_LCD_WRITE_BITMAP, payload)
+        pkt = gpio._build_packet(CMD_ST7735_WRITE_BITMAP, payload)
         mock.send(pkt)
 
         sent = mock.pop_sent(raw=True)
@@ -106,7 +106,7 @@ def test_display_write_bitmap_host_conversion():
         row_payload = None
         for pkt in sent:
             cmd = int.from_bytes(pkt[1:3], "little")
-            if cmd != CMD_LCD_WRITE_BITMAP:
+            if cmd != CMD_ST7735_WRITE_BITMAP:
                 continue
             length = int.from_bytes(pkt[3:5], "little")
             payload = pkt[5:5+length]
