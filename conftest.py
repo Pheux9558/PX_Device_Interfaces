@@ -28,7 +28,15 @@ import pytest
 def reset_matrix_singleton():
     """Reset DisplayUNO_R4_MATRIX singleton counter before each test."""
     from px_device_interfaces import GPIO_Lib
-    
-    GPIO_Lib.Display.DisplayUNO_R4_MATRIX.total_instances = 0
+    # Guard against cases where the Display class or matrix is unavailable
+    try:
+        matrix_cls = GPIO_Lib.Display.DisplayUNO_R4_MATRIX
+    except Exception:
+        # If the Display matrix class isn't present (e.g. after a merge),
+        # skip resetting and allow tests that don't depend on it to run.
+        yield
+        return
+
+    matrix_cls.total_instances = 0
     yield
-    GPIO_Lib.Display.DisplayUNO_R4_MATRIX.total_instances = 0
+    matrix_cls.total_instances = 0
