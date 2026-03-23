@@ -11,17 +11,21 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from px_device_interfaces.transports.mock import MockTransport, MockTransportConfig
-from px_device_interfaces.GPIO_Lib import GPIO_Lib, CMD_ST7735_WRITE_BITMAP, CMD_DIGITAL_READ
+from px_device_interfaces.GPIO_Lib import GPIO_Lib, CMD_ST7735_WRITE_BITMAP, CMD_DIGITAL_READ, PinMode
 
 
 def test_mock_large_bitmap_and_response(tmp_path):
+    def log_debug(msg):
+        if gpio.transport_config.debug:
+            print(f"[DEBUG] {msg}")
+
     device = "testdev"
     # create a MockTransport (no loopback - we'll push responses manually)
     mock = MockTransport(loopback=False)
 
     # create GPIO_Lib with a mock transport config and inject transport instance
-    cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
-    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
+    cfg = MockTransportConfig(loopback=False, debug=False, timeout=0.1, auto_io=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=False)
     gpio._transport = mock
     mock.connect()
 
@@ -32,8 +36,8 @@ def test_mock_large_bitmap_and_response(tmp_path):
 
     try:
         # configure IO (sends config frames)
-        gpio.pinMode(15, "INPUT", "BTN1")
-        gpio.pinMode(16, "OUTPUT", "LED1")
+        gpio.pinMode(15, PinMode.INPUT, "BTN1")
+        gpio.pinMode(16, PinMode.OUTPUT, "LED1")
 
         # clear any sent frames recorded by MockTransport
         mock.pop_sent()
@@ -53,10 +57,10 @@ def test_mock_large_bitmap_and_response(tmp_path):
         cmd = int.from_bytes(sent_pkt[1:3], "little")
         length = int.from_bytes(sent_pkt[3:5], "little")
         chk = sent_pkt[5 + length]
-        print("\n--- Transmitted packet ---")
-        print(f"HEX ({len(sent_pkt)} bytes): {hex_repr}")
-        print(f"CMD=0x{cmd:04X}, LEN={length}, CHK=0x{chk:02X}")
-        print("--- end packet ---\n")
+        log_debug("\n--- Transmitted packet ---")
+        log_debug(f"HEX ({len(sent_pkt)} bytes): {hex_repr}")
+        log_debug(f"CMD=0x{cmd:04X}, LEN={length}, CHK=0x{chk:02X}")
+        log_debug("--- end packet ---\n")
 
         # verify the 2-byte length field contains 256 (little-endian at offsets 3..4)
         assert length == 256
@@ -81,17 +85,22 @@ def test_display_write_bitmap_host_conversion():
     """Display.write_bitmap() should convert RGB565->BGR565+invert on the host before sending rows."""
     mock = MockTransport(loopback=False)
     cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
-    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True, require_ack_on_send=False)
     gpio._transport = mock
     mock.connect()
 
     gpio._running = True
+    gpio._send_thread = threading.Thread(target=gpio._send_worker, daemon=True)
     gpio._recv_thread = threading.Thread(target=gpio._recv_worker, daemon=True)
+    with gpio._ready_cv:
+        gpio._ready = True
+        gpio._ready_cv.notify_all()
+    gpio._send_thread.start()
     gpio._recv_thread.start()
 
     try:
         spi = gpio.SPI(gpio, data_pin=23, clock_pin=18)
-        lcd = gpio.Display(gpio, spi, cs_pin=5, rs_pin=16, enable_pin=17, width=2, height=1)
+        lcd = gpio.Display.DisplayST7735(gpio, spi, cs_pin=5, rs_pin=16, enable_pin=17, width=2, height=1)
 
         # clear setup frames
         mock.pop_sent()
@@ -100,7 +109,8 @@ def test_display_write_bitmap_host_conversion():
         # red RGB565 = 0xF800 -> bytes [0x00, 0xF8]
         # blue RGB565 = 0x001F -> bytes [0x1F, 0x00]
         bmp = bytes([0x00, 0xF8, 0x1F, 0x00])
-        lcd.write_bitmap(bmp, x_pos=0, y_pos=0, x_len=2, y_len=1)
+        lcd.write_bitmap(bmp, x=0, y=0, width=2, height=1)
+        assert gpio.await_send_empty(timeout=6.0)
 
         sent = mock.pop_sent(raw=True)
         row_payload = None
@@ -123,5 +133,7 @@ def test_display_write_bitmap_host_conversion():
 
     finally:
         gpio._running = False
+        if gpio._send_thread is not None:
+            gpio._send_thread.join(0.2)
         if gpio._recv_thread is not None:
             gpio._recv_thread.join(0.2)

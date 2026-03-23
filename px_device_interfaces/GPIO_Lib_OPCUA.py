@@ -200,9 +200,13 @@ class GPIO_Lib_OPCUA:
         # Code to stop the GPIO_Lib_OPCUA functionality
         self.log_debug_message("Stopping GPIO_Lib_OPCUA")
         if self._transport:
-            self._transport.disconnect()
-            self._transport = None
-        self._running = False
+            try:
+                self._transport.disconnect()
+            except Exception as e:
+                self.log_debug_message(f"Error while disconnecting transport: {e}")
+            finally:
+                self._running = False
+                self._transport = None
 
 
     # region Labels to Nodeid
@@ -321,10 +325,9 @@ class GPIO_Lib_OPCUA:
         if not nodeid_in:
             raise ValueError(f"GPIO_Lib_OPCUA.writeArrayIndex: unknown input label '{label}'")
         self.log_debug_message(f"GPIO_Lib_OPCUA.writeArrayIndex: reading current array for label '{label}' from nodeid {nodeid_in}")
+        array_value = self.IN_SW_mirror[label]["value"]
         if self._transport_config.auto_io or force:
             array_value = self._transport.read(nodeid_in)
-        else:
-            array_value = self.IN_SW_mirror[label]["value"]
 
         if not isinstance(array_value, list):
             raise ValueError(f"GPIO_Lib_OPCUA.writeArrayIndex: GPIO input '{label}' is not an array. It is of type {type(array_value)}")

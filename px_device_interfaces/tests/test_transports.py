@@ -10,7 +10,7 @@ from px_device_interfaces.transports import MockTransport
 
 def test_mock_transport_loopback():
     # call using the new parameter name semantics (positional is supported)
-    t = MockTransport(loopback=True)
+    t = MockTransport(loopback=True, debug=False)
     assert not t.is_connected
     assert t.connect() is True
     assert t.is_connected
