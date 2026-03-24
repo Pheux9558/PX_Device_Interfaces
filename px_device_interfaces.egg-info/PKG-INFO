@@ -1,4 +1,4 @@
-Metadata-Version: 2.4
+Metadata-Version: 1.1.0
 Name: px-device-interfaces
 Version: 0.0.1
 Summary: PX Device Interfaces: connection and GPIO helper libraries
@@ -9,6 +9,7 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: pyserial
 Requires-Dist: opcua
+Requires-Dist: cryptography
 Dynamic: license-file
 
 # PX_Device_Interfaces
