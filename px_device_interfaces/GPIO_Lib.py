@@ -254,6 +254,7 @@ CMD_DEVICE_OK                       = 0x1000 # General OK response (e.g. Respons
 CMD_DEVICE_ERROR                    = 0x1001 # General ERROR response (e.g. Response to invalid commands or parameters)
 
 # Controll codes
+CMD_SYS_GET_STATS                   = 0xFFFA
 CMD_FIRMWARE_RESET                  = 0xFFFC # Reset the device, no payload. Response with CMD_BANNER_GPIO_READY after reboot and initialization. Note: this command will cause the device to disconnect and reconnect if using USB CDC, so the transport may need to be re-established on the host side after sending this command.
 CMD_FIRMWARE_BUILD_FLAGS            = 0xFFFD # Response with build flags, returns: (build flags string in UTF-8)
 CMD_FIRMWARE_NAME                   = 0xFFFE # Response with firmware name, returns (name string in UTF-8) # Name of the device configuration
