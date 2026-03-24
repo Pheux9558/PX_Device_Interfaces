@@ -1,6 +1,10 @@
 include README.md
 include LICENSE
-recursive-include arduino *
-recursive-include Firmware_Remote *
-recursive-include GPIO_Lib_master *
-recursive-include gpio_lib_firmware_update_test *
+
+# Package Python modules and helpers
+recursive-include px_device_interfaces *.py
+recursive-include px_device_interfaces/examples *
+recursive-include px_device_interfaces/transports *
+recursive-include px_device_interfaces/tests *
+recursive-include px_device_interfaces/utils *
+recursive-include px_device_interfaces/tools *.py
