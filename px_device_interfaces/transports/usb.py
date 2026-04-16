@@ -141,12 +141,12 @@ class USBTransport(BaseTransport):
         try:
             with self._lock:
                 self._serial = serial.Serial(self.port, baudrate=self.baud, timeout=self.timeout_connect)
-                # Give Arduino a short time to reset and the bootloader to finish
-                # so initial configuration packets aren't lost. Then flush input.
-                # short delay to allow serial open to settle; handshake will
-                # ensure readiness so this can be small
+                # Give the device a short time to settle after open.
+                # Do not clear the input buffer here: on boards that emit a
+                # GPIO_READY banner immediately after boot/reconnect, resetting
+                # the input buffer can discard the only readiness signal the
+                # host is waiting for.
                 time.sleep(0.1)
-                self._serial.reset_input_buffer()
                 self._serial.flush()
                 self._connected = True
             return True

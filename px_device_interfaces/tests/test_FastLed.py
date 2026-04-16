@@ -14,10 +14,9 @@ steps_between_colors = -25
 
 
 
-port = '/dev/ttyACM0'  # Adjust as necessary for your system
-baud = 921600
+
 config = USBTransportConfig(debug=False, auto_connect=True) # Auto-connect will try to find the device automatically, but you can specify port and baud if needed
-gpio_lib = GPIO_Lib(transport_config=config, require_ack_on_send=True, send_ack_timeout=.5)
+gpio_lib = GPIO_Lib(transport_config=config, send_ack_timeout=.5)
 gpio_lib.start()
 
 

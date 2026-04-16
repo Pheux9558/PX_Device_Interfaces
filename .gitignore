@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 dist/
 *.code-workspace
+/firmware/GPIO_Lib_Firmware/lib/_legacy

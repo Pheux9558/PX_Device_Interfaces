@@ -1,411 +1,503 @@
-// Minimal GPIO HAL that maps to Arduino pin functions when ARDUINO is defined
+// GPIO RTOS Service - Phase 3 Task Implementation
+// Timer-driven polling of digital and analog inputs using rtosal_delay_until()
+// All GPIO state owned by GpioTask
 #include "gpio.h"
 #include "cmd.h"
+#include "cmd_auto.h"
+#include "modules.h"
+#include "../../rtosal/src/rtosal.h"
+#include <string.h>
+#include <stdio.h>
 
 #if defined(ARDUINO)
-#include <Arduino.h>
-#include <stdlib.h>
+/* HAL replaces direct vendor calls.  ESP32 port: hal_port_esp32.cpp */
+#include "../../hal/src/hal_gpio.h"
 
-// forward declare debug helper so functions defined below can call it
-static void _call_dbg(const char *msg);
+// Self-register GPIO command handler (0x00xx range) with the dispatch system.
+// Replaces the manual cmd_register_handler() calls that were previously in
+// gpio_init() and in main.cpp.  Processed by cmd_init() -> cmd_auto_register_all().
+CMD_REGISTER(0x0000, 0x001F, gpio_cmd_handler)
 
-#include "modules.h"
-
+// GPIO state structures (owned by task)
 #define MAX_DIGITAL_INPUTS 16
 #define MAX_ANALOG_INPUTS 8
 #define GPIO_POLL_INTERVAL_MS 10
 
-struct digital_input_t {
-	uint16_t pin;
-	uint8_t last;
-	volatile bool dirty;
-	bool used;
-	bool use_interrupt;
-};
+typedef struct {
+    uint16_t pin;
+    uint8_t last;
+    volatile bool dirty;
+    bool used;
+    bool use_interrupt;
+} digital_input_t;
 
-struct analog_input_t {
-	uint16_t pin;
-	uint16_t last;
-	uint16_t threshold;
-	bool used;
-	bool initialized;
-};
+typedef struct {
+    uint16_t pin;
+    uint16_t last;
+    uint16_t threshold;
+    bool used;
+    bool initialized;
+} analog_input_t;
 
-static digital_input_t g_digital_inputs[MAX_DIGITAL_INPUTS];
-static analog_input_t g_analog_inputs[MAX_ANALOG_INPUTS];
-static uint16_t g_analog_default_threshold = 4;
-static uint32_t g_last_poll_ms = 0;
+// All GPIO service state bundled into one struct — owned by GpioTask.
+// The task is created with &g_gpio_state as its arg so ownership is explicit.
+// The mutex serialises competing accesses from DispatchTask (cmd handler) and GpioTask (poll loop).
+typedef struct {
+    digital_input_t digital_inputs[MAX_DIGITAL_INPUTS];
+    analog_input_t  analog_inputs[MAX_ANALOG_INPUTS];
+    uint16_t        analog_default_threshold;
+} gpio_state_t;
 
-#if defined(ARDUINO_ARCH_ESP32)
-static void IRAM_ATTR gpio_digital_isr(void *arg) {
-	digital_input_t *entry = (digital_input_t *)arg;
-	if (entry) {
-		entry->dirty = true;
-	}
-}
+static gpio_state_t   g_gpio_state;
+static rtosal_mutex_t g_gpio_mutex = NULL;
+static rtosal_task_t  g_gpio_task  = NULL;
 
-static void gpio_attach_interrupt(digital_input_t *entry) {
-	if (!entry) return;
-	attachInterruptArg((int)entry->pin, gpio_digital_isr, entry, CHANGE);
-	entry->use_interrupt = true;
-}
-#else
-static void gpio_attach_interrupt(digital_input_t *entry) {
-	(void)entry;
-}
-#endif
-
-static digital_input_t *find_digital_input(uint16_t pin) {
-	for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
-		if (g_digital_inputs[i].used && g_digital_inputs[i].pin == pin) return &g_digital_inputs[i];
-	}
-	return NULL;
-}
-
-static digital_input_t *alloc_digital_input(uint16_t pin) {
-	for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
-		if (!g_digital_inputs[i].used) {
-			g_digital_inputs[i].used = true;
-			g_digital_inputs[i].pin = pin;
-			g_digital_inputs[i].last = 0;
-			g_digital_inputs[i].dirty = true;
-			g_digital_inputs[i].use_interrupt = false;
-			return &g_digital_inputs[i];
-		}
-	}
-	return NULL;
-}
-
-static analog_input_t *find_analog_input(uint16_t pin) {
-	for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
-		if (g_analog_inputs[i].used && g_analog_inputs[i].pin == pin) return &g_analog_inputs[i];
-	}
-	return NULL;
-}
-
-static analog_input_t *alloc_analog_input(uint16_t pin) {
-	for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
-		if (!g_analog_inputs[i].used) {
-			g_analog_inputs[i].used = true;
-			g_analog_inputs[i].pin = pin;
-			g_analog_inputs[i].last = 0;
-			g_analog_inputs[i].threshold = g_analog_default_threshold;
-			g_analog_inputs[i].initialized = false;
-			return &g_analog_inputs[i];
-		}
-	}
-	return NULL;
-}
-
-static void gpio_send_digital_update(uint16_t pin, uint8_t value) {
-	uint8_t resp[2];
-	resp[0] = (uint8_t)(pin & 0xFF);
-	resp[1] = value & 0xFF;
-	cmd_send_response(0x0010, resp, 2);
-}
-
-static void gpio_send_analog_update(uint16_t pin, uint16_t value) {
-	uint8_t resp[3];
-	resp[0] = (uint8_t)(pin & 0xFF);
-	resp[1] = (uint8_t)(value & 0xFF);
-	resp[2] = (uint8_t)((value >> 8) & 0xFF);
-	cmd_send_response(0x0012, resp, 3);
-}
-
-static digital_input_t *gpio_register_digital_input(uint16_t pin) {
-	digital_input_t *entry = find_digital_input(pin);
-	if (!entry) entry = alloc_digital_input(pin);
-	if (!entry) return NULL;
-	int v = gpio_digital_read(pin);
-	entry->last = (uint8_t)(v & 0xFF);
-	entry->dirty = false;
-	gpio_attach_interrupt(entry);
-	gpio_send_digital_update(pin, entry->last);
-	return entry;
-}
-
-static analog_input_t *gpio_register_analog_input(uint16_t pin) {
-	analog_input_t *entry = find_analog_input(pin);
-	if (!entry) entry = alloc_analog_input(pin);
-	if (!entry) return NULL;
-	int v = gpio_analog_read(pin);
-	entry->last = (uint16_t)v;
-	entry->initialized = true;
-	gpio_send_analog_update(pin, entry->last);
-	return entry;
-}
-
-void gpio_init() {
-	// register module flag at init
-	modules_add_flag(gpio_module_flags());
-	for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
-		g_digital_inputs[i].used = false;
-		g_digital_inputs[i].dirty = false;
-		g_digital_inputs[i].use_interrupt = false;
-	}
-	for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
-		g_analog_inputs[i].used = false;
-		g_analog_inputs[i].initialized = false;
-		g_analog_inputs[i].threshold = g_analog_default_threshold;
-	}
-	g_last_poll_ms = 0;
-}
-// Hardware abstraction implementations
-void gpio_digital_write(uint16_t pin, uint8_t value) {
-	digitalWrite((int)pin, value ? HIGH : LOW);
-	char b[64];
-	snprintf(b, sizeof(b), "gpio: digital_write pin=%u val=%u", (unsigned)pin, (unsigned)value);
-	_call_dbg(b);
-}
-
-int gpio_digital_read(uint16_t pin) {
-	int v = digitalRead((int)pin) == HIGH ? 1 : 0;
-	char b[64];
-	snprintf(b, sizeof(b), "gpio: digital_read pin=%u val=%u", (unsigned)pin, (unsigned)v);
-	_call_dbg(b);
-	return v;
-}
-
-void gpio_analog_write(uint16_t pin, uint16_t value) {
-	analogWrite((int)pin, (int)value);
-	char b[64];
-	snprintf(b, sizeof(b), "gpio: analog_write pin=%u val=%u", (unsigned)pin, (unsigned)value);
-	_call_dbg(b);
-}
-
-int gpio_analog_read(uint16_t pin) {
-	int v = analogRead((int)pin);
-	char b[64];
-	snprintf(b, sizeof(b), "gpio: analog_read pin=%u val=%d", (unsigned)pin, v);
-	_call_dbg(b);
-	return v;
-}
-
-// Debug callback storage and helper
-static gpio_debug_cb_t g_debug_cb = NULL;
-
-void gpio_set_debug_cb(gpio_debug_cb_t cb) { g_debug_cb = cb; }
-
-// forward declare debug helper so other functions can call it before it's defined
+// Forward declarations
+static void gpio_task_fn(void *arg);
 static void _call_dbg(const char *msg);
 
+// Debug callback (optional)
+static void (*g_debug_cb)(const char *msg) = NULL;
+void gpio_set_debug_cb(void (*cb)(const char *msg)) { g_debug_cb = cb; }
+
 static void _call_dbg(const char *msg) {
-	if (g_debug_cb) {
-		g_debug_cb(msg);
-	}
+    if (g_debug_cb) {
+        g_debug_cb(msg);
+    }
 }
 
-// Setup helpers
-void gpio_set_mode(uint16_t pin, uint8_t mode) {
-	if (mode) {
-		pinMode((int)pin, OUTPUT);
-		char b[64];
-		snprintf(b, sizeof(b), "gpio: set pin %u MODE=OUTPUT", (unsigned)pin);
-		_call_dbg(b);
-	} else {
-		pinMode((int)pin, INPUT);
-		char b[64];
-		snprintf(b, sizeof(b), "gpio: set pin %u MODE=INPUT", (unsigned)pin);
-		_call_dbg(b);
-	}
+// Helper: Find digital input by pin
+static digital_input_t *find_digital_input(gpio_state_t *s, uint16_t pin) {
+    for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
+        if (s->digital_inputs[i].used && s->digital_inputs[i].pin == pin)
+            return &s->digital_inputs[i];
+    }
+    return NULL;
 }
 
-void gpio_set_pull(uint16_t pin, uint8_t pull) {
-	if (pull == 1) {
-		// pull-up
-		pinMode((int)pin, INPUT_PULLUP);
-		char b[64];
-		snprintf(b, sizeof(b), "gpio: set pin %u PULL=UP", (unsigned)pin);
-		_call_dbg(b);
-	} else if (pull == 2) {
-#if defined(INPUT_PULLDOWN)
-		pinMode((int)pin, INPUT_PULLDOWN);
-#else
-		pinMode((int)pin, INPUT);
-#endif
-		char b[64];
-		snprintf(b, sizeof(b), "gpio: set pin %u PULL=DOWN", (unsigned)pin);
-		_call_dbg(b);
-	} else {
-		// no pull
-		pinMode((int)pin, INPUT);
-		char b[64];
-		snprintf(b, sizeof(b), "gpio: set pin %u PULL=NONE", (unsigned)pin);
-		_call_dbg(b);
-	}
+// Helper: Allocate digital input slot
+static digital_input_t *alloc_digital_input(gpio_state_t *s, uint16_t pin) {
+    for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
+        if (!s->digital_inputs[i].used) {
+            s->digital_inputs[i].used          = true;
+            s->digital_inputs[i].pin           = pin;
+            s->digital_inputs[i].last          = 0;
+            s->digital_inputs[i].dirty         = true;
+            s->digital_inputs[i].use_interrupt = false;
+            return &s->digital_inputs[i];
+        }
+    }
+    return NULL;
 }
 
-void gpio_attach_servo(uint16_t pin, uint8_t index) {
-	// Minimal stub: user firmware may include Servo support.
-	// For now just ensure the pin is set to output so attach or writes work.
-	pinMode((int)pin, OUTPUT);
-	char b[64];
-	snprintf(b, sizeof(b), "gpio: attach servo idx=%u pin=%u", (unsigned)index, (unsigned)pin);
-	_call_dbg(b);
+// Helper: Find analog input by pin
+static analog_input_t *find_analog_input(gpio_state_t *s, uint16_t pin) {
+    for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
+        if (s->analog_inputs[i].used && s->analog_inputs[i].pin == pin)
+            return &s->analog_inputs[i];
+    }
+    return NULL;
 }
 
-// Command handling implementation
-#include "cmd.h"
+// Helper: Allocate analog input slot
+static analog_input_t *alloc_analog_input(gpio_state_t *s, uint16_t pin) {
+    for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
+        if (!s->analog_inputs[i].used) {
+            s->analog_inputs[i].used         = true;
+            s->analog_inputs[i].pin          = pin;
+            s->analog_inputs[i].last         = 0;
+            s->analog_inputs[i].threshold    = s->analog_default_threshold;
+            s->analog_inputs[i].initialized  = false;
+            return &s->analog_inputs[i];
+        }
+    }
+    return NULL;
+}
 
+// Hardware abstraction: digital operations
+static void gpio_digital_write(uint16_t pin, uint8_t value) {
+    hal_gpio_write(pin, value);
+    char b[64];
+    snprintf(b, sizeof(b), "gpio: digital_write pin=%u val=%u", (unsigned)pin, (unsigned)value);
+    _call_dbg(b);
+}
+
+static int gpio_digital_read(uint16_t pin) {
+    uint8_t v = 0;
+    hal_gpio_read(pin, &v);
+    if (g_debug_cb) {
+        char b[64];
+        snprintf(b, sizeof(b), "gpio: digital_read pin=%u val=%u", (unsigned)pin, (unsigned)(v & 1u));
+        _call_dbg(b);
+    }
+    return (int)(v & 1u);
+}
+
+// Hardware abstraction: analog operations
+static void gpio_analog_write(uint16_t pin, uint16_t value) {
+    hal_gpio_analog_write(pin, value);
+    char b[64];
+    snprintf(b, sizeof(b), "gpio: analog_write pin=%u val=%u", (unsigned)pin, (unsigned)value);
+    _call_dbg(b);
+}
+
+static int gpio_analog_read(uint16_t pin) {
+    uint16_t v = 0;
+    hal_gpio_analog_read(pin, &v);
+    if (g_debug_cb) {
+        char b[64];
+        snprintf(b, sizeof(b), "gpio: analog_read pin=%u val=%u", (unsigned)pin, (unsigned)v);
+        _call_dbg(b);
+    }
+    return (int)v;
+}
+
+// Helper: Send digital input change notification to host
+static void gpio_send_digital_update(uint16_t pin, uint8_t value) {
+    uint8_t resp[2];
+    resp[0] = (uint8_t)(pin & 0xFF);
+    resp[1] = value & 0xFF;
+    cmd_send_response(0x0010, resp, 2);
+}
+
+// Helper: Send analog input change notification to host  
+static void gpio_send_analog_update(uint16_t pin, uint16_t value) {
+    uint8_t resp[3];
+    resp[0] = (uint8_t)(pin & 0xFF);
+    resp[1] = (uint8_t)(value & 0xFF);
+    resp[2] = (uint8_t)((value >> 8) & 0xFF);
+    cmd_send_response(0x0012, resp, 3);
+}
+
+// Helper: Configure pin mode
+static void gpio_set_mode(uint16_t pin, uint8_t mode) {
+    if (mode) {
+        hal_gpio_mode(pin, HAL_GPIO_MODE_OUTPUT);
+        char b[64];
+        snprintf(b, sizeof(b), "gpio: set pin %u MODE=OUTPUT", (unsigned)pin);
+        _call_dbg(b);
+    } else {
+        hal_gpio_mode(pin, HAL_GPIO_MODE_INPUT);
+        char b[64];
+        snprintf(b, sizeof(b), "gpio: set pin %u MODE=INPUT", (unsigned)pin);
+        _call_dbg(b);
+    }
+}
+
+// Helper: Configure pin pull resistor
+static void gpio_set_pull(uint16_t pin, uint8_t pull) {
+    if (pull == 1) {
+        // pull-up
+        hal_gpio_mode(pin, HAL_GPIO_MODE_INPUT_PULLUP);
+        char b[64];
+        snprintf(b, sizeof(b), "gpio: set pin %u PULL=UP", (unsigned)pin);
+        _call_dbg(b);
+    } else if (pull == 2) {
+        hal_gpio_mode(pin, HAL_GPIO_MODE_INPUT_PULLDOWN);
+        char b[64];
+        snprintf(b, sizeof(b), "gpio: set pin %u PULL=DOWN", (unsigned)pin);
+        _call_dbg(b);
+    } else {
+        hal_gpio_mode(pin, HAL_GPIO_MODE_INPUT);
+        char b[64];
+        snprintf(b, sizeof(b), "gpio: set pin %u PULL=NONE", (unsigned)pin);
+        _call_dbg(b);
+    }
+}
+
+// ISR helper — platform-agnostic; IRAM handling is in the ESP32 HAL port trampoline.
+static void gpio_digital_isr(void *arg) {
+    digital_input_t *entry = (digital_input_t *)arg;
+    if (entry) {
+        entry->dirty = true;
+    }
+}
+
+static void gpio_attach_interrupt(digital_input_t *entry) {
+    if (!entry) return;
+    hal_gpio_attach_isr(entry->pin, gpio_digital_isr, entry, HAL_GPIO_ISR_CHANGE);
+    entry->use_interrupt = true;
+}
+
+static void gpio_poll_inputs_once(gpio_state_t *s) {
+    if (!s) return;
+
+    // Poll digital inputs
+    for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
+        digital_input_t *entry = &s->digital_inputs[i];
+        if (!entry->used) continue;
+        int v = gpio_digital_read(entry->pin);
+        if ((uint8_t)v != entry->last) {
+            entry->last = (uint8_t)v;
+            gpio_send_digital_update(entry->pin, entry->last);
+        }
+        entry->dirty = false;
+    }
+
+    // Poll analog inputs
+    for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
+        analog_input_t *entry = &s->analog_inputs[i];
+        if (!entry->used) continue;
+
+        int v = gpio_analog_read(entry->pin);
+        if (!entry->initialized) {
+            entry->last = (uint16_t)v;
+            entry->initialized = true;
+            gpio_send_analog_update(entry->pin, entry->last);
+            continue;
+        }
+
+        int diff = abs((int)entry->last - v);
+        if (diff >= (int)entry->threshold) {
+            entry->last = (uint16_t)v;
+            gpio_send_analog_update(entry->pin, entry->last);
+        }
+    }
+}
+
+// Register digital input and send initial state to host
+static digital_input_t *gpio_register_digital_input(gpio_state_t *s, uint16_t pin) {
+    digital_input_t *entry = find_digital_input(s, pin);
+    if (!entry) entry = alloc_digital_input(s, pin);
+    if (!entry) return NULL;
+    int v = gpio_digital_read(pin);
+    entry->last = (uint8_t)(v & 0xFF);
+    entry->dirty = false;
+    gpio_attach_interrupt(entry);
+    gpio_send_digital_update(pin, entry->last);
+    return entry;
+}
+
+// Register analog input and send initial state to host
+static analog_input_t *gpio_register_analog_input(gpio_state_t *s, uint16_t pin) {
+    analog_input_t *entry = find_analog_input(s, pin);
+    if (!entry) entry = alloc_analog_input(s, pin);
+    if (!entry) return NULL;
+    int v = gpio_analog_read(pin);
+    entry->last = (uint16_t)v;
+    entry->initialized = true;
+    gpio_send_analog_update(pin, entry->last);
+    return entry;
+}
+
+// GpioTask main loop: timer-driven polling with rtosal_delay_until()
+// The task arg is a pointer to gpio_state_t — the task is the sole owner of that state.
+static void gpio_task_fn(void *arg) {
+    gpio_state_t *s = (gpio_state_t *)arg;
+
+    // Initialise state (task is sole writer at this point — mutex not needed yet)
+    for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
+        s->digital_inputs[i].used          = false;
+        s->digital_inputs[i].dirty         = false;
+        s->digital_inputs[i].use_interrupt = false;
+    }
+    for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
+        s->analog_inputs[i].used        = false;
+        s->analog_inputs[i].initialized = false;
+        s->analog_inputs[i].threshold   = s->analog_default_threshold;
+    }
+
+    modules_add_flag("GPIO");
+
+    // Task loop: scan for input changes at fixed 10ms interval
+    rtosal_tick_t wake_time = rtosal_now_ticks();
+
+    while (1) {
+        // Lock while reading/writing shared state (cmd handler may run concurrently)
+        rtosal_mutex_lock(g_gpio_mutex, RTOSAL_MAX_DELAY);
+
+        gpio_poll_inputs_once(s);
+
+        rtosal_mutex_unlock(g_gpio_mutex);
+
+        // Sleep until next poll interval
+        rtosal_delay_until(&wake_time, GPIO_POLL_INTERVAL_MS);
+    }
+}
+
+// Command handler: process GPIO commands (0x00xx range).
+// Runs on DispatchTask — acquires g_gpio_mutex before touching shared state.
 bool gpio_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
-	// handle setup commands and digital in/out
-	switch (cmd) {
-		case 0x0000: // digital output (setup)
-			if (len >= 1) {
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				gpio_set_mode(pin, 1);
-			}
-			cmd_send_ok();
-			return true;
-		case 0x0001: // digital input (setup)
-			if (len >= 1) {
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				gpio_set_mode(pin, 0);
-				gpio_register_digital_input(pin);
-			}
-			cmd_send_ok();
-			return true;
-		case 0x0002: // digital input pullup
-			if (len >= 1) {
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				gpio_set_pull(pin, 1);
-				gpio_register_digital_input(pin);
-			}
-			cmd_send_ok();
-			return true;
-		case 0x0003: // digital input pulldown
-			if (len >= 1) {
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				gpio_set_pull(pin, 2);
-				gpio_register_digital_input(pin);
-			}
-			cmd_send_ok();
-			return true;
-		case 0x0008: // analog output
-			if (len >= 1) {
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				gpio_set_mode(pin, 1);
-			}
-			cmd_send_ok();
-			return true;
-		case 0x0009: // analog input
-			if (len >= 1) {
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				gpio_set_mode(pin, 0);
-				gpio_register_analog_input(pin);
-			}
-			cmd_send_ok();
-			return true;
-		case 0x000A: // analog read resolution (ADC bits)
-			if (len < 1) { cmd_send_error(); return true; }
-			{
-				uint8_t bits = payload[0];
-				analogReadResolution(bits);
-				cmd_send_ok();
-			}
-			return true;
-		case 0x000B: // analog tolerance / threshold
-			if (len < 1) { cmd_send_error(); return true; }
-			if (len == 1) {
-				g_analog_default_threshold = payload[0];
-				cmd_send_ok();
-				return true;
-			}
-			{
-				uint16_t pin = (len >= 3) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				uint8_t threshold = (len >= 3) ? payload[2] : payload[1];
-				analog_input_t *entry = find_analog_input(pin);
-				if (!entry) { cmd_send_error(); return true; }
-				entry->threshold = threshold;
-				cmd_send_ok();
-				return true;
-			}
-		case 0x0011: // digital write
-			if (len < 2) { cmd_send_error(); return true; }
-			{
-				uint16_t pin = (len >= 3) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				uint8_t val = payload[len-1];
-				gpio_digital_write(pin, val);
-				cmd_send_ok();
-			}
-			return true;
-		case 0x0010: // digital read
-			if (len < 1) { cmd_send_error(); return true; }
-			{
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				int v = gpio_digital_read(pin);
-				uint8_t resp[2];
-				resp[0] = (uint8_t)(pin & 0xFF);
-				resp[1] = (uint8_t)(v & 0xFF);
-				cmd_send_response(0x0010, resp, 2);
-			}
-			return true;
-		case 0x0012: // analog read
-			if (len < 1) { cmd_send_error(); return true; }
-			{
-				uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
-				int v = gpio_analog_read(pin);
-				gpio_send_analog_update(pin, (uint16_t)v);
-			}
-			return true;
-		case 0x0013: // analog write (16-bit value)
-			if (len < 3) { cmd_send_error(); return true; }
-			{
-				uint16_t pin, val;
-				if (len >= 4) {
-					// 2-byte pin, 2-byte value
-					pin = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-					val = (uint16_t)payload[2] | ((uint16_t)payload[3] << 8);
-				} else {
-					// 1-byte pin, 2-byte value
-					pin = payload[0];
-					val = (uint16_t)payload[1] | ((uint16_t)payload[2] << 8);
-				}
-				gpio_analog_write(pin, val);
-				cmd_send_ok();
-			}
-			return true;
-		default:
-			return false;
-	}
+    gpio_state_t *s = &g_gpio_state;
+    switch (cmd) {
+        case 0x0000: // digital output (setup)
+            if (len >= 1) {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                gpio_set_mode(pin, 1);
+            }
+            cmd_send_ok();
+            return true;
+
+        case 0x0001: // digital input (setup)
+            if (len >= 1) {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                gpio_set_mode(pin, 0);
+                rtosal_mutex_lock(g_gpio_mutex, RTOSAL_MAX_DELAY);
+                gpio_register_digital_input(s, pin);
+                rtosal_mutex_unlock(g_gpio_mutex);
+            }
+            cmd_send_ok();
+            return true;
+
+        case 0x0002: // digital input pullup
+            if (len >= 1) {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                gpio_set_pull(pin, 1);
+                rtosal_mutex_lock(g_gpio_mutex, RTOSAL_MAX_DELAY);
+                gpio_register_digital_input(s, pin);
+                rtosal_mutex_unlock(g_gpio_mutex);
+            }
+            cmd_send_ok();
+            return true;
+
+        case 0x0003: // digital input pulldown
+            if (len >= 1) {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                gpio_set_pull(pin, 2);
+                rtosal_mutex_lock(g_gpio_mutex, RTOSAL_MAX_DELAY);
+                gpio_register_digital_input(s, pin);
+                rtosal_mutex_unlock(g_gpio_mutex);
+            }
+            cmd_send_ok();
+            return true;
+
+        case 0x0008: // analog output
+            if (len >= 1) {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                gpio_set_mode(pin, 1);
+            }
+            cmd_send_ok();
+            return true;
+
+        case 0x0009: // analog input
+            if (len >= 1) {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                gpio_set_mode(pin, 0);
+                rtosal_mutex_lock(g_gpio_mutex, RTOSAL_MAX_DELAY);
+                gpio_register_analog_input(s, pin);
+                rtosal_mutex_unlock(g_gpio_mutex);
+            }
+            cmd_send_ok();
+            return true;
+
+        case 0x000A: // analog read resolution (ADC bits)
+            if (len < 1) { cmd_send_error(); return true; }
+            {
+                uint8_t bits = payload[0];
+                hal_gpio_analog_resolution(bits);
+                cmd_send_ok();
+            }
+            return true;
+
+        case 0x000B: // analog tolerance / threshold
+            if (len < 1) { cmd_send_error(); return true; }
+            if (len == 1) {
+                rtosal_mutex_lock(g_gpio_mutex, RTOSAL_MAX_DELAY);
+                s->analog_default_threshold = payload[0];
+                rtosal_mutex_unlock(g_gpio_mutex);
+                cmd_send_ok();
+                return true;
+            }
+            {
+                uint16_t pin = (len >= 3) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                uint8_t threshold = (len >= 3) ? payload[2] : payload[1];
+                rtosal_mutex_lock(g_gpio_mutex, RTOSAL_MAX_DELAY);
+                analog_input_t *entry = find_analog_input(s, pin);
+                if (entry) entry->threshold = threshold;
+                rtosal_mutex_unlock(g_gpio_mutex);
+                if (!entry) { cmd_send_error(); return true; }
+                cmd_send_ok();
+                return true;
+            }
+
+        case 0x0010: // digital read
+            if (len < 1) { cmd_send_error(); return true; }
+            {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                int v = gpio_digital_read(pin);
+                uint8_t resp[2];
+                resp[0] = (uint8_t)(pin & 0xFF);
+                resp[1] = (uint8_t)(v & 0xFF);
+                cmd_send_response(0x0010, resp, 2);
+            }
+            return true;
+
+        case 0x0011: // digital write
+            if (len < 2) { cmd_send_error(); return true; }
+            {
+                uint16_t pin = (len >= 3) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                uint8_t val = payload[len-1];
+                gpio_digital_write(pin, val);
+                cmd_send_ok();
+            }
+            return true;
+
+        case 0x0012: // analog read
+            if (len < 1) { cmd_send_error(); return true; }
+            {
+                uint16_t pin = (len >= 2) ? (uint16_t)payload[0] | ((uint16_t)payload[1] << 8) : payload[0];
+                int v = gpio_analog_read(pin);
+                gpio_send_analog_update(pin, (uint16_t)v);
+            }
+            return true;
+
+        case 0x0013: // analog write (16-bit value)
+            if (len < 3) { cmd_send_error(); return true; }
+            {
+                uint16_t pin, val;
+                if (len >= 4) {
+                    pin = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
+                    val = (uint16_t)payload[2] | ((uint16_t)payload[3] << 8);
+                } else {
+                    pin = payload[0];
+                    val = (uint16_t)payload[1] | ((uint16_t)payload[2] << 8);
+                }
+                gpio_analog_write(pin, val);
+                cmd_send_ok();
+            }
+            return true;
+
+        default:
+            return false;
+    }
 }
 
+// Legacy polling function (compatibility wrapper, now does nothing as task handles it)
 void gpio_poll_inputs() {
-	uint32_t now = millis();
-	if ((uint32_t)(now - g_last_poll_ms) < GPIO_POLL_INTERVAL_MS) return;
-	g_last_poll_ms = now;
-
-	for (int i = 0; i < MAX_DIGITAL_INPUTS; ++i) {
-		digital_input_t *entry = &g_digital_inputs[i];
-		if (!entry->used) continue;
-		if (entry->use_interrupt && !entry->dirty) continue;
-		int v = gpio_digital_read(entry->pin);
-		if ((uint8_t)v != entry->last) {
-			entry->last = (uint8_t)v;
-			gpio_send_digital_update(entry->pin, entry->last);
-		}
-		entry->dirty = false;
-	}
-
-	for (int i = 0; i < MAX_ANALOG_INPUTS; ++i) {
-		analog_input_t *entry = &g_analog_inputs[i];
-		if (!entry->used) continue;
-		int v = gpio_analog_read(entry->pin);
-		if (!entry->initialized) {
-			entry->last = (uint16_t)v;
-			entry->initialized = true;
-			gpio_send_analog_update(entry->pin, entry->last);
-			continue;
-		}
-		int diff = abs((int)entry->last - v);
-		if (diff >= (int)entry->threshold) {
-			entry->last = (uint16_t)v;
-			gpio_send_analog_update(entry->pin, entry->last);
-		}
-	}
+    // On STM32 bare-metal, rtosal_task_create() returns RTOSAL_ERROR and
+    // GpioTask is never started, so we must poll cooperatively from loop().
+    if (g_gpio_task != NULL) {
+        return;
+    }
+    if (rtosal_mutex_lock(g_gpio_mutex, 0) != RTOSAL_OK) {
+        return;
+    }
+    gpio_poll_inputs_once(&g_gpio_state);
+    rtosal_mutex_unlock(g_gpio_mutex);
 }
 
-const char *gpio_module_flags() {
-	return "GPIO";
+// Module info string
+const char *gpio_module_flags(void) {
+    return "GPIO";
 }
-#endif
+
+// Initialize GPIO task
+void gpio_init(void) {
+    // Initialise state struct defaults before the task starts
+    g_gpio_state.analog_default_threshold = 4;
+
+    // Create mutex that serialises cmd-handler vs GpioTask access to g_gpio_state
+    rtosal_mutex_create(&g_gpio_mutex);
+
+    // Create GpioTask; pass &g_gpio_state so the task explicitly owns the state
+    rtosal_task_config_t gpio_cfg = {
+        .name        = "GpioTask",
+        .fn          = gpio_task_fn,
+        .arg         = &g_gpio_state,
+        .stack_words = 8192,
+        .priority    = 1
+    };
+    rtosal_task_create(&gpio_cfg, &g_gpio_task);
+}
+
+#endif  // ARDUINO

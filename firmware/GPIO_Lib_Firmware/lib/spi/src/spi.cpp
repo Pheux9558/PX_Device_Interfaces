@@ -1,8 +1,15 @@
+// SPI Service - Phase 4 bootstrap implementation
 #include "spi.h"
 #include "cmd.h"
+#include "cmd_auto.h"
 #include "modules.h"
 
+#if defined(SPI_SUPPORT)
+CMD_REGISTER(0x0220, 0x022F, spi_cmd_handler)
+#endif
+
 #if defined(ARDUINO) && defined(SPI_SUPPORT)
+
 #include <Arduino.h>
 #include <stdlib.h>
 
@@ -64,14 +71,14 @@ static void spi_begin_if_ready(gpio_lib_spi_instance_t *inst) {
 #endif
 }
 
-void spi_init() {
+void spi_init(void) {
     for (int i = 0; i < MAX_SPI_INSTANCES; ++i) {
         g_instances[i].used = false;
     }
     modules_add_flag(spi_module_flags());
 }
 
-const char *spi_module_flags() {
+const char *spi_module_flags(void) {
     return "SPI_SUPPORT";
 }
 
@@ -98,17 +105,20 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 cmd_send_ok();
             }
             return true;
+
         case 0x0221: // CMD_SPI_SET_FREQUENCY
             if (len < 6) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint32_t freq = (uint32_t)payload[2] | ((uint32_t)payload[3] << 8) | ((uint32_t)payload[4] << 16) | ((uint32_t)payload[5] << 24);
+                uint32_t freq = (uint32_t)payload[2] | ((uint32_t)payload[3] << 8)
+                              | ((uint32_t)payload[4] << 16) | ((uint32_t)payload[5] << 24);
                 gpio_lib_spi_instance_t *inst = spi_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->freq = freq;
                 cmd_send_ok();
             }
             return true;
+
         case 0x0222: // CMD_SPI_SET_MODE
             if (len < 3) { cmd_send_error(); return true; }
             {
@@ -120,11 +130,12 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 cmd_send_ok();
             }
             return true;
+
         case 0x0223: // CMD_SPI_SET_PIN_CLOCK
             if (len < 3) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint16_t pin = (len >= 4) ? (uint16_t)payload[2] | ((uint16_t)payload[3] << 8) : payload[2];
+                uint16_t pin = (len >= 4) ? ((uint16_t)payload[2] | ((uint16_t)payload[3] << 8)) : payload[2];
                 gpio_lib_spi_instance_t *inst = spi_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->sck = (int8_t)pin;
@@ -132,11 +143,12 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 cmd_send_ok();
             }
             return true;
+
         case 0x0224: // CMD_SPI_SET_PIN_MOSI
             if (len < 3) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint16_t pin = (len >= 4) ? (uint16_t)payload[2] | ((uint16_t)payload[3] << 8) : payload[2];
+                uint16_t pin = (len >= 4) ? ((uint16_t)payload[2] | ((uint16_t)payload[3] << 8)) : payload[2];
                 gpio_lib_spi_instance_t *inst = spi_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->mosi = (int8_t)pin;
@@ -144,11 +156,12 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 cmd_send_ok();
             }
             return true;
+
         case 0x0225: // CMD_SPI_SET_PIN_MISO
             if (len < 3) { cmd_send_error(); return true; }
             {
                 uint16_t id = (uint16_t)payload[0] | ((uint16_t)payload[1] << 8);
-                uint16_t pin = (len >= 4) ? (uint16_t)payload[2] | ((uint16_t)payload[3] << 8) : payload[2];
+                uint16_t pin = (len >= 4) ? ((uint16_t)payload[2] | ((uint16_t)payload[3] << 8)) : payload[2];
                 gpio_lib_spi_instance_t *inst = spi_get_instance(id);
                 if (!inst) { cmd_send_error(); return true; }
                 inst->miso = (int8_t)pin;
@@ -156,6 +169,7 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 cmd_send_ok();
             }
             return true;
+
         case 0x0226: // CMD_SPI_READ (full-duplex transfer)
             if (len < 2) { cmd_send_error(); return true; }
             {
@@ -165,6 +179,7 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 const uint8_t *tx = &payload[2];
                 uint16_t tx_len = (uint16_t)(len - 2);
                 if (tx_len == 0) { cmd_send_ok(); return true; }
+
                 uint8_t *rx = (uint8_t *)malloc(tx_len + 2);
                 if (!rx) { cmd_send_error(); return true; }
                 spi_transfer_bytes(inst, tx, &rx[2], tx_len);
@@ -174,6 +189,7 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 free(rx);
             }
             return true;
+
         case 0x0227: // CMD_SPI_WRITE
             if (len < 3) { cmd_send_error(); return true; }
             {
@@ -188,12 +204,21 @@ bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
                 cmd_send_ok();
             }
             return true;
+
         default:
             return false;
     }
 }
+
 #else
-void spi_init() {}
-const char *spi_module_flags() { return "SPI_SUPPORT"; }
-bool spi_cmd_handler(uint16_t, const uint8_t *, uint16_t) { return false; }
+
+void spi_init(void) {}
+const char *spi_module_flags(void) { return "SPI_SUPPORT"; }
+bool spi_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
+    (void)cmd;
+    (void)payload;
+    (void)len;
+    return false;
+}
+
 #endif

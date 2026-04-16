@@ -1,15 +1,21 @@
+// LCD Service (Phase 4 bootstrap)
+// ST7735 path is implemented first; other display families remain as stubs.
 #pragma once
+
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
-void lcd_init();
-const char *lcd_module_flags();
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// ST7735 LCD handler (0x002x)
+void lcd_init(void);
 bool st7735_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len);
-
-// HD44780 character LCD handler (0x003x)
 bool hd44780_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len);
-
-// AiP31068L character LCD handler (0x004x)
 bool aip31068l_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len);
+const char *lcd_module_flags(void);
+
+#ifdef __cplusplus
+}
+#endif

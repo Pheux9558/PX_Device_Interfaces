@@ -95,8 +95,8 @@ test_pattern_bitmap = [
 
 
 def main() -> None:
-    cfg = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=True, reset_on_start=True)
-    gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
+    cfg = USBTransportConfig(port="/dev/ttyACM0", baud=921600, debug=False, reset_on_start=True)
+    gpio = GPIO_Lib(transport_config=cfg, send_ack_timeout=1)
 
     try:
         gpio.start()
@@ -104,36 +104,35 @@ def main() -> None:
         
 
         # T-Dongle S3 I2C
-        i2c_0 = GPIO_Lib.I2C(gpio_lib=gpio, clock_pin=44, data_pin=43, frequency=400_000)
+        i2c = GPIO_Lib.I2C(gpio_lib=gpio, clock_pin=44, data_pin=43, frequency=400_000)
 
         # Arduino Uno R4 WiFi I2C Qwiic port (Wire1 on SDA=8, SCL=9)
-        # i2c_0 = GPIO_Lib.I2C(gpio_lib=gpio, i2c_bus=0)
-        # i2c_1 = GPIO_Lib.I2C(gpio_lib=gpio, i2c_bus=1)
+        # i2c = GPIO_Lib.I2C(gpio_lib=gpio, i2c_bus=0)
+        # i2c = GPIO_Lib.I2C(gpio_lib=gpio, i2c_bus=1)
 
         if True:
             # Display 128x64 OLED (SSD1306)
             display = GPIO_Lib.Display.DisplaySSD1306(
                 gpio_lib=gpio,
-                i2c=i2c_0,
+                i2c=i2c,
                 address=0x3C,
                 width=128,
-                height=32,
+                height=64,
             )
-
-        if False:
+        else:
             # # Display 128x32 OLED (SSD1306)
-            display1 = GPIO_Lib.Display.DisplaySSD1306(
+            display = GPIO_Lib.Display.DisplaySSD1306(
                 gpio_lib=gpio,
-                i2c=i2c_1,
+                i2c=i2c,
                 address=0x3C,
                 width=128,
                 height=32,
             )
-            display1.clear()
-            display1.set_cursor(0, 0)
-            display1.write_text("SSD1306 OK")
-            display1.set_cursor(0, 10)
-            display1.write_text("Wire bus 1")
+            display.clear()
+            display.set_cursor(0, 0)
+            display.write_text("SSD1306 OK")
+            display.set_cursor(0, 10)
+            display.write_text("Wire bus 1")
 
 
 

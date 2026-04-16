@@ -175,6 +175,15 @@ class OPCUATransport:
                         client_node.set_value(value, varianttype=node_variant_type)
                         return
                     except Exception as e_vt:
+                        # Some servers reject set_value(...) writes because of the
+                        # value/status/timestamp combination. Retry with a Value-only
+                        # DataValue using the node's exact variant type.
+                        try:
+                            dv_typed = ua.DataValue(ua.Variant(value, node_variant_type))
+                            client_node.set_attribute(ua.AttributeIds.Value, dv_typed)
+                            return
+                        except Exception:
+                            pass
                         # If node expects ByteString, try bytes
                         if node_variant_type == ua.VariantType.ByteString and isinstance(value, (list, bytearray, bytes)):
                             try:
@@ -225,6 +234,16 @@ class OPCUATransport:
                     client_node.set_attribute(ua.AttributeIds.Value, dv)
                     return
                 except Exception as e2:
+                    pass
+
+                # Fallback 4: write a plain DataValue without status/timestamps.
+                # Some servers reject set_value(...) because it sends an unsupported
+                # value/status/timestamp combination, but accept a minimal Value-only write.
+                try:
+                    dv = ua.DataValue(ua.Variant(value))
+                    client_node.set_attribute(ua.AttributeIds.Value, dv)
+                    return
+                except Exception:
                     pass
 
                 # No suitable fallback succeeded — if the server explicitly

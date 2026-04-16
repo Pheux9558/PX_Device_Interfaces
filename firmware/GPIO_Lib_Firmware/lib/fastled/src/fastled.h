@@ -1,23 +1,21 @@
 #pragma once
+
 #include <stdint.h>
 
-// Initialize FastLED module (register flags/allocations)
-void fastled_init();
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// Command handler for FastLED command range
+void fastled_init(void);
 bool fastled_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len);
+const char *fastled_module_flags(void);
 
-// Return module flags string (copied by modules_add_flag)
-const char *fastled_module_flags();
-
-// Public constants for LED types (match host enum)
 #define FASTLED_TYPE_APA102 0x00
 #define FASTLED_TYPE_WS2812 0x01
 
-// Helper function for debug module: set a single LED color immediately
-// Returns true if successful, false if instance not found or not configured
 bool fastled_set_single_led(uint16_t instance_id, uint8_t r, uint8_t g, uint8_t b);
-
-// Helper function for debug module: create a simple FastLED instance
-// Returns true if successful
 bool fastled_create_debug_instance(uint16_t instance_id, uint16_t data_pin, uint16_t clock_pin, uint8_t led_type);
+
+#ifdef __cplusplus
+}
+#endif

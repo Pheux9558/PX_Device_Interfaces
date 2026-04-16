@@ -28,11 +28,16 @@ def parse_args():
     p.add_argument("--file", "-f", default=str(Path(__file__).resolve().parent / "rgb565data.bin"), help="Path to RGB565 binary file (little-endian)")
     p.add_argument("--width", "-W", type=int, default=160, help="Bitmap width in pixels")
     p.add_argument("--height", "-H", type=int, default=80, help="Bitmap height in pixels")
+    p.add_argument("--display-width", type=int, default=160, help="Physical display width in pixels (default: 160)")
+    p.add_argument("--display-height", type=int, default=80, help="Physical display height in pixels (default: 80)")
     p.add_argument("--x", type=int, default=0, help="X position on display")
     p.add_argument("--y", type=int, default=0, help="Y position on display")
     p.add_argument("--port", default="/dev/ttyACM0", help="Serial port to use (default: /dev/ttyACM0)")
     p.add_argument("--baud", type=int, default=921600, help="Serial baud (default: 921600)")
     p.add_argument("--rotation", type=int, default=1, choices=[0,1,2,3], help="Display rotation")
+    p.add_argument("--ack-timeout", type=float, default=3.0, help="Per-packet ACK timeout in seconds (default: 3.0)")
+    p.add_argument("--chunk-rows", type=int, default=0, help="Rows per bitmap write call (default: 0 = single write call)")
+    p.add_argument("--pre-write-settle", type=float, default=0.6, help="Seconds to wait after setup so late ACKs are drained (default: 0.6)")
     p.add_argument("--random-rows", dest="random_rows", action="store_true", default=False, help="Send rows in random order")
     p.add_argument("--backlight", dest="backlight", type=int, default=255, help="Backlight brightness (0-255, default: 255)")
     p.add_argument("--no-reset", dest="reset_on_start", action="store_false", default=True, help="Don't reset device on startup")
@@ -56,13 +61,14 @@ def main():
 
     # Setup transport and GPIO_Lib
     cfg = USBTransportConfig(port=args.port, baud=args.baud, debug=False, reset_on_start=args.reset_on_start)
-    gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
+    gpio = GPIO_Lib(transport_config=cfg, send_ack_timeout=args.ack_timeout)
 
     gpio.setHandshakeEnabled(args.reset_on_start)  # If we're not resetting on start, disable handshake to avoid hanging if device is already running
     
     print(f"Reset on start: {args.reset_on_start} | Handshake enabled: {gpio.handshake_enabled}")
     try:
-        gpio.start()
+        if not gpio.start():
+            raise RuntimeError("Failed to start GPIO_Lib")
         gpio.sync()
         time.sleep(0.5)
 
@@ -76,8 +82,8 @@ def main():
             enable_pin=1,
             backlight_pin=38,
             backlight_inverted=True,
-            width=args.width,
-            height=args.height,
+            width=args.display_width,
+            height=args.display_height,
         )
 
         if args.backlight:
@@ -88,9 +94,27 @@ def main():
 
         gpio.await_send_empty()
 
+        if args.pre_write_settle > 0:
+            time.sleep(args.pre_write_settle)
+
         print(f"Writing {args.width}x{args.height} bitmap from {file_path} to display at ({args.x},{args.y})")
         start_time = time.time()
-        lcd.write_bitmap(data, x=args.x, y=args.y, width=args.width, height=args.height, random_rows=args.random_rows)
+        if args.chunk_rows > 0:
+            row_bytes = args.width * 2
+            for row_start in range(0, args.height, args.chunk_rows):
+                chunk_h = min(args.chunk_rows, args.height - row_start)
+                start = row_start * row_bytes
+                end = start + (chunk_h * row_bytes)
+                lcd.write_bitmap(
+                    data[start:end],
+                    x=args.x,
+                    y=args.y + row_start,
+                    width=args.width,
+                    height=chunk_h,
+                    random_rows=False,
+                )
+        else:
+            lcd.write_bitmap(data, x=args.x, y=args.y, width=args.width, height=args.height, random_rows=args.random_rows)
 
         gpio.await_send_empty()
         total_time = time.time() - start_time
@@ -113,3 +137,18 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+"""
+Future enhancements:
+
+Optimize speed of the bitmap transmission if you can. 
+I have some ideas to implement:
+- add a stream system to send a length of bytes instad of just a row (e.g. 1kb at a time)
+- compress the bitmap data on the host and decompress on the device (e.g. RLE or LZ4) if this is faster
+
+Look into those options and see if they can be implemented without breaking the existing protocol.
+If the device is unresponsive after sending you need to reset it by flashing the firmware again, 
+so be careful with any changes you make to the protocol or device code.
+
+
+"""

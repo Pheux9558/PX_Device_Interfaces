@@ -85,5 +85,33 @@
       "-DDEBUG_BRIGHTNESS=64",
       "-DDEBUG_LED_ACTIVE_LOW"
     ]
+  },
+  "ESP32_S3_R8": {
+    "manufacturer": "ESP32",
+    "model": "ESP32-S3-R8",
+    "platform": "espressif32",
+    "board": "esp32-s3-devkitc-1",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": [
+      "-DGPIOLIB_RTOS=1",
+      "-DGPIOLIB_TARGET_ESP32_S3_R8=1",
+      "-DARDUINO_USB_MODE=1",
+      "-DARDUINO_USB_CDC_ON_BOOT=1"
+    ]
+  },
+  "STM32F411": {
+    "manufacturer": "STMicroelectronics",
+    "model": "STM32F411",
+    "platform": "ststm32",
+    "board": "blackpill_f411ce",
+    "upload_speed": 921600,
+    "monitor_speed": 921600,
+    "framework": "arduino",
+    "device_based_flags": [
+      "-DGPIOLIB_RTOS=1",
+      "-DGPIOLIB_TARGET_STM32F411=1"
+    ]
   }
 }

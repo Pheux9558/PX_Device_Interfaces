@@ -1,9 +1,15 @@
 #include "firmware.h"
 #include "cmd.h"
+#include "cmd_auto.h"
 #include "gpio.h"
 #include "modules.h"
 #include <string.h>
 #include <stdio.h>
+
+// Self-register firmware command handler (0xFFFC-0xFFFF range).
+// Note: this range spans two high-bytes so cmd_dispatch_register() rejects the
+// hash-table entry; it still gets registered in the legacy range-scan fallback.
+CMD_REGISTER(0xFFFC, 0xFFFF, firmware_cmd_handler)
 
 #if defined(ARDUINO)
 #include <Arduino.h>
@@ -46,6 +52,10 @@ static const char *s_firmware_name = GPIO_LIB_FIRMWARE_NAME;
 static const uint8_t s_fw_major = 1;
 static const uint8_t s_fw_minor = 0;
 static const uint8_t s_fw_patch = 0;
+
+void firmware_init(void) {
+    modules_add_flag("FIRMWARE");
+}
 
 bool firmware_cmd_handler(uint16_t cmd, const uint8_t *payload, uint16_t len) {
     (void)payload; (void)len;

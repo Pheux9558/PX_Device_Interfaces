@@ -1,9 +1,12 @@
 // Command parsing + lightweight dispatcher
 #include "cmd.h"
+#include "cmd_auto.h"
+#include "dispatch.h"
 #include "serial.h"
+#include "../../serial_rtos/src/serial_rtos.h"
 #include <string.h>
 
-// small handler table
+// Legacy range-based handler table (kept for API compatibility)
 #define CMD_MAX_HANDLERS 12
 struct handler_entry { uint16_t start; uint16_t end; cmd_handler_t h; };
 static struct handler_entry g_handlers[CMD_MAX_HANDLERS];
@@ -18,6 +21,10 @@ static size_t g_buf_len = 0;
 void cmd_init() {
     g_handler_count = 0;
     g_buf_len = 0;
+    // Initialize hash-table dispatch
+    cmd_dispatch_init();
+    // Register all handlers declared with CMD_REGISTER() in service files
+    cmd_auto_register_all();
 }
 
 bool cmd_register_handler(uint16_t start, uint16_t end, cmd_handler_t handler) {
@@ -26,6 +33,15 @@ bool cmd_register_handler(uint16_t start, uint16_t end, cmd_handler_t handler) {
     g_handlers[g_handler_count].end = end;
     g_handlers[g_handler_count].h = handler;
     ++g_handler_count;
+    
+    // Populate hash-table dispatch (Phase 2.5)
+    // Attempt to use O(1) hash dispatch first
+    if (!cmd_dispatch_register(start, end, handler)) {
+        // If registration fails (e.g., range spans multiple high-bytes),
+        // fall back to legacy range-scan at dispatch time
+        // (range-scan code still in place as fallback)
+    }
+    
     return true;
 }
 
@@ -36,16 +52,33 @@ static uint8_t compute_checksum(uint16_t cmd, uint16_t len, const uint8_t *paylo
 }
 
 void cmd_send_response(uint16_t rcmd, const uint8_t *payload, uint16_t rlen) {
+    uint8_t frame[1 + 2 + 2 + CMD_BUFSZ + 1];
+    if (rlen > CMD_BUFSZ) {
+        rlen = CMD_BUFSZ;
+    }
+
     uint8_t hdr[5];
     hdr[0] = 0xAA;
     hdr[1] = (uint8_t)(rcmd & 0xFF);
     hdr[2] = (uint8_t)((rcmd >> 8) & 0xFF);
     hdr[3] = (uint8_t)(rlen & 0xFF);
     hdr[4] = (uint8_t)((rlen >> 8) & 0xFF);
-    serial_write(hdr, sizeof(hdr));
-    if (payload && rlen) serial_write(payload, rlen);
+    memcpy(frame, hdr, sizeof(hdr));
+    if (payload && rlen) {
+        memcpy(&frame[5], payload, rlen);
+    }
     uint8_t chk = compute_checksum(rcmd, rlen, payload ? payload : (const uint8_t*)"\0");
-    serial_write(&chk, 1);
+    frame[5 + rlen] = chk;
+
+    // Use queued TX path when RTOS transport is active.
+    if (g_response_queue != NULL) {
+        if (serial_write_rtos(frame, (size_t)(6 + rlen)) > 0) {
+            return;
+        }
+    }
+
+    // Fallback for early boot/non-RTOS contexts.
+    serial_write(frame, (size_t)(6 + rlen));
 }
 
 void cmd_send_ok() { uint16_t code = 0x1000; cmd_send_response(code, NULL, 0); }
@@ -79,14 +112,23 @@ static void _process_buffer() {
         if (!cmd_verify_checksum(&g_buf[pos], total_len)) { pos++; continue; }
         const uint8_t *payload = &g_buf[pos + 5];
         bool handled = false;
-        for (int i = 0; i < g_handler_count; ++i) {
-            if (cmd >= g_handlers[i].start && cmd <= g_handlers[i].end) {
-                if (g_handlers[i].h) {
-                    handled = g_handlers[i].h(cmd, payload, payload_len);
+        
+        // Phase 2.5: Try O(1) hash-table dispatch first
+        handled = cmd_dispatch_execute(cmd, payload, payload_len);
+        
+        // Fallback: Legacy range-scan if hash dispatch didn't handle it
+        // (for ranges that span multiple high-bytes, which hash table doesn't support)
+        if (!handled) {
+            for (int i = 0; i < g_handler_count; ++i) {
+                if (cmd >= g_handlers[i].start && cmd <= g_handlers[i].end) {
+                    if (g_handlers[i].h) {
+                        handled = g_handlers[i].h(cmd, payload, payload_len);
+                    }
+                    break;
                 }
-                break;
             }
         }
+        
         if (!handled) {
             // unknown command -> send error
             cmd_send_error();

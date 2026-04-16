@@ -85,7 +85,7 @@ def test_display_write_bitmap_host_conversion():
     """Display.write_bitmap() should convert RGB565->BGR565+invert on the host before sending rows."""
     mock = MockTransport(loopback=False)
     cfg = MockTransportConfig(loopback=False, debug=True, timeout=0.1, auto_io=False)
-    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True, require_ack_on_send=False)
+    gpio = GPIO_Lib(transport_config=cfg, debug_enabled=True)
     gpio._transport = mock
     mock.connect()
 
@@ -97,6 +97,17 @@ def test_display_write_bitmap_host_conversion():
         gpio._ready_cv.notify_all()
     gpio._send_thread.start()
     gpio._recv_thread.start()
+
+    # Auto-ACK thread: inject CMD_DEVICE_OK frames so wait_ack packets don't timeout.
+    # OK frame: [0xAA][CMD=0x1000 LE][LEN=0x0000][CHK=(0x1000+0+0)&0xFF=0x00]
+    _ok_frame = bytes([0xAA, 0x00, 0x10, 0x00, 0x00, 0x00])
+    _auto_ack_running = True
+    def _auto_ack():
+        while _auto_ack_running:
+            time.sleep(0.005)
+            mock._incoming.put(_ok_frame)
+    ack_thread = threading.Thread(target=_auto_ack, daemon=True)
+    ack_thread.start()
 
     try:
         spi = gpio.SPI(gpio, data_pin=23, clock_pin=18)
@@ -132,6 +143,7 @@ def test_display_write_bitmap_host_conversion():
         assert pixel_bytes == bytes([0xE0, 0xFF, 0xFF, 0x07])
 
     finally:
+        _auto_ack_running = False
         gpio._running = False
         if gpio._send_thread is not None:
             gpio._send_thread.join(0.2)

@@ -41,16 +41,17 @@ EXCEED_POINT_SIZE = 36
 
 def run_blink_and_capture():
     env = dict(os.environ)
+    repo_root = Path(__file__).resolve().parents[2]  # Two levels up: utils -> px_device_interfaces -> repo root
     env["PYTHONPATH"] = env.get("PYTHONPATH", "")
     if env["PYTHONPATH"] != "":
-        env["PYTHONPATH"] = env["PYTHONPATH"] + os.pathsep + str(Path(__file__).resolve().parents[1])
+        env["PYTHONPATH"] = env["PYTHONPATH"] + os.pathsep + str(repo_root)
     else:
-        env["PYTHONPATH"] = str(Path(__file__).resolve().parents[1])
+        env["PYTHONPATH"] = str(repo_root)
 
     print("Running blink script and capturing output to", LOG_PATH)
     try:
         # use a timeout to avoid blocking indefinitely if the blink script waits on hardware
-        p = subprocess.run([sys.executable, "px_device_interfaces/utils/blink_builtin.py"], env=env, capture_output=True, text=True, timeout=30)
+        p = subprocess.run([sys.executable, "-m", "px_device_interfaces.utils.blink_builtin"], env=env, cwd=str(repo_root), capture_output=True, text=True, timeout=30)
         LOG_PATH.write_text(p.stdout + "\n" + p.stderr)
         return LOG_PATH
     except subprocess.TimeoutExpired:

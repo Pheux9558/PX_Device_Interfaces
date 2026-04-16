@@ -16,7 +16,7 @@ from px_device_interfaces.GPIO_Lib import GPIO_Lib, PinMode
 def main():
     cfg = USBTransportConfig(debug=False, reset_on_start=True, auto_connect=True)
     
-    gpio = GPIO_Lib(transport_config=cfg, require_ack_on_send=True, send_ack_timeout=1)
+    gpio = GPIO_Lib(transport_config=cfg, send_ack_timeout=1)
     spi = GPIO_Lib.SPI(gpio_lib=gpio, data_pin=3, clock_pin=5, frequency=40_000_000)
     lcd = GPIO_Lib.Display.DisplayST7735(
         gpio_lib=gpio,
@@ -49,6 +49,7 @@ def main():
                 lcd.clear()
                 lcd.write_text("BOOT button", x=5, y=5)
                 lcd.write_text("pressed!", x=5, y=15)
+                print("BOOT button pressed!")
                 # print a small circle bitmap (RGB565) on the LCD to indicate button press
                 # Green color in RGB565: 0x07E0
                 circle_bitmap = [
@@ -68,9 +69,10 @@ def main():
                 lcd.clear()
                 lcd.write_text("BOOT button", x=5, y=5)
                 lcd.write_text("released", x=5, y=15)
+                print("BOOT button released")
 
             gpio.await_send_empty()
-            # time.sleep(0.5)  # Check button state every 0.5 seconds
+            time.sleep(0.5)  # Check button state every 0.5 seconds
         time.sleep(2)  # Show final message for 2 seconds before exiting
 
     finally:
