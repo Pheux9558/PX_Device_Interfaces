@@ -37,12 +37,6 @@ void loop() {
 #if defined(OLED_SUPPORT)
 #include "oled.h"
 #endif
-#if defined(ENCODER_SUPPORT)
-#include "encoder.h"
-#endif
-#if defined(STEPPER_SUPPORT)
-#include "stepper.h"
-#endif
 #if defined(ARDUINO_UNOR4_WIFI)
 #include "matrix.h"
 #endif
@@ -128,18 +122,6 @@ void setup() {
   oled_init();
 #endif
 
-#if defined(ENCODER_SUPPORT)
-  const char *encoder_msg = "encoder: initializing encoder module\n";
-  serial_write((const uint8_t *)encoder_msg, strlen(encoder_msg));
-  encoder_init();
-#endif
-
-#if defined(STEPPER_SUPPORT)
-  const char *stepper_msg = "stepper: initializing stepper module\n";
-  serial_write((const uint8_t *)stepper_msg, strlen(stepper_msg));
-  stepper_init();
-#endif
-
 #if defined(ARDUINO_UNOR4_WIFI)
   const char *matrix_msg = "matrix: initializing una r4 matrix module\n";
   serial_write((const uint8_t *)matrix_msg, strlen(matrix_msg));
@@ -192,14 +174,6 @@ void loop() {
   // Update custom matrix animations
   matrix_update();
 #endif
-
-  #if defined(ENCODER_SUPPORT)
-    encoder_poll();
-  #endif
-
-  #if defined(STEPPER_SUPPORT)
-    stepper_poll();
-  #endif
 
   // Minimal delay to let other FreeRTOS tasks run
   // RxTask and TxTask will handle serial I/O asynchronously

@@ -6,6 +6,7 @@ import time
 from px_device_interfaces.GPIO_Lib import GPIO_Lib
 from px_device_interfaces.transports.usb import USBTransportConfig
 
+# source /home/pheux/Documents/projects/0_python/PX_Device_Interfaces/.venv/bin/activate 2>/dev/null || true && python -m px_device_interfaces.examples.FastLed.APA102 --data-pin 40 --clock-pin 39 --count 30 --hold 0.5 --port /dev/ttyACM0
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(

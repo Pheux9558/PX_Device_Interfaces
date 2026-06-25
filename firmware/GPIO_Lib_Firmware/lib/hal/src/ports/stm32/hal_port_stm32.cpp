@@ -8,7 +8,7 @@
 
 /*
  * STM32 HAL implementation for Arduino core.
- * GPIO and time are implemented for active services (GPIO/Encoder/Stepper).
+ * GPIO and time are implemented for active services.
  * UART/I2C/SPI can be expanded in follow-up tasks.
  */
 

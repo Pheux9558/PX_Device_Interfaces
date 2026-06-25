@@ -26,8 +26,12 @@ px_device_interfaces/examples/FastLed/APA102.py
 px_device_interfaces/examples/FastLed/NeoPixel.py
 px_device_interfaces/examples/GPIO/analog_read.py
 px_device_interfaces/examples/encoder/encoder_test.py
+px_device_interfaces/examples/stepper/drv8825_test.py
+px_device_interfaces/examples/stepper/generic_test.py
 px_device_interfaces/examples/stepper/stepper_test.py
+px_device_interfaces/examples/stepper/stspin220_test.py
 px_device_interfaces/tests/firmware_resp.py
+px_device_interfaces/tests/linear_axis.py
 px_device_interfaces/tests/opcua_transport_speed.py
 px_device_interfaces/tests/test_FastLed.py
 px_device_interfaces/tests/test_gpio_lib_opcua.py

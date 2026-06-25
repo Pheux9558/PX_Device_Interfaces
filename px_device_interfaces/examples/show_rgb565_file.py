@@ -60,7 +60,8 @@ def main():
         sys.exit(2)
 
     # Setup transport and GPIO_Lib
-    cfg = USBTransportConfig(port=args.port, baud=args.baud, debug=False, reset_on_start=args.reset_on_start)
+    cfg = USBTransportConfig(port=args.port, baud=args.baud, debug=True, auto_connect=True)
+    print(f"Using transport config: {cfg}, port: {cfg.port}")
     gpio = GPIO_Lib(transport_config=cfg, send_ack_timeout=args.ack_timeout)
 
     gpio.setHandshakeEnabled(args.reset_on_start)  # If we're not resetting on start, disable handshake to avoid hanging if device is already running
