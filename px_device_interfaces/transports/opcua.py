@@ -139,8 +139,7 @@ class OPCUATransport:
 
     @property
     def is_connected(self) -> bool:
-        with self._lock:
-            return bool(self._connected)
+        return bool(self._connected)
 
     
     # Convenience helpers (not part of BaseTransport)
